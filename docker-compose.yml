@@ -1,0 +1,31 @@
+name: backend-ujian-spring-boot-java
+
+services:
+
+  db:
+    image: mariadb:11.5-rc
+    container_name: backend-ujian-spring-boot-java-dev-db
+
+    ports:
+      - 3001:3306
+
+    environment:
+      MARIADB_ROOT_PASSWORD: 'toor'
+      MARIADB_DATABASE: 'ujian-db'
+      MARIADB_USER: 'spring'
+      MARIADB_PASSWORD: 'boot'
+
+    volumes:
+      - backend-ujian-spring-boot-java-dev-data:/var/lib/mysql
+
+    networks:
+      - backend-ujian-spring-boot-java-dev-net
+
+
+volumes:
+  backend-ujian-spring-boot-java-dev-data:
+    driver: local
+
+networks:
+  backend-ujian-spring-boot-java-dev-net:
+    driver: bridge
