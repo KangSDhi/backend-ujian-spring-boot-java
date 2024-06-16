@@ -1,5 +1,6 @@
 package dev.kangsdhi.backendujianspringbootjava.database;
 
+import dev.kangsdhi.backendujianspringbootjava.database.seeder.AdminSeeder;
 import dev.kangsdhi.backendujianspringbootjava.database.seeder.JurusanSeeder;
 import dev.kangsdhi.backendujianspringbootjava.database.seeder.KelasSeeder;
 import dev.kangsdhi.backendujianspringbootjava.database.seeder.TingkatSeeder;
@@ -22,10 +23,14 @@ public class DatabaseSeeder {
     @Autowired
     KelasSeeder kelasSeeder;
 
+    @Autowired
+    AdminSeeder adminSeeder;
+
     @EventListener
     public void seed(ContextRefreshedEvent event) {
-        tingkatSeeder.createDataTingkat();
-        jurusanSeeder.createDataJurusan();
-        kelasSeeder.createDataKelas();
+        tingkatSeeder.seedTingkat();
+        jurusanSeeder.seedJurusan();
+        kelasSeeder.seedKelas();
+        adminSeeder.seedAdmin();
     }
 }

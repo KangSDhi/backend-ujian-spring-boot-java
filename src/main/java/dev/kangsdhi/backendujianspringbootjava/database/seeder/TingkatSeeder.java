@@ -11,7 +11,7 @@ public class TingkatSeeder {
     @Autowired
     private TingkatRepository tingkatRepository;
 
-    public void createDataTingkat(){
+    public void seedTingkat(){
         String[] dataTingkats = new String[]{
                 "X",
                 "XI",

@@ -24,7 +24,7 @@ public class KelasSeeder {
     @Autowired
     KelasRepository kelasRepository;
 
-    public void createDataKelas() {
+    public void seedKelas() {
         int countDataKelas = kelasRepository.findAll().toArray().length;
         if (countDataKelas == 0){
 

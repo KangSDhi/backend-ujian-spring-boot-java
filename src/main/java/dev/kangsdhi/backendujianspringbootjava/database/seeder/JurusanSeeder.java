@@ -11,7 +11,7 @@ public class JurusanSeeder {
     @Autowired
     private JurusanRepository jurusanRepository;
 
-    public void createDataJurusan(){
+    public void seedJurusan(){
         String[] dataJurusans = new String[]{
                 "Teknik Konstruksi dan Properti",
                 "Desain Pemodelan dan Informasi Bangunan",
