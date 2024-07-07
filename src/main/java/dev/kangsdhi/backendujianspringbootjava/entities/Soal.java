@@ -25,7 +25,7 @@ public class Soal {
         }
     }
 
-    @Column(name = "nama_soal", nullable = false)
+    @Column(name = "nama_soal", nullable = false, unique = true)
     private String namaSoal;
 
     @Column(name = "butir_soal", nullable = false)

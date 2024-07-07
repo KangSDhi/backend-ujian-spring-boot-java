@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AdminSeeder {
 
@@ -17,8 +19,8 @@ public class AdminSeeder {
     private PasswordEncoder passwordEncoder;
 
     public void seedAdmin(){
-        Pengguna admin = penggunaRepository.findByRolePengguna(RolePengguna.ADMIN);
-        if (admin == null) {
+        List<Pengguna> admin = penggunaRepository.findByRolePengguna(RolePengguna.ADMIN);
+        if (admin.isEmpty()) {
             Pengguna adminBaru = new Pengguna();
             adminBaru.setNamaPengguna("Kang Admin");
             adminBaru.setEmailPengguna("kangadmin@gmail.com");

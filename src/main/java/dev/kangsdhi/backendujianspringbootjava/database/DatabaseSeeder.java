@@ -1,9 +1,6 @@
 package dev.kangsdhi.backendujianspringbootjava.database;
 
-import dev.kangsdhi.backendujianspringbootjava.database.seeder.AdminSeeder;
-import dev.kangsdhi.backendujianspringbootjava.database.seeder.JurusanSeeder;
-import dev.kangsdhi.backendujianspringbootjava.database.seeder.KelasSeeder;
-import dev.kangsdhi.backendujianspringbootjava.database.seeder.TingkatSeeder;
+import dev.kangsdhi.backendujianspringbootjava.database.seeder.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -26,11 +23,27 @@ public class DatabaseSeeder {
     @Autowired
     AdminSeeder adminSeeder;
 
+    @Autowired
+    SiswaSeeder siswaSeeder;
+
+    @Autowired
+    SoalSeeder soalSeeder;
+
+    @Autowired
+    BankSoalSeeder bankSoalSeeder;
+
+    @Autowired
+    UjianSeeder ujianSeeder;
+
     @EventListener
     public void seed(ContextRefreshedEvent event) {
         tingkatSeeder.seedTingkat();
         jurusanSeeder.seedJurusan();
         kelasSeeder.seedKelas();
         adminSeeder.seedAdmin();
+        siswaSeeder.seedSiswa();
+        soalSeeder.seedSoal();
+        bankSoalSeeder.seedBankSoal();
+        ujianSeeder.seedUjian();
     }
 }
