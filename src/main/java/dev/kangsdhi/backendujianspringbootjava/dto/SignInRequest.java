@@ -7,8 +7,8 @@ import lombok.Data;
 @Data
 public class SignInRequest {
 
-    @NotBlank(message = "Email atau ID Peserta Kosong!")
-    @NotNull(message = "Email atau ID Peserta Kosong!")
+    @NotBlank(message = "Email atau ID Siswa Kosong!")
+    @NotNull(message = "Email atau ID Siswa Kosong!")
     private String emailOrIdSiswa;
 
     @NotBlank(message = "Password Kosong!")

@@ -47,7 +47,7 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
                 // check this out
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(pengguna.getUsername(), signInRequest.getPassword()));
             } else {
-                throw new UsernameNotFoundException("ID Peserta atau Password Salah!");
+                throw new UsernameNotFoundException("ID Siswa atau Password Salah!");
             }
         }
 

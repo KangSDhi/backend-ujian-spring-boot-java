@@ -1,5 +1,7 @@
 package dev.kangsdhi.backendujianspringbootjava.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.kangsdhi.backendujianspringbootjava.dto.ErrorResponse;
 import dev.kangsdhi.backendujianspringbootjava.entities.RolePengguna;
 import dev.kangsdhi.backendujianspringbootjava.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -44,7 +49,22 @@ public class SecurityConfiguration {
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
                         jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class
-                );
+                )
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            ErrorResponse<String> errorResponse = new ErrorResponse<>();
+                            errorResponse.setHttpCode(HttpStatus.FORBIDDEN.value());
+                            errorResponse.setErrors(accessDeniedException.getMessage());
+                            ResponseEntity<ErrorResponse<String>> responseEntity = ResponseEntity.status(HttpStatus.FORBIDDEN)
+                                    .body(errorResponse);
+                            ObjectMapper objectMapper = new ObjectMapper();
+                            String jsonResponse = objectMapper.writeValueAsString(responseEntity.getBody());
+                            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                            response.setStatus(HttpStatus.FORBIDDEN.value());
+                            response.getWriter().write(jsonResponse);
+                            response.getWriter().flush();
+                            logger.error(accessDeniedException.getMessage());
+                        }));
         return http.build();
     }
 
