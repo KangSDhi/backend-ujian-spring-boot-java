@@ -55,7 +55,7 @@ public class Pengguna implements UserDetails {
 
     @Override
     public String getUsername() {
-        return emailPengguna;
+        return namaPengguna;
     }
 
     @Override
