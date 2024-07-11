@@ -64,7 +64,22 @@ public class SecurityConfiguration {
                             response.getWriter().write(jsonResponse);
                             response.getWriter().flush();
                             logger.error(accessDeniedException.getMessage());
-                        }));
+                        })
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            ErrorResponse<String> errorResponse = new ErrorResponse<>();
+                            errorResponse.setHttpCode(HttpStatus.UNAUTHORIZED.value());
+                            errorResponse.setErrors(authException.getMessage());
+                            ResponseEntity<ErrorResponse<String>> responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                                    .body(errorResponse);
+                            ObjectMapper objectMapper = new ObjectMapper();
+                            String jsonResponse = objectMapper.writeValueAsString(responseEntity.getBody());
+                            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                            response.getWriter().write(jsonResponse);
+                            response.getWriter().flush();
+                            logger.error(authException.getMessage());
+                        })
+                );
         return http.build();
     }
 
