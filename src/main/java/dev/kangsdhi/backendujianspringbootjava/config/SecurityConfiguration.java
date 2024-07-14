@@ -40,12 +40,13 @@ public class SecurityConfiguration {
         Logger logger = LoggerFactory.getLogger(SecurityConfiguration.class);
 
         http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request -> request.requestMatchers("/api/auth/**")
-                .permitAll()
-                        .requestMatchers("/api/admin/**").hasAnyAuthority(RolePengguna.ADMIN.name())
-                        .requestMatchers("/api/guru/**").hasAnyAuthority(RolePengguna.GURU.name())
-                        .requestMatchers("/api/siswa/**").hasAnyAuthority(RolePengguna.SISWA.name())
-                        .anyRequest().authenticated())
+                .authorizeHttpRequests(request ->
+                        request.requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/api/health/**").permitAll()
+                                .requestMatchers("/api/admin/**").hasAnyAuthority(RolePengguna.ADMIN.name())
+                                .requestMatchers("/api/guru/**").hasAnyAuthority(RolePengguna.GURU.name())
+                                .requestMatchers("/api/siswa/**").hasAnyAuthority(RolePengguna.SISWA.name())
+                                .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
                         jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class
@@ -97,7 +98,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
