@@ -7,9 +7,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -43,10 +48,13 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected ResponseEntity<ErrorResponse<String>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        ErrorResponse<String> errorResponse = new ErrorResponse<>();
+    protected ResponseEntity<ErrorResponse<Map<String, String>>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        ErrorResponse<Map<String, String>> errorResponse = new ErrorResponse<>();
         errorResponse.setHttpCode(HttpStatus.BAD_REQUEST.value());
-        String errorMessage = e.getBindingResult().getAllErrors().getFirst().getDefaultMessage();
+        Map<String, String> errorMessage = new HashMap<>();
+        for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
+            errorMessage.put(fieldError.getField(), fieldError.getDefaultMessage());
+        }
         errorResponse.setErrors(errorMessage);
         logger.warn(e.getMessage());
         logger.warn(String.valueOf(errorResponse));

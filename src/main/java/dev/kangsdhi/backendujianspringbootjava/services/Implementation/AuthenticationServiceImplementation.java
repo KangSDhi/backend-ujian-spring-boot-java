@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,20 +36,20 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
         ValidateUtils validateUtils = new ValidateUtils();
 
         if (validateUtils.validateEmailFormat(signInRequest.getEmailOrIdSiswa())){
-            pengguna = penggunaRepository.findByEmailPengguna(signInRequest.getEmailOrIdSiswa()).orElseThrow(() -> new UsernameNotFoundException("Email atau Password Salah!"));
+            pengguna = penggunaRepository.findByEmailPengguna(signInRequest.getEmailOrIdSiswa()).orElseThrow(() -> new UsernameNotFoundException("Pengguna Tidak Ditemukan!"));
             if (pengguna != null && passwordEncoder.matches(signInRequest.getPassword(), pengguna.getPassword())) {
                 // check this out
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(pengguna.getUsername(), signInRequest.getPassword()));
             } else {
-                throw new UsernameNotFoundException("Email atau Password Salah!");
+                throw new UsernameNotFoundException("Pengguna Tidak Ditemukan!");
             }
         } else {
-            pengguna = penggunaRepository.findByIdSiswa(signInRequest.getEmailOrIdSiswa()).orElseThrow(() -> new UsernameNotFoundException("ID Peserta atau Password Salah!"));
+            pengguna = penggunaRepository.findByIdSiswa(signInRequest.getEmailOrIdSiswa()).orElseThrow(() -> new UsernameNotFoundException("Siswa Tidak Ditemukan!"));
             if (pengguna != null && passwordEncoder.matches(signInRequest.getPassword(), pengguna.getPassword())) {
                 // check this out
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(pengguna.getUsername(), signInRequest.getPassword()));
             } else {
-                throw new UsernameNotFoundException("ID Siswa atau Password Salah!");
+                throw new UsernameNotFoundException("Siswa Tidak Ditemukan!");
             }
         }
 
@@ -59,8 +61,14 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
 
         Map<String, String> data = new HashMap<>();
         data.put("token", jwtToken);
+        data.put("level", pengguna.getRolePengguna().name());
         signInResponse.setData(data);
 
         return signInResponse;
+    }
+
+    @Override
+    public UserDetails getCurrentUser() {
+        return (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }
