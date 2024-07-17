@@ -2,6 +2,7 @@ package dev.kangsdhi.backendujianspringbootjava.services.Implementation;
 
 import dev.kangsdhi.backendujianspringbootjava.dto.SignInRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.SignInResponse;
+import dev.kangsdhi.backendujianspringbootjava.dto.SignOutResponse;
 import dev.kangsdhi.backendujianspringbootjava.entities.Pengguna;
 import dev.kangsdhi.backendujianspringbootjava.entities.RolePengguna;
 import dev.kangsdhi.backendujianspringbootjava.repository.PenggunaRepository;
@@ -71,6 +72,14 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
         signInResponse.setData(data);
 
         return signInResponse;
+    }
+
+    @Override
+    public SignOutResponse signOut() {
+        SignOutResponse signOutResponse = new SignOutResponse();
+        signOutResponse.setHttpCode(HttpStatus.OK.value());
+        signOutResponse.setMessage("Berhasil Logout");
+        return signOutResponse;
     }
 
     @Override

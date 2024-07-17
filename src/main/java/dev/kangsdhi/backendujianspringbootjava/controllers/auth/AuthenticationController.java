@@ -1,9 +1,6 @@
 package dev.kangsdhi.backendujianspringbootjava.controllers.auth;
 
-import dev.kangsdhi.backendujianspringbootjava.dto.CheckUserAuthResponse;
-import dev.kangsdhi.backendujianspringbootjava.dto.PingResponse;
-import dev.kangsdhi.backendujianspringbootjava.dto.SignInRequest;
-import dev.kangsdhi.backendujianspringbootjava.dto.SignInResponse;
+import dev.kangsdhi.backendujianspringbootjava.dto.*;
 import dev.kangsdhi.backendujianspringbootjava.services.AuthenticationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +21,11 @@ public class AuthenticationController {
     @PostMapping("/signin")
     public ResponseEntity<SignInResponse<Object>> signIn(@Valid @RequestBody SignInRequest signInRequest) {
         return ResponseEntity.ok(authenticationService.signIn(signInRequest));
+    }
+
+    @GetMapping("/signout")
+    public ResponseEntity<SignOutResponse> signOut() {
+        return ResponseEntity.ok(authenticationService.signOut());
     }
 
     @GetMapping("/check/user")
