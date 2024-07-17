@@ -3,6 +3,7 @@ package dev.kangsdhi.backendujianspringbootjava.services.Implementation;
 import dev.kangsdhi.backendujianspringbootjava.dto.SignInRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.SignInResponse;
 import dev.kangsdhi.backendujianspringbootjava.entities.Pengguna;
+import dev.kangsdhi.backendujianspringbootjava.entities.RolePengguna;
 import dev.kangsdhi.backendujianspringbootjava.repository.PenggunaRepository;
 import dev.kangsdhi.backendujianspringbootjava.services.AuthenticationService;
 import dev.kangsdhi.backendujianspringbootjava.services.JWTService;
@@ -62,6 +63,11 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
         Map<String, String> data = new HashMap<>();
         data.put("token", jwtToken);
         data.put("level", pengguna.getRolePengguna().name());
+        data.put("nama_pengguna", pengguna.getNamaPengguna());
+        if (pengguna.getRolePengguna() == RolePengguna.SISWA){
+            data.put("tingkat", pengguna.getKelas().getTingkat().getTingkat());
+            data.put("jurusan", pengguna.getKelas().getJurusan().getJurusan());
+        }
         signInResponse.setData(data);
 
         return signInResponse;
