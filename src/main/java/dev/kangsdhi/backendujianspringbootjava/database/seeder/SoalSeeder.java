@@ -32,15 +32,21 @@ public class SoalSeeder {
 
     public void seedSoal(){
         List<Soal> dataSoal = soalRepository.findAll();
+        String waktuMulaiPagiString = "23-07-2024 07:00:00";
+        String waktuSelesaiPagiString = "23-07-2024 08:00:00";
+        String waktuMulaiSiangString = "23-07-2024 11:00:00";
+        String waktuSelesaiSiangString = "23-07-2024 13:00:00";
+        String waktuMulaiSoreString = "23-07-2024 14:00:00";
+        String waktuSelesaiSoreString = "23-07-2024 15:00:00";
         if (dataSoal.isEmpty()){
             List<SoalBaruSeeder> dataSoalBaruSeeder = new ArrayList<>(List.of(
                     new SoalBaruSeeder(
                             "Matematika X",
                             56,
                             AcakSoal.ACAK,
-                            convertUtils.convertStringToDatetimeOrTime("18-07-2024 07:00:00"),
+                            convertUtils.convertStringToDatetimeOrTime(waktuMulaiPagiString),
                             convertUtils.convertStringToDatetimeOrTime("02:00:00"),
-                            convertUtils.convertStringToDatetimeOrTime("18-07-2024 09:00:00"),
+                            convertUtils.convertStringToDatetimeOrTime(waktuSelesaiPagiString),
                             "X",
                             null,
                             TipeSoal.PILIHAN_GANDA),
@@ -48,9 +54,9 @@ public class SoalSeeder {
                             "Dasar Kejuruan TKJ",
                             40,
                             AcakSoal.ACAK,
-                            convertUtils.convertStringToDatetimeOrTime("18-07-2024 10:00:00"),
+                            convertUtils.convertStringToDatetimeOrTime(waktuMulaiSiangString),
                             convertUtils.convertStringToDatetimeOrTime("03:00:00"),
-                            convertUtils.convertStringToDatetimeOrTime("18-07-2024 13:00:00"),
+                            convertUtils.convertStringToDatetimeOrTime(waktuSelesaiSiangString),
                             "X",
                             "Teknik Komputer dan Jaringan",
                             TipeSoal.PILIHAN_GANDA),
@@ -58,9 +64,19 @@ public class SoalSeeder {
                             "Konsentrasi Kejuruan GMT",
                             40,
                             AcakSoal.ACAK,
-                            convertUtils.convertStringToDatetimeOrTime("18-07-2024 10:00:00"),
+                            convertUtils.convertStringToDatetimeOrTime(waktuMulaiPagiString),
                             convertUtils.convertStringToDatetimeOrTime("03:00:00"),
-                            convertUtils.convertStringToDatetimeOrTime("18-07-2024 13:00:00"),
+                            convertUtils.convertStringToDatetimeOrTime(waktuSelesaiPagiString),
+                            "XII",
+                            "Teknik Geomatika",
+                            TipeSoal.PILIHAN_GANDA),
+                    new SoalBaruSeeder(
+                            "Pilihan GMT Kejuruan GMT",
+                            40,
+                            AcakSoal.ACAK,
+                            convertUtils.convertStringToDatetimeOrTime(waktuMulaiSoreString),
+                            convertUtils.convertStringToDatetimeOrTime("03:00:00"),
+                            convertUtils.convertStringToDatetimeOrTime(waktuSelesaiSoreString),
                             "XII",
                             "Teknik Geomatika",
                             TipeSoal.PILIHAN_GANDA)
