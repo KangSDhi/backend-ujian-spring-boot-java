@@ -1,8 +1,8 @@
 package dev.kangsdhi.backendujianspringbootjava.services.Implementation;
 
-import dev.kangsdhi.backendujianspringbootjava.dto.MataUjian;
-import dev.kangsdhi.backendujianspringbootjava.dto.MataUjianRequest;
-import dev.kangsdhi.backendujianspringbootjava.dto.MataUjianResponse;
+import dev.kangsdhi.backendujianspringbootjava.dto.data.MataUjian;
+import dev.kangsdhi.backendujianspringbootjava.dto.request.MataUjianRequest;
+import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessageAndData;
 import dev.kangsdhi.backendujianspringbootjava.entities.Jurusan;
 import dev.kangsdhi.backendujianspringbootjava.entities.Soal;
 import dev.kangsdhi.backendujianspringbootjava.entities.Tingkat;
@@ -12,7 +12,6 @@ import dev.kangsdhi.backendujianspringbootjava.repository.SoalRepository;
 import dev.kangsdhi.backendujianspringbootjava.repository.TingkatRepository;
 import dev.kangsdhi.backendujianspringbootjava.services.MataUjianService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -30,14 +29,14 @@ public class MataUjianServiceImplementation implements MataUjianService {
     private final SoalRepository soalRepository;
 
     @Override
-    public MataUjianResponse<List<MataUjian>> listMataUjian(MataUjianRequest mataUjianRequest) {
+    public ResponseWithMessageAndData<List<MataUjian>> listMataUjian(MataUjianRequest mataUjianRequest) {
         ZonedDateTime jakartaTime = ZonedDateTime.now(ZoneId.of("Asia/Jakarta"));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         Tingkat tingkat = tingkatRepository.findTingkatByTingkat(mataUjianRequest.getTingkat());
         Jurusan jurusan = jurusanRepository.findJurusanByJurusan(mataUjianRequest.getJurusan());
         List<Soal> soal = soalRepository.findSoalForSiswa(jakartaTime.format(formatter), tingkat, jurusan);
 
-        MataUjianResponse<List<MataUjian>> mataUjianResponse = new MataUjianResponse<>();
+        ResponseWithMessageAndData<List<MataUjian>> mataUjianResponse = new ResponseWithMessageAndData<>();
         List<MataUjian> mataUjianList = new ArrayList<>();
         for (Soal soalItem: soal){
 

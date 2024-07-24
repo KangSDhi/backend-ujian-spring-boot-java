@@ -1,6 +1,6 @@
 package dev.kangsdhi.backendujianspringbootjava.database.seeder;
 
-import dev.kangsdhi.backendujianspringbootjava.dto.SoalBaruSeeder;
+import dev.kangsdhi.backendujianspringbootjava.dto.seeder.SoalBaruSeeder;
 import dev.kangsdhi.backendujianspringbootjava.entities.Jurusan;
 import dev.kangsdhi.backendujianspringbootjava.entities.Soal;
 import dev.kangsdhi.backendujianspringbootjava.entities.Tingkat;
@@ -32,12 +32,12 @@ public class SoalSeeder {
 
     public void seedSoal(){
         List<Soal> dataSoal = soalRepository.findAll();
-        String waktuMulaiPagiString = "23-07-2024 07:00:00";
-        String waktuSelesaiPagiString = "23-07-2024 08:00:00";
-        String waktuMulaiSiangString = "23-07-2024 11:00:00";
-        String waktuSelesaiSiangString = "23-07-2024 13:00:00";
-        String waktuMulaiSoreString = "23-07-2024 14:00:00";
-        String waktuSelesaiSoreString = "23-07-2024 15:00:00";
+        String waktuMulaiPagiString = "24-07-2024 07:00:00";
+        String waktuSelesaiPagiString = "24-07-2024 08:00:00";
+        String waktuMulaiSiangString = "24-07-2024 11:00:00";
+        String waktuSelesaiSiangString = "24-07-2024 13:00:00";
+        String waktuMulaiSoreString = "24-07-2024 14:00:00";
+        String waktuSelesaiSoreString = "24-07-2024 15:00:00";
         if (dataSoal.isEmpty()){
             List<SoalBaruSeeder> dataSoalBaruSeeder = new ArrayList<>(List.of(
                     new SoalBaruSeeder(

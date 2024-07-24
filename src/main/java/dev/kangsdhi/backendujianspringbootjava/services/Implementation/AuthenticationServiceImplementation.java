@@ -1,8 +1,8 @@
 package dev.kangsdhi.backendujianspringbootjava.services.Implementation;
 
-import dev.kangsdhi.backendujianspringbootjava.dto.SignInRequest;
-import dev.kangsdhi.backendujianspringbootjava.dto.SignInResponse;
-import dev.kangsdhi.backendujianspringbootjava.dto.SignOutResponse;
+import dev.kangsdhi.backendujianspringbootjava.dto.request.SignInRequest;
+import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessage;
+import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessageAndData;
 import dev.kangsdhi.backendujianspringbootjava.entities.Pengguna;
 import dev.kangsdhi.backendujianspringbootjava.entities.RolePengguna;
 import dev.kangsdhi.backendujianspringbootjava.repository.PenggunaRepository;
@@ -32,7 +32,7 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
     private final JWTService jwtService;
 
     @Override
-    public SignInResponse signIn(SignInRequest signInRequest) {
+    public ResponseWithMessageAndData<Map<String, String>> signIn(SignInRequest signInRequest) {
 
         Pengguna pengguna = new Pengguna();
         ValidateUtils validateUtils = new ValidateUtils();
@@ -57,7 +57,7 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
 
         String jwtToken = jwtService.generateToken(pengguna);
 
-        SignInResponse<Object> signInResponse = new SignInResponse<>();
+        ResponseWithMessageAndData<Map<String, String>> signInResponse = new ResponseWithMessageAndData<>();
         signInResponse.setHttpCode(HttpStatus.OK.value());
         signInResponse.setMessage("Berhasil Login");
 
@@ -75,8 +75,8 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
     }
 
     @Override
-    public SignOutResponse signOut() {
-        SignOutResponse signOutResponse = new SignOutResponse();
+    public ResponseWithMessage signOut() {
+        ResponseWithMessage signOutResponse = new ResponseWithMessage();
         signOutResponse.setHttpCode(HttpStatus.OK.value());
         signOutResponse.setMessage("Berhasil Logout");
         return signOutResponse;

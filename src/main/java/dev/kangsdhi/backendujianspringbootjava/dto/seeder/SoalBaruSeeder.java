@@ -1,4 +1,4 @@
-package dev.kangsdhi.backendujianspringbootjava.dto;
+package dev.kangsdhi.backendujianspringbootjava.dto.seeder;
 
 import dev.kangsdhi.backendujianspringbootjava.enums.AcakSoal;
 import dev.kangsdhi.backendujianspringbootjava.enums.TipeSoal;

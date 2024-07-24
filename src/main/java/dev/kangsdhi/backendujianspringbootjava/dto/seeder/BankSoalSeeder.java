@@ -1,4 +1,4 @@
-package dev.kangsdhi.backendujianspringbootjava.dto;
+package dev.kangsdhi.backendujianspringbootjava.dto.seeder;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

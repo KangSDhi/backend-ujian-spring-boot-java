@@ -1,4 +1,4 @@
-package dev.kangsdhi.backendujianspringbootjava.dto;
+package dev.kangsdhi.backendujianspringbootjava.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

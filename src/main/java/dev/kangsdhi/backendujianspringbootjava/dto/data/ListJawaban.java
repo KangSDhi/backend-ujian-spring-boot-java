@@ -1,7 +1,6 @@
-package dev.kangsdhi.backendujianspringbootjava.dto;
+package dev.kangsdhi.backendujianspringbootjava.dto.data;
 
 import dev.kangsdhi.backendujianspringbootjava.enums.StatusPertanyaan;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.UUID;

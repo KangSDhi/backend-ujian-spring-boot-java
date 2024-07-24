@@ -1,6 +1,6 @@
 package dev.kangsdhi.backendujianspringbootjava.database.seeder;
 
-import dev.kangsdhi.backendujianspringbootjava.dto.SiswaBaruSeeder;
+import dev.kangsdhi.backendujianspringbootjava.dto.seeder.SiswaBaruSeeder;
 import dev.kangsdhi.backendujianspringbootjava.entities.*;
 import dev.kangsdhi.backendujianspringbootjava.repository.JurusanRepository;
 import dev.kangsdhi.backendujianspringbootjava.repository.KelasRepository;

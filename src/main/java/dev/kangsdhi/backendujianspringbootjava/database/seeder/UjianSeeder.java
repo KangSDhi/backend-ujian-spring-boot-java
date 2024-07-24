@@ -2,8 +2,8 @@ package dev.kangsdhi.backendujianspringbootjava.database.seeder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.kangsdhi.backendujianspringbootjava.dto.ListJawaban;
-import dev.kangsdhi.backendujianspringbootjava.dto.UjianBaruSeeder;
+import dev.kangsdhi.backendujianspringbootjava.dto.data.ListJawaban;
+import dev.kangsdhi.backendujianspringbootjava.dto.seeder.UjianBaruSeeder;
 import dev.kangsdhi.backendujianspringbootjava.entities.*;
 import dev.kangsdhi.backendujianspringbootjava.enums.StatusPertanyaan;
 import dev.kangsdhi.backendujianspringbootjava.enums.StatusUjian;
@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
