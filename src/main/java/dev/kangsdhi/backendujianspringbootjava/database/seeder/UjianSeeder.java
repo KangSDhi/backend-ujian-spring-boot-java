@@ -48,12 +48,12 @@ public class UjianSeeder {
                     new UjianBaruSeeder(
                             "Matematika X",
                             convertUtils.convertStringToDatetimeOrTime("05-07-2024 07:00:00"),
-                            StatusUjian.BELUM_MULAI,
+                            StatusUjian.PROSES,
                             "Sigit Boworaharjo"),
                     new UjianBaruSeeder(
                             "Matematika X",
                             convertUtils.convertStringToDatetimeOrTime("05-07-2024 07:00:00"),
-                            StatusUjian.BELUM_MULAI,
+                            StatusUjian.PROSES,
                             "Dhini Aprilia Budiarti")
             ));
 
@@ -103,7 +103,7 @@ public class UjianSeeder {
                 Ujian ujian = new Ujian();
                 ujian.setSoal(soal);
                 ujian.setListJawabanUjian(listJawabanJson);
-                ujian.setStatusUjian(StatusUjian.BELUM_MULAI);
+                ujian.setStatusUjian(StatusUjian.PROSES);
                 ujian.setPengguna(pengguna);
                 ujian.setWaktuSelesaiUjian(ujianBaruSeederItem.getWaktuSelesaiUjian());
                 ujianRepository.save(ujian);

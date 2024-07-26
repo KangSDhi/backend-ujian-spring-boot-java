@@ -50,7 +50,7 @@ public class SoalSeeder {
                     new SoalBaruSeeder(
                             "Matematika X",
                             56,
-                            AcakSoal.ACAK,
+                            AcakSoal.TIDAK_ACAK,
                             convertUtils.convertStringToDatetimeOrTime(waktuMulaiPagiString),
                             convertUtils.convertStringToDatetimeOrTime("02:00:00"),
                             convertUtils.convertStringToDatetimeOrTime(waktuSelesaiPagiString),

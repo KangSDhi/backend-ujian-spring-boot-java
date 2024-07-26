@@ -3,6 +3,7 @@ package dev.kangsdhi.backendujianspringbootjava.services.Implementation;
 import dev.kangsdhi.backendujianspringbootjava.repository.PenggunaRepository;
 import dev.kangsdhi.backendujianspringbootjava.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,5 +23,10 @@ public class UserServiceImplementation implements UserService {
                 return penggunaRepository.findByNamaPengguna(username).orElseThrow(() -> new UsernameNotFoundException("Pengguna Tidak Ditemukan!"));
             }
         };
+    }
+
+    @Override
+    public UserDetails getCurrentUser() {
+        return (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }
