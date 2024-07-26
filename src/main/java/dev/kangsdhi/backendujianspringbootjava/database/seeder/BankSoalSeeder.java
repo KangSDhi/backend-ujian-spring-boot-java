@@ -22,8 +22,8 @@ public class BankSoalSeeder {
     public void seedBankSoal() {
         List<BankSoal> dataBankSoal = bankSoalRepository.findAll();
         if (dataBankSoal.isEmpty()){
-            List<dev.kangsdhi.backendujianspringbootjava.dto.BankSoalSeeder> dataBankSoalSeeders = new ArrayList<>(List.of(
-                    new dev.kangsdhi.backendujianspringbootjava.dto.BankSoalSeeder(
+            List<dev.kangsdhi.backendujianspringbootjava.dto.seeder.BankSoalSeeder> dataBankSoalSeeders = new ArrayList<>(List.of(
+                    new dev.kangsdhi.backendujianspringbootjava.dto.seeder.BankSoalSeeder(
                             "Matematika X",
                             "5 + 5 =",
                             null,
@@ -38,7 +38,7 @@ public class BankSoalSeeder {
                             0F,
                             10F
                     ),
-                    new dev.kangsdhi.backendujianspringbootjava.dto.BankSoalSeeder(
+                    new dev.kangsdhi.backendujianspringbootjava.dto.seeder.BankSoalSeeder(
                             "Matematika X",
                             "7 / 7 =",
                             null,
@@ -55,7 +55,7 @@ public class BankSoalSeeder {
                     )
             ));
 
-            for (dev.kangsdhi.backendujianspringbootjava.dto.BankSoalSeeder bankSoalSeederItem : dataBankSoalSeeders) {
+            for (dev.kangsdhi.backendujianspringbootjava.dto.seeder.BankSoalSeeder bankSoalSeederItem : dataBankSoalSeeders) {
                 Soal soal = soalRepository.findByNamaSoal(bankSoalSeederItem.getNamaSoal());
 
                 BankSoal bankSoal = new BankSoal();

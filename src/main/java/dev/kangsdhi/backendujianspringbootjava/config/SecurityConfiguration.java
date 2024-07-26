@@ -1,7 +1,7 @@
 package dev.kangsdhi.backendujianspringbootjava.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.kangsdhi.backendujianspringbootjava.dto.ErrorResponse;
+import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseError;
 import dev.kangsdhi.backendujianspringbootjava.entities.RolePengguna;
 import dev.kangsdhi.backendujianspringbootjava.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +41,8 @@ public class SecurityConfiguration {
 
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request ->
-                        request.requestMatchers("/api/auth/**").permitAll()
+                        request.requestMatchers("/api/auth/signout").authenticated()
+                                .requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers("/api/health/**").permitAll()
                                 .requestMatchers("/api/admin/**").hasAnyAuthority(RolePengguna.ADMIN.name())
                                 .requestMatchers("/api/guru/**").hasAnyAuthority(RolePengguna.GURU.name())
@@ -53,11 +54,11 @@ public class SecurityConfiguration {
                 )
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .accessDeniedHandler((request, response, accessDeniedException) -> {
-                            ErrorResponse<String> errorResponse = new ErrorResponse<>();
-                            errorResponse.setHttpCode(HttpStatus.FORBIDDEN.value());
-                            errorResponse.setErrors(accessDeniedException.getMessage());
-                            ResponseEntity<ErrorResponse<String>> responseEntity = ResponseEntity.status(HttpStatus.FORBIDDEN)
-                                    .body(errorResponse);
+                            ResponseError<String> responseError = new ResponseError<>();
+                            responseError.setHttpCode(HttpStatus.FORBIDDEN.value());
+                            responseError.setErrors(accessDeniedException.getMessage());
+                            ResponseEntity<ResponseError<String>> responseEntity = ResponseEntity.status(HttpStatus.FORBIDDEN)
+                                    .body(responseError);
                             ObjectMapper objectMapper = new ObjectMapper();
                             String jsonResponse = objectMapper.writeValueAsString(responseEntity.getBody());
                             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -67,11 +68,11 @@ public class SecurityConfiguration {
                             logger.error(accessDeniedException.getMessage());
                         })
                         .authenticationEntryPoint((request, response, authException) -> {
-                            ErrorResponse<String> errorResponse = new ErrorResponse<>();
-                            errorResponse.setHttpCode(HttpStatus.UNAUTHORIZED.value());
-                            errorResponse.setErrors(authException.getMessage());
-                            ResponseEntity<ErrorResponse<String>> responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                                    .body(errorResponse);
+                            ResponseError<String> responseError = new ResponseError<>();
+                            responseError.setHttpCode(HttpStatus.UNAUTHORIZED.value());
+                            responseError.setErrors(authException.getMessage());
+                            ResponseEntity<ResponseError<String>> responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                                    .body(responseError);
                             ObjectMapper objectMapper = new ObjectMapper();
                             String jsonResponse = objectMapper.writeValueAsString(responseEntity.getBody());
                             response.setContentType(MediaType.APPLICATION_JSON_VALUE);

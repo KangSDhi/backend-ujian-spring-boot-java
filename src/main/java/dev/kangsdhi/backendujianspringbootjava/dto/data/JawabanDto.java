@@ -1,13 +1,12 @@
-package dev.kangsdhi.backendujianspringbootjava.dto;
+package dev.kangsdhi.backendujianspringbootjava.dto.data;
 
 import dev.kangsdhi.backendujianspringbootjava.enums.StatusPertanyaan;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.UUID;
 
 @Data
-public class ListJawaban {
+public class JawabanDto {
     private UUID idBank;
     private String pertanyaan;
     private String pilihanA;

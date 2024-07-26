@@ -1,6 +1,6 @@
 package dev.kangsdhi.backendujianspringbootjava.database.seeder;
 
-import dev.kangsdhi.backendujianspringbootjava.dto.SoalBaruSeeder;
+import dev.kangsdhi.backendujianspringbootjava.dto.seeder.SoalBaruSeeder;
 import dev.kangsdhi.backendujianspringbootjava.entities.Jurusan;
 import dev.kangsdhi.backendujianspringbootjava.entities.Soal;
 import dev.kangsdhi.backendujianspringbootjava.entities.Tingkat;
@@ -13,6 +13,8 @@ import dev.kangsdhi.backendujianspringbootjava.utils.ConvertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,15 +34,26 @@ public class SoalSeeder {
 
     public void seedSoal(){
         List<Soal> dataSoal = soalRepository.findAll();
+
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        String waktuMulaiPagiString = currentDate.format(formatter) + " 06:00:00";
+        String waktuSelesaiPagiString = currentDate.format(formatter) + " 09:00:00";
+        String waktuMulaiSiangString = currentDate.format(formatter) + " 08:00:00";
+        String waktuSelesaiSiangString = currentDate.format(formatter) + " 14:00:00";
+        String waktuMulaiSoreString = currentDate.format(formatter) + " 13:00:00";
+        String waktuSelesaiSoreString = currentDate.format(formatter) + " 18:00:00";
+
         if (dataSoal.isEmpty()){
             List<SoalBaruSeeder> dataSoalBaruSeeder = new ArrayList<>(List.of(
                     new SoalBaruSeeder(
                             "Matematika X",
                             56,
                             AcakSoal.ACAK,
-                            convertUtils.convertStringToDatetimeOrTime("05-07-2024 07:00:00"),
+                            convertUtils.convertStringToDatetimeOrTime(waktuMulaiPagiString),
                             convertUtils.convertStringToDatetimeOrTime("02:00:00"),
-                            convertUtils.convertStringToDatetimeOrTime("05-07-2024 09:00:00"),
+                            convertUtils.convertStringToDatetimeOrTime(waktuSelesaiPagiString),
                             "X",
                             null,
                             TipeSoal.PILIHAN_GANDA),
@@ -48,11 +61,31 @@ public class SoalSeeder {
                             "Dasar Kejuruan TKJ",
                             40,
                             AcakSoal.ACAK,
-                            convertUtils.convertStringToDatetimeOrTime("05-07-2024 10:00:00"),
+                            convertUtils.convertStringToDatetimeOrTime(waktuMulaiSiangString),
                             convertUtils.convertStringToDatetimeOrTime("03:00:00"),
-                            convertUtils.convertStringToDatetimeOrTime("05-07-2024 13:00:00"),
+                            convertUtils.convertStringToDatetimeOrTime(waktuSelesaiSiangString),
                             "X",
                             "Teknik Komputer dan Jaringan",
+                            TipeSoal.PILIHAN_GANDA),
+                    new SoalBaruSeeder(
+                            "Konsentrasi Kejuruan GMT",
+                            40,
+                            AcakSoal.ACAK,
+                            convertUtils.convertStringToDatetimeOrTime(waktuMulaiPagiString),
+                            convertUtils.convertStringToDatetimeOrTime("03:00:00"),
+                            convertUtils.convertStringToDatetimeOrTime(waktuSelesaiPagiString),
+                            "XII",
+                            "Teknik Geomatika",
+                            TipeSoal.PILIHAN_GANDA),
+                    new SoalBaruSeeder(
+                            "Pilihan GMT Kejuruan GMT",
+                            40,
+                            AcakSoal.ACAK,
+                            convertUtils.convertStringToDatetimeOrTime(waktuMulaiSoreString),
+                            convertUtils.convertStringToDatetimeOrTime("03:00:00"),
+                            convertUtils.convertStringToDatetimeOrTime(waktuSelesaiSoreString),
+                            "XII",
+                            "Teknik Geomatika",
                             TipeSoal.PILIHAN_GANDA)
             ));
 

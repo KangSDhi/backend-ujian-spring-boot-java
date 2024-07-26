@@ -1,8 +1,10 @@
 package dev.kangsdhi.backendujianspringbootjava.services.Implementation;
 
-import dev.kangsdhi.backendujianspringbootjava.dto.SignInRequest;
-import dev.kangsdhi.backendujianspringbootjava.dto.SignInResponse;
+import dev.kangsdhi.backendujianspringbootjava.dto.request.SignInRequest;
+import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessage;
+import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessageAndData;
 import dev.kangsdhi.backendujianspringbootjava.entities.Pengguna;
+import dev.kangsdhi.backendujianspringbootjava.entities.RolePengguna;
 import dev.kangsdhi.backendujianspringbootjava.repository.PenggunaRepository;
 import dev.kangsdhi.backendujianspringbootjava.services.AuthenticationService;
 import dev.kangsdhi.backendujianspringbootjava.services.JWTService;
@@ -30,7 +32,7 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
     private final JWTService jwtService;
 
     @Override
-    public SignInResponse signIn(SignInRequest signInRequest) {
+    public ResponseWithMessageAndData<Map<String, String>> signIn(SignInRequest signInRequest) {
 
         Pengguna pengguna = new Pengguna();
         ValidateUtils validateUtils = new ValidateUtils();
@@ -55,16 +57,29 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
 
         String jwtToken = jwtService.generateToken(pengguna);
 
-        SignInResponse<Object> signInResponse = new SignInResponse<>();
+        ResponseWithMessageAndData<Map<String, String>> signInResponse = new ResponseWithMessageAndData<>();
         signInResponse.setHttpCode(HttpStatus.OK.value());
         signInResponse.setMessage("Berhasil Login");
 
         Map<String, String> data = new HashMap<>();
         data.put("token", jwtToken);
         data.put("level", pengguna.getRolePengguna().name());
+        data.put("nama_pengguna", pengguna.getNamaPengguna());
+        if (pengguna.getRolePengguna() == RolePengguna.SISWA){
+            data.put("tingkat", pengguna.getKelas().getTingkat().getTingkat());
+            data.put("jurusan", pengguna.getKelas().getJurusan().getJurusan());
+        }
         signInResponse.setData(data);
 
         return signInResponse;
+    }
+
+    @Override
+    public ResponseWithMessage signOut() {
+        ResponseWithMessage signOutResponse = new ResponseWithMessage();
+        signOutResponse.setHttpCode(HttpStatus.OK.value());
+        signOutResponse.setMessage("Berhasil Logout");
+        return signOutResponse;
     }
 
     @Override
