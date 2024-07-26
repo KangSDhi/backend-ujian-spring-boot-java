@@ -1,6 +1,6 @@
 package dev.kangsdhi.backendujianspringbootjava.services.Implementation;
 
-import dev.kangsdhi.backendujianspringbootjava.dto.data.MataUjian;
+import dev.kangsdhi.backendujianspringbootjava.dto.data.MataUjianDto;
 import dev.kangsdhi.backendujianspringbootjava.dto.request.MataUjianRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessageAndData;
 import dev.kangsdhi.backendujianspringbootjava.entities.Jurusan;
@@ -29,41 +29,41 @@ public class MataUjianServiceImplementation implements MataUjianService {
     private final SoalRepository soalRepository;
 
     @Override
-    public ResponseWithMessageAndData<List<MataUjian>> listMataUjian(MataUjianRequest mataUjianRequest) {
+    public ResponseWithMessageAndData<List<MataUjianDto>> listMataUjian(MataUjianRequest mataUjianRequest) {
         ZonedDateTime jakartaTime = ZonedDateTime.now(ZoneId.of("Asia/Jakarta"));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         Tingkat tingkat = tingkatRepository.findTingkatByTingkat(mataUjianRequest.getTingkat());
         Jurusan jurusan = jurusanRepository.findJurusanByJurusan(mataUjianRequest.getJurusan());
         List<Soal> soal = soalRepository.findSoalForSiswa(jakartaTime.format(formatter), tingkat, jurusan);
 
-        ResponseWithMessageAndData<List<MataUjian>> mataUjianResponse = new ResponseWithMessageAndData<>();
-        List<MataUjian> mataUjianList = new ArrayList<>();
+        ResponseWithMessageAndData<List<MataUjianDto>> mataUjianResponse = new ResponseWithMessageAndData<>();
+        List<MataUjianDto> mataUjianDtoList = new ArrayList<>();
         for (Soal soalItem: soal){
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
-            MataUjian mataUjian = new MataUjian();
-            mataUjian.setIdSoal(soalItem.getId().toString());
-            mataUjian.setNamaSoal(soalItem.getNamaSoal());
-            mataUjian.setButirSoal(soalItem.getButirSoal());
-            mataUjian.setAcakSoal(soalItem.getAcakSoal());
-            mataUjian.setWaktuMulaiSoal(dateFormat.format(soalItem.getWaktuMulaiSoal()));
-            mataUjian.setWaktuSelesaiSoal(dateFormat.format(soalItem.getWaktuSelesaiSoal()));
+            MataUjianDto mataUjianDto = new MataUjianDto();
+            mataUjianDto.setIdSoal(soalItem.getId().toString());
+            mataUjianDto.setNamaSoal(soalItem.getNamaSoal());
+            mataUjianDto.setButirSoal(soalItem.getButirSoal());
+            mataUjianDto.setAcakSoal(soalItem.getAcakSoal());
+            mataUjianDto.setWaktuMulaiSoal(dateFormat.format(soalItem.getWaktuMulaiSoal()));
+            mataUjianDto.setWaktuSelesaiSoal(dateFormat.format(soalItem.getWaktuSelesaiSoal()));
 
             long jakartaTimeInTimeMilis = jakartaTime.toInstant().toEpochMilli();
             long waktuMulaiInTimeMilis = soalItem.getWaktuMulaiSoal().getTime();
             long waktuSelesaiInTimeMilis = soalItem.getWaktuSelesaiSoal().getTime();
             if (jakartaTimeInTimeMilis >= waktuMulaiInTimeMilis && jakartaTimeInTimeMilis <= waktuSelesaiInTimeMilis) {
-                mataUjian.setStatusMataUjian(StatusMataUjian.MULAI);
+                mataUjianDto.setStatusMataUjian(StatusMataUjian.MULAI);
             } else if (jakartaTimeInTimeMilis >= waktuMulaiInTimeMilis) {
-                mataUjian.setStatusMataUjian(StatusMataUjian.SELESAI);
+                mataUjianDto.setStatusMataUjian(StatusMataUjian.SELESAI);
             } else {
-                mataUjian.setStatusMataUjian(StatusMataUjian.BELUM_MULAI);
+                mataUjianDto.setStatusMataUjian(StatusMataUjian.BELUM_MULAI);
             }
 
-            mataUjianList.add(mataUjian);
+            mataUjianDtoList.add(mataUjianDto);
         }
-        mataUjianResponse.setData(mataUjianList);
+        mataUjianResponse.setData(mataUjianDtoList);
         return mataUjianResponse;
     }
 }

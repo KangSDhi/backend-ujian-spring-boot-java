@@ -13,6 +13,8 @@ import dev.kangsdhi.backendujianspringbootjava.utils.ConvertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,12 +34,17 @@ public class SoalSeeder {
 
     public void seedSoal(){
         List<Soal> dataSoal = soalRepository.findAll();
-        String waktuMulaiPagiString = "24-07-2024 07:00:00";
-        String waktuSelesaiPagiString = "24-07-2024 08:00:00";
-        String waktuMulaiSiangString = "24-07-2024 11:00:00";
-        String waktuSelesaiSiangString = "24-07-2024 13:00:00";
-        String waktuMulaiSoreString = "24-07-2024 14:00:00";
-        String waktuSelesaiSoreString = "24-07-2024 15:00:00";
+
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        String waktuMulaiPagiString = currentDate.format(formatter) + " 06:00:00";
+        String waktuSelesaiPagiString = currentDate.format(formatter) + " 09:00:00";
+        String waktuMulaiSiangString = currentDate.format(formatter) + " 08:00:00";
+        String waktuSelesaiSiangString = currentDate.format(formatter) + " 14:00:00";
+        String waktuMulaiSoreString = currentDate.format(formatter) + " 13:00:00";
+        String waktuSelesaiSoreString = currentDate.format(formatter) + " 18:00:00";
+
         if (dataSoal.isEmpty()){
             List<SoalBaruSeeder> dataSoalBaruSeeder = new ArrayList<>(List.of(
                     new SoalBaruSeeder(

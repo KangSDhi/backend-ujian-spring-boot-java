@@ -29,21 +29,16 @@ public class SoalServiceImplementation implements SoalService {
 
         if (soal == null){
             responseSoal.setData(null);
+            return responseSoal;
         }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
-
         SoalDto soalDto = new SoalDto();
-        assert soal != null;
         soalDto.setId(soal.getId().toString());
         soalDto.setNamaSoal(soal.getNamaSoal());
         soalDto.setTingkat(soal.getTingkat().getTingkat());
-        if (soal.getJurusan() != null){
-            soalDto.setJurusan(soal.getJurusan().getJurusan());
-        } else {
-            soalDto.setJurusan(null);
-        }
+        soalDto.setJurusan(soal.getJurusan() != null ? soal.getJurusan().getJurusan() : null);
         soalDto.setDurasiSoal(soal.getDurasiSoal().toString());
         soalDto.setButirSoal(soal.getButirSoal());
         soalDto.setAcakSoal(soal.getAcakSoal());
@@ -52,7 +47,6 @@ public class SoalServiceImplementation implements SoalService {
         soalDto.setWaktuSelesaiSoal(dateFormat.format(soal.getWaktuSelesaiSoal()));
 
         responseSoal.setData(soalDto);
-
         return responseSoal;
     }
 }

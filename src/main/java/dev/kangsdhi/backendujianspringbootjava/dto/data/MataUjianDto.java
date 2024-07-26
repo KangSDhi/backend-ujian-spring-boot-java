@@ -5,7 +5,7 @@ import dev.kangsdhi.backendujianspringbootjava.enums.StatusMataUjian;
 import lombok.Data;
 
 @Data
-public class MataUjian {
+public class MataUjianDto {
     private String idSoal;
     private String namaSoal;
     private Integer butirSoal;
