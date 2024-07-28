@@ -67,6 +67,10 @@ public class UjianServiceImplementation implements UjianService {
             return createResponse(HttpStatus.BAD_REQUEST, "Bank Soal Kosong, Gagal Generate Ujian!");
         }
 
+        if (bankSoalList.size() < soal.getButirSoal()){
+            return createResponse(HttpStatus.BAD_REQUEST, "Butir Soal Melebihi Banyak Bank Soal, Gagal Generate Ujian!");
+        }
+
         List<JawabanDto> jawabanDtoList = generateJawabanDtoList(soal, bankSoalList);
         if (soal.getAcakSoal() == AcakSoal.ACAK){
             Collections.shuffle(jawabanDtoList);

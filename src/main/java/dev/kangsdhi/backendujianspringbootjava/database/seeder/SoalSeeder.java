@@ -49,11 +49,11 @@ public class SoalSeeder {
             List<SoalBaruSeeder> dataSoalBaruSeeder = new ArrayList<>(List.of(
                     new SoalBaruSeeder(
                             "Matematika X",
-                            56,
-                            AcakSoal.TIDAK_ACAK,
-                            convertUtils.convertStringToDatetimeOrTime(waktuMulaiPagiString),
+                            10,
+                            AcakSoal.ACAK,
+                            convertUtils.convertStringToDatetimeOrTime(waktuMulaiSiangString),
                             convertUtils.convertStringToDatetimeOrTime("02:00:00"),
-                            convertUtils.convertStringToDatetimeOrTime(waktuSelesaiPagiString),
+                            convertUtils.convertStringToDatetimeOrTime(waktuSelesaiSiangString),
                             "X",
                             null,
                             TipeSoal.PILIHAN_GANDA),
