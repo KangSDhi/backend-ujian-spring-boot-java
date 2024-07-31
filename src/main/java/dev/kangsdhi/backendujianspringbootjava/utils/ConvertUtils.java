@@ -35,4 +35,9 @@ public class ConvertUtils {
 
         return date;
     }
+
+    public String convertDateToStringFormat(Date date){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        return sdf.format(date);
+    }
 }

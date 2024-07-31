@@ -7,13 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface BankSoalRepository extends JpaRepository<BankSoal, UUID> {
     List<BankSoal> findBySoal(Soal soal);
-
-//    @Query("""
-//            select bs
-//            from BankSoal bs inner join BankSoal.soal s where s.namaSoal = :namaSoal""")
-//    List<BankSoal> findBySoalInnerJoinSoal(@Param("namaSoal") String namaSoal);
 }

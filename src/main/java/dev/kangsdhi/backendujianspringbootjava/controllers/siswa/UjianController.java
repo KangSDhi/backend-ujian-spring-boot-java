@@ -1,6 +1,7 @@
 package dev.kangsdhi.backendujianspringbootjava.controllers.siswa;
 
 import dev.kangsdhi.backendujianspringbootjava.dto.data.MataUjianDto;
+import dev.kangsdhi.backendujianspringbootjava.dto.request.JawabanUjianRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.request.MataUjianRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessage;
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessageAndData;
@@ -34,6 +35,13 @@ public class UjianController {
         return new ResponseEntity<>(mataUjianResponse, httpStatus);
     }
 
+    @GetMapping("/ujian")
+    public ResponseEntity<ResponseWithMessageAndData<Object>> loadSoal(@RequestParam String idSoal){
+        ResponseWithMessageAndData<Object> response = ujianService.loadDataJawabanSoal(idSoal);
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        return new ResponseEntity<>(response, httpStatus);
+    }
+
     @GetMapping("/ujian/checkin")
     public ResponseEntity<ResponseWithMessage> checkInUjian(@RequestParam String idSoal){
         ResponseWithMessage response = ujianService.checkInUjian(idSoal);
@@ -45,6 +53,13 @@ public class UjianController {
     @GetMapping("/ujian/generate")
     public ResponseEntity<ResponseWithMessage> generateUjian(@RequestParam String idSoal){
         ResponseWithMessage response = ujianService.generateUjian(idSoal);
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        return new ResponseEntity<>(response, httpStatus);
+    }
+
+    @PostMapping("/ujian/jawab")
+    public ResponseEntity<ResponseWithMessage> jawabUjian(@Valid @RequestBody JawabanUjianRequest jawabanUjianRequest){
+        ResponseWithMessage response = ujianService.jawabUjian(jawabanUjianRequest);
         HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
         return new ResponseEntity<>(response, httpStatus);
     }

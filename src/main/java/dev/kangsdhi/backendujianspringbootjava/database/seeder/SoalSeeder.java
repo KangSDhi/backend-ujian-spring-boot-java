@@ -42,7 +42,7 @@ public class SoalSeeder {
         String waktuSelesaiPagiString = currentDate.format(formatter) + " 09:00:00";
         String waktuMulaiSiangString = currentDate.format(formatter) + " 08:00:00";
         String waktuSelesaiSiangString = currentDate.format(formatter) + " 14:00:00";
-        String waktuMulaiSoreString = currentDate.format(formatter) + " 13:00:00";
+        String waktuMulaiSoreString = currentDate.format(formatter) + " 14:00:00";
         String waktuSelesaiSoreString = currentDate.format(formatter) + " 18:00:00";
 
         if (dataSoal.isEmpty()){
@@ -51,9 +51,9 @@ public class SoalSeeder {
                             "Matematika X",
                             10,
                             AcakSoal.ACAK,
-                            convertUtils.convertStringToDatetimeOrTime(waktuMulaiSiangString),
-                            convertUtils.convertStringToDatetimeOrTime("02:00:00"),
-                            convertUtils.convertStringToDatetimeOrTime(waktuSelesaiSiangString),
+                            convertUtils.convertStringToDatetimeOrTime(waktuMulaiSoreString),
+                            convertUtils.convertStringToDatetimeOrTime("06:00:00"),
+                            convertUtils.convertStringToDatetimeOrTime(waktuSelesaiSoreString),
                             "X",
                             null,
                             TipeSoal.PILIHAN_GANDA),
