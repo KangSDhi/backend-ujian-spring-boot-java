@@ -107,7 +107,7 @@ public class UjianServiceImplementation implements UjianService {
         }
 
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(soal.getWaktuMulaiSoal());
+        calendar.setTime(new Date());
         calendar.add(Calendar.MINUTE, 5);
 
         ConvertUtils convertUtils = new ConvertUtils();
