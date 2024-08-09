@@ -38,8 +38,8 @@ public class SoalSeeder {
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-        String waktuMulaiPagiString = currentDate.format(formatter) + " 06:00:00";
-        String waktuSelesaiPagiString = currentDate.format(formatter) + " 09:00:00";
+        String waktuMulaiPagiString = currentDate.format(formatter) + " 08:30:00";
+        String waktuSelesaiPagiString = currentDate.format(formatter) + " 11:00:00";
         String waktuMulaiSiangString = currentDate.format(formatter) + " 08:00:00";
         String waktuSelesaiSiangString = currentDate.format(formatter) + " 14:00:00";
         String waktuMulaiSoreString = currentDate.format(formatter) + " 14:00:00";
@@ -53,9 +53,9 @@ public class SoalSeeder {
                             "Matematika X",
                             10,
                             AcakSoal.ACAK,
-                            convertUtils.convertStringToDatetimeOrTime(waktuMulaiMalamString),
+                            convertUtils.convertStringToDatetimeOrTime(waktuMulaiPagiString),
                             convertUtils.convertStringToDatetimeOrTime("04:00:00"),
-                            convertUtils.convertStringToDatetimeOrTime(waktuSelesaiMalamString),
+                            convertUtils.convertStringToDatetimeOrTime(waktuSelesaiPagiString),
                             "X",
                             null,
                             TipeSoal.PILIHAN_GANDA),
