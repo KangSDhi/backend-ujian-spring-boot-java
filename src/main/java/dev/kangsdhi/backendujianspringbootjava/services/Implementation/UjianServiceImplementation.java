@@ -115,6 +115,7 @@ public class UjianServiceImplementation implements UjianService {
         String waktuSelesaiUjian = convertUtils.convertDateToStringFormat(ujian.getWaktuSelesaiUjian());
         HashMap<String, Object> dataUjian = new HashMap<>();
         dataUjian.put("soal", ujianMappingDtoList);
+        dataUjian.put("statusUjian", ujian.getStatusUjian().name());
         dataUjian.put("waktuAktifSelesaiUjian", waktuAktifSelesaiUjian);
         dataUjian.put("waktuSelesaiUjian", waktuSelesaiUjian);
         return createResponseWithMessageAndData(HttpStatus.OK, "Data Ujian Ada", dataUjian);

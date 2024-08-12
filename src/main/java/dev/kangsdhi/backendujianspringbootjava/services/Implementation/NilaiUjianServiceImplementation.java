@@ -6,6 +6,7 @@ import dev.kangsdhi.backendujianspringbootjava.dto.data.UjianMappingDto;
 import dev.kangsdhi.backendujianspringbootjava.dto.request.HasilUjianRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessageAndData;
 import dev.kangsdhi.backendujianspringbootjava.entities.*;
+import dev.kangsdhi.backendujianspringbootjava.enums.StatusUjian;
 import dev.kangsdhi.backendujianspringbootjava.repository.*;
 import dev.kangsdhi.backendujianspringbootjava.services.NilaiUjianService;
 import dev.kangsdhi.backendujianspringbootjava.services.UserService;
@@ -56,60 +57,65 @@ public class NilaiUjianServiceImplementation implements NilaiUjianService {
             return createResponseWithMessageAndData(HttpStatus.NOT_FOUND, "Ujian Tidak Ditemukan!", null);
         }
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<UjianMappingDto> ujianMappingDtoList;
-        try {
-            ujianMappingDtoList = Arrays.asList(objectMapper.readValue(ujian.getListJawabanUjian(), UjianMappingDto[].class));
-        } catch (Exception e) {
-            return createResponseWithMessageAndData(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null);
-        }
-
-        AtomicReference<Float> totalNilai = new AtomicReference<>(0f);
-
-        ujianMappingDtoList.forEach(ujianMappingDto -> {
-            BankSoal bankSoal = bankSoalRepository.findById(ujianMappingDto.getIdBank()).orElse(null);
-
-            if (bankSoal != null) {
-                if (Objects.equals(bankSoal.getPilihanA(), ujianMappingDto.getJawaban())){
-                    totalNilai.updateAndGet(v -> v + bankSoal.getNilaiA());
-                }
-
-                if (Objects.equals(bankSoal.getPilihanB(), ujianMappingDto.getJawaban())){
-                    totalNilai.updateAndGet(v -> v + bankSoal.getNilaiB());
-                }
-
-                if (Objects.equals(bankSoal.getPilihanC(), ujianMappingDto.getJawaban())){
-                    totalNilai.updateAndGet(v -> v + bankSoal.getNilaiC());
-                }
-
-                if (Objects.equals(bankSoal.getPilihanD(), ujianMappingDto.getJawaban())){
-                    totalNilai.updateAndGet(v -> v + bankSoal.getNilaiD());
-                }
-
-                if (Objects.equals(bankSoal.getPilihanE(), ujianMappingDto.getJawaban())){
-                    totalNilai.updateAndGet(v -> v + bankSoal.getNilaiE());
-                }
-            }
-        });
-
-        NilaiUjian nilaiUjian = new NilaiUjian();
-        nilaiUjian.setUjian(ujian);
-        nilaiUjian.setNilaiUjian(totalNilai.get());
-
         Optional<NilaiUjian> existingNilaiUjian = nilaiUjianRepository.findByUjian(ujian);
-        if (existingNilaiUjian.isPresent()) {
-            NilaiUjian existing = existingNilaiUjian.get();
-            existing.setNilaiUjian(nilaiUjian.getNilaiUjian());
-            nilaiUjian =  nilaiUjianRepository.save(existing);
-        } else {
-            nilaiUjian = nilaiUjianRepository.save(nilaiUjian);
-        }
 
         HasilUjianDto hasilUjianDto = new HasilUjianDto();
-        hasilUjianDto.setIdNilaiUjian(nilaiUjian.getId());
-        hasilUjianDto.setNilaiUjian(nilaiUjian.getNilaiUjian());
 
-        return createResponseWithMessageAndData(HttpStatus.CREATED, "Berhasil Membuat Nilai", hasilUjianDto);
+        if (existingNilaiUjian.isPresent()) {
+            hasilUjianDto.setIdNilaiUjian(existingNilaiUjian.get().getId());
+            hasilUjianDto.setNilaiUjian(existingNilaiUjian.get().getNilaiUjian());
+            return createResponseWithMessageAndData(HttpStatus.OK, "Berhasil Mengambil Nilai", hasilUjianDto);
+        } else {
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<UjianMappingDto> ujianMappingDtoList;
+            try {
+                ujianMappingDtoList = Arrays.asList(objectMapper.readValue(ujian.getListJawabanUjian(), UjianMappingDto[].class));
+            } catch (Exception e) {
+                return createResponseWithMessageAndData(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null);
+            }
+
+            AtomicReference<Float> totalNilai = new AtomicReference<>(0f);
+
+            ujianMappingDtoList.forEach(ujianMappingDto -> {
+                BankSoal bankSoal = bankSoalRepository.findById(ujianMappingDto.getIdBank()).orElse(null);
+
+                if (bankSoal != null) {
+                    if (Objects.equals(bankSoal.getPilihanA(), ujianMappingDto.getJawaban())){
+                        totalNilai.updateAndGet(v -> v + bankSoal.getNilaiA());
+                    }
+
+                    if (Objects.equals(bankSoal.getPilihanB(), ujianMappingDto.getJawaban())){
+                        totalNilai.updateAndGet(v -> v + bankSoal.getNilaiB());
+                    }
+
+                    if (Objects.equals(bankSoal.getPilihanC(), ujianMappingDto.getJawaban())){
+                        totalNilai.updateAndGet(v -> v + bankSoal.getNilaiC());
+                    }
+
+                    if (Objects.equals(bankSoal.getPilihanD(), ujianMappingDto.getJawaban())){
+                        totalNilai.updateAndGet(v -> v + bankSoal.getNilaiD());
+                    }
+
+                    if (Objects.equals(bankSoal.getPilihanE(), ujianMappingDto.getJawaban())){
+                        totalNilai.updateAndGet(v -> v + bankSoal.getNilaiE());
+                    }
+                }
+            });
+
+            NilaiUjian nilaiUjian = new NilaiUjian();
+            nilaiUjian.setUjian(ujian);
+            nilaiUjian.setNilaiUjian(totalNilai.get());
+
+            NilaiUjian nilaiUjianBaru = nilaiUjianRepository.save(nilaiUjian);
+
+            ujian.setStatusUjian(StatusUjian.SELESAI);
+            ujianRepository.save(ujian);
+
+            hasilUjianDto.setIdNilaiUjian(nilaiUjianBaru.getId());
+            hasilUjianDto.setNilaiUjian(nilaiUjian.getNilaiUjian());
+
+            return createResponseWithMessageAndData(HttpStatus.CREATED, "Berhasil Membuat Nilai", hasilUjianDto);
+        }
     }
 
     private Pengguna getCurrentPengguna(){
