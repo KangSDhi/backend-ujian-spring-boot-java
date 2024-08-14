@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-public class JawabanDto {
+public class UjianMappingDto {
     private UUID idBank;
     private String pertanyaan;
     private String pilihanA;

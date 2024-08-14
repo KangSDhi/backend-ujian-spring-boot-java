@@ -1,17 +1,17 @@
 package dev.kangsdhi.backendujianspringbootjava.controllers.siswa;
 
 import dev.kangsdhi.backendujianspringbootjava.dto.data.MataUjianDto;
+import dev.kangsdhi.backendujianspringbootjava.dto.request.JawabanUjianRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.request.MataUjianRequest;
+import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessage;
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessageAndData;
 import dev.kangsdhi.backendujianspringbootjava.services.MataUjianService;
+import dev.kangsdhi.backendujianspringbootjava.services.UjianService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,19 +21,46 @@ import java.util.List;
 public class UjianController {
 
     private final MataUjianService mataUjianService;
+    private final UjianService ujianService;
 
     @PostMapping("/mata-ujian")
     public ResponseEntity<ResponseWithMessageAndData<List<MataUjianDto>>> mataUjian(@Valid @RequestBody MataUjianRequest mataUjianRequest) {
         ResponseWithMessageAndData<List<MataUjianDto>> mataUjianResponse = mataUjianService.listMataUjian(mataUjianRequest);
-        int sizeDataMataUjian = mataUjianResponse.getData().toArray().length;
-        if (sizeDataMataUjian == 0) {
-            mataUjianResponse.setHttpCode(HttpStatus.NOT_FOUND.value());
-            mataUjianResponse.setMessage("Soal Mata Ujian Tidak Tersedia!");
-            return new ResponseEntity<>(mataUjianResponse, HttpStatus.NOT_FOUND);
-        } else {
-            mataUjianResponse.setHttpCode(HttpStatus.OK.value());
-            mataUjianResponse.setMessage("Soal Mata Ujian Tersedia!");
-            return new ResponseEntity<>(mataUjianResponse, HttpStatus.OK);
-        }
+        HttpStatus httpStatus = mataUjianResponse.getData().isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
+        String message = mataUjianResponse.getData().isEmpty() ? "Soal Mata Ujian Tidak Tersedia!" : "Soal Mata Ujian Tersedia!";
+
+        mataUjianResponse.setHttpCode(httpStatus.value());
+        mataUjianResponse.setMessage(message);
+
+        return new ResponseEntity<>(mataUjianResponse, httpStatus);
+    }
+
+    @GetMapping("/ujian")
+    public ResponseEntity<ResponseWithMessageAndData<Object>> loadSoal(@RequestParam String idSoal){
+        ResponseWithMessageAndData<Object> response = ujianService.loadDataJawabanSoal(idSoal);
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        return new ResponseEntity<>(response, httpStatus);
+    }
+
+    @GetMapping("/ujian/checkin")
+    public ResponseEntity<ResponseWithMessage> checkInUjian(@RequestParam String idSoal){
+        ResponseWithMessage response = ujianService.checkInUjian(idSoal);
+        HttpStatus httpStatus = response.getMessage().equals("Ujian Ada!") ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+        response.setHttpCode(httpStatus.value());
+        return new ResponseEntity<>(response, httpStatus);
+    }
+
+    @GetMapping("/ujian/generate")
+    public ResponseEntity<ResponseWithMessage> generateUjian(@RequestParam String idSoal){
+        ResponseWithMessage response = ujianService.generateUjian(idSoal);
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        return new ResponseEntity<>(response, httpStatus);
+    }
+
+    @PostMapping("/ujian/jawab")
+    public ResponseEntity<ResponseWithMessage> jawabUjian(@Valid @RequestBody JawabanUjianRequest jawabanUjianRequest){
+        ResponseWithMessage response = ujianService.jawabUjian(jawabanUjianRequest);
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        return new ResponseEntity<>(response, httpStatus);
     }
 }

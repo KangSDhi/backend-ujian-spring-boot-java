@@ -38,22 +38,26 @@ public class SoalSeeder {
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-        String waktuMulaiPagiString = currentDate.format(formatter) + " 06:00:00";
-        String waktuSelesaiPagiString = currentDate.format(formatter) + " 09:00:00";
-        String waktuMulaiSiangString = currentDate.format(formatter) + " 08:00:00";
+        String waktuMulaiPagiString = currentDate.format(formatter) + " 08:30:00";
+        String waktuSelesaiPagiString = currentDate.format(formatter) + " 11:00:00";
+        String waktuMulaiSiangString = currentDate.format(formatter) + " 12:00:00";
         String waktuSelesaiSiangString = currentDate.format(formatter) + " 14:00:00";
-        String waktuMulaiSoreString = currentDate.format(formatter) + " 13:00:00";
+        String waktuMulaiSoreString = currentDate.format(formatter) + " 14:00:00";
         String waktuSelesaiSoreString = currentDate.format(formatter) + " 18:00:00";
+        String waktuMulaiMalamString = currentDate.format(formatter) + " 18:00:00";
+        String waktuSelesaiMalamString = currentDate.format(formatter) + " 22:00:00";
+        String waktuMulaiFullString = currentDate.format(formatter) + " 06:00:00";
+        String waktuSelesaiFullString = currentDate.format(formatter) + " 23:00:00";
 
         if (dataSoal.isEmpty()){
             List<SoalBaruSeeder> dataSoalBaruSeeder = new ArrayList<>(List.of(
                     new SoalBaruSeeder(
                             "Matematika X",
-                            56,
+                            10,
                             AcakSoal.ACAK,
-                            convertUtils.convertStringToDatetimeOrTime(waktuMulaiPagiString),
-                            convertUtils.convertStringToDatetimeOrTime("02:00:00"),
-                            convertUtils.convertStringToDatetimeOrTime(waktuSelesaiPagiString),
+                            convertUtils.convertStringToDatetimeOrTime(waktuMulaiFullString),
+                            convertUtils.convertStringToDatetimeOrTime("17:00:00"),
+                            convertUtils.convertStringToDatetimeOrTime(waktuSelesaiFullString),
                             "X",
                             null,
                             TipeSoal.PILIHAN_GANDA),

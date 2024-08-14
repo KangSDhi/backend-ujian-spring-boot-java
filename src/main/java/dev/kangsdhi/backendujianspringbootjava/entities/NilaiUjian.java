@@ -30,6 +30,6 @@ public class NilaiUjian {
     @JoinColumn(name = "ujian_id", referencedColumnName = "id", nullable = false)
     private Ujian ujian;
 
-    @Column(name = "nilai_ujian", columnDefinition = "INT(10) UNSIGNED")
-    private Integer nilaiUjian;
+    @Column(name = "nilai_ujian", columnDefinition = "FLOAT(10) UNSIGNED")
+    private Float nilaiUjian;
 }

@@ -2,7 +2,7 @@ package dev.kangsdhi.backendujianspringbootjava.database.seeder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.kangsdhi.backendujianspringbootjava.dto.data.JawabanDto;
+import dev.kangsdhi.backendujianspringbootjava.dto.data.UjianMappingDto;
 import dev.kangsdhi.backendujianspringbootjava.dto.seeder.UjianBaruSeeder;
 import dev.kangsdhi.backendujianspringbootjava.entities.*;
 import dev.kangsdhi.backendujianspringbootjava.enums.StatusPertanyaan;
@@ -48,26 +48,26 @@ public class UjianSeeder {
                     new UjianBaruSeeder(
                             "Matematika X",
                             convertUtils.convertStringToDatetimeOrTime("05-07-2024 07:00:00"),
-                            StatusUjian.BELUM_MULAI,
+                            StatusUjian.PROSES,
                             "Sigit Boworaharjo"),
                     new UjianBaruSeeder(
                             "Matematika X",
                             convertUtils.convertStringToDatetimeOrTime("05-07-2024 07:00:00"),
-                            StatusUjian.BELUM_MULAI,
+                            StatusUjian.PROSES,
                             "Dhini Aprilia Budiarti")
             ));
 
             for (UjianBaruSeeder ujianBaruSeederItem : dataUjianBaruSeeder) {
                 Pengguna pengguna = penggunaRepository.findByNamaPenggunaAndRolePengguna(ujianBaruSeederItem.getNamaPengguna(), RolePengguna.SISWA);
-                List<JawabanDto> listJawabanDto = new ArrayList<>();
+                List<UjianMappingDto> ujianMappingDtoList = new ArrayList<>();
                 Soal soal = soalRepository.findByNamaSoal(ujianBaruSeederItem.getNamaSoal());
                 List<BankSoal> listBankSoal = bankSoalRepository.findBySoal(soal);
                 for (BankSoal bankSoalItem : listBankSoal) {
 
-                    JawabanDto jawabanDto = new JawabanDto();
-                    jawabanDto.setIdBank(bankSoalItem.getId());
-                    jawabanDto.setPertanyaan(bankSoalItem.getPertanyaanBankSoal());
-                    jawabanDto.setStatusPertanyaan(StatusPertanyaan.BELUM_DIJAWAB);
+                    UjianMappingDto ujianMappingDto = new UjianMappingDto();
+                    ujianMappingDto.setIdBank(bankSoalItem.getId());
+                    ujianMappingDto.setPertanyaan(bankSoalItem.getPertanyaanBankSoal());
+                    ujianMappingDto.setStatusPertanyaan(StatusPertanyaan.BELUM_DIJAWAB);
 
                     System.out.println(bankSoalItem.toString());
 
@@ -85,25 +85,25 @@ public class UjianSeeder {
 
                     System.out.println(Arrays.toString(listPilihan.toArray()));
 
-                    jawabanDto.setPilihanA(listPilihan.getFirst());
-                    jawabanDto.setPilihanB(listPilihan.get(1));
-                    jawabanDto.setPilihanC(listPilihan.get(2));
-                    jawabanDto.setPilihanD(listPilihan.get(3));
-                    jawabanDto.setPilihanE(listPilihan.get(4));
+                    ujianMappingDto.setPilihanA(listPilihan.getFirst());
+                    ujianMappingDto.setPilihanB(listPilihan.get(1));
+                    ujianMappingDto.setPilihanC(listPilihan.get(2));
+                    ujianMappingDto.setPilihanD(listPilihan.get(3));
+                    ujianMappingDto.setPilihanE(listPilihan.get(4));
 
-                    listJawabanDto.add(jawabanDto);
+                    ujianMappingDtoList.add(ujianMappingDto);
                 }
 
-                Collections.shuffle(listJawabanDto);
+                Collections.shuffle(ujianMappingDtoList);
 
-                System.out.println(Arrays.toString(listJawabanDto.toArray()));
-                String listJawabanJson = convertListJawabanToJson(listJawabanDto);
+                System.out.println(Arrays.toString(ujianMappingDtoList.toArray()));
+                String listJawabanJson = convertListJawabanToJson(ujianMappingDtoList);
 
                 System.out.println(listJawabanJson);
                 Ujian ujian = new Ujian();
                 ujian.setSoal(soal);
                 ujian.setListJawabanUjian(listJawabanJson);
-                ujian.setStatusUjian(StatusUjian.BELUM_MULAI);
+                ujian.setStatusUjian(StatusUjian.PROSES);
                 ujian.setPengguna(pengguna);
                 ujian.setWaktuSelesaiUjian(ujianBaruSeederItem.getWaktuSelesaiUjian());
                 ujianRepository.save(ujian);
@@ -112,10 +112,10 @@ public class UjianSeeder {
         }
     }
 
-    private String convertListJawabanToJson(List<JawabanDto> jawabanDto){
+    private String convertListJawabanToJson(List<UjianMappingDto> ujianMappingDtoList){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            return objectMapper.writeValueAsString(jawabanDto);
+            return objectMapper.writeValueAsString(ujianMappingDtoList);
         } catch (JsonProcessingException e){
             logger.error(e.getMessage());
             return null;

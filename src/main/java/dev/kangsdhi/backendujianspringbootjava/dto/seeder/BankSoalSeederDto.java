@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class BankSoalSeeder {
+public class BankSoalSeederDto {
 
     private String namaSoal;
     private String pertanyaanBankSoal;
