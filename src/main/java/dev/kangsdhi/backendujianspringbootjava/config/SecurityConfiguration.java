@@ -44,6 +44,7 @@ public class SecurityConfiguration {
                         request.requestMatchers("/api/auth/signout").authenticated()
                                 .requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers("/api/health/**").permitAll()
+                                .requestMatchers("/api/dev/**").permitAll()
                                 .requestMatchers("/api/admin/**").hasAnyAuthority(RolePengguna.ADMIN.name())
                                 .requestMatchers("/api/guru/**").hasAnyAuthority(RolePengguna.GURU.name())
                                 .requestMatchers("/api/siswa/**").hasAnyAuthority(RolePengguna.SISWA.name())
