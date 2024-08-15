@@ -10,6 +10,7 @@ import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.type.SqlTypes;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -28,6 +29,9 @@ public class Soal {
             id = UUID.randomUUID();
         }
     }
+
+    @OneToMany(mappedBy = "soal", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BankSoal> bankSoalList;
 
     @Column(name = "nama_soal", nullable = false, unique = true)
     private String namaSoal;

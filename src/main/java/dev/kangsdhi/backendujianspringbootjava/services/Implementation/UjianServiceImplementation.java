@@ -111,8 +111,8 @@ public class UjianServiceImplementation implements UjianService {
         calendar.add(Calendar.MINUTE, 5);
 
         ConvertUtils convertUtils = new ConvertUtils();
-        String waktuAktifSelesaiUjian = convertUtils.convertDateToStringFormat(calendar.getTime());
-        String waktuSelesaiUjian = convertUtils.convertDateToStringFormat(ujian.getWaktuSelesaiUjian());
+        String waktuAktifSelesaiUjian = convertUtils.convertDateToDatetimeStringFormat(calendar.getTime());
+        String waktuSelesaiUjian = convertUtils.convertDateToDatetimeStringFormat(ujian.getWaktuSelesaiUjian());
         HashMap<String, Object> dataUjian = new HashMap<>();
         dataUjian.put("soal", ujianMappingDtoList);
         dataUjian.put("statusUjian", ujian.getStatusUjian().name());

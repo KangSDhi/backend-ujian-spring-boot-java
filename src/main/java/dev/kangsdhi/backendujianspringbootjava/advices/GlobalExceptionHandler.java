@@ -1,6 +1,7 @@
 package dev.kangsdhi.backendujianspringbootjava.advices;
 
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseError;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -12,8 +13,10 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -56,5 +59,27 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(responseError, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(NoSuchElementException.class)
+    protected ResponseEntity<ResponseError<String>> handleNoSuchElementException(NoSuchElementException e) {
+        ResponseError<String> responseError = new ResponseError<>();
+        responseError.setHttpCode(HttpStatus.NOT_FOUND.value());
+        responseError.setErrors(e.getMessage());
+        return new ResponseEntity<>(responseError, HttpStatus.NOT_FOUND);
+    }
 
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    protected ResponseEntity<ResponseError<String>> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException e) {
+        ResponseError<String> responseError = new ResponseError<>();
+        responseError.setHttpCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        responseError.setErrors(e.getMessage());
+        return new ResponseEntity<>(responseError, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    protected ResponseEntity<ResponseError<String>> handleEntityNotFoundException(EntityNotFoundException e) {
+        ResponseError<String> responseError = new ResponseError<>();
+        responseError.setHttpCode(HttpStatus.NOT_FOUND.value());
+        responseError.setErrors(e.getMessage());
+        return new ResponseEntity<>(responseError, HttpStatus.NOT_FOUND);
+    }
 }

@@ -36,8 +36,13 @@ public class ConvertUtils {
         return date;
     }
 
-    public String convertDateToStringFormat(Date date){
+    public String convertDateToDatetimeStringFormat(Date date){
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        return sdf.format(date);
+    }
+
+    public String convertDateToTimeStringFormat(Date date){
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         return sdf.format(date);
     }
 }
