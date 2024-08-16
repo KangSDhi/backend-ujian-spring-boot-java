@@ -22,13 +22,7 @@ public class SoalController {
     @GetMapping("/soal/findit")
     public ResponseEntity<ResponseWithMessageAndData<SoalDto>> finditSoalById(@RequestParam String idSoal) {
         ResponseWithMessageAndData<SoalDto> soalResponse = soalService.soalById(idSoal);
-        if (soalResponse.getData() == null) {
-            soalResponse.setHttpCode(HttpStatus.NOT_FOUND.value());
-            soalResponse.setMessage("Soal Kosong");
-            return new ResponseEntity<>(soalResponse, HttpStatus.NOT_FOUND);
-        }
-        soalResponse.setHttpCode(HttpStatus.OK.value());
-        soalResponse.setMessage("Soal Tersedia!");
-        return ResponseEntity.ok(soalResponse);
+        HttpStatus httpStatus = HttpStatus.valueOf(soalResponse.getHttpCode());
+        return new ResponseEntity<>(soalResponse, httpStatus);
     }
 }

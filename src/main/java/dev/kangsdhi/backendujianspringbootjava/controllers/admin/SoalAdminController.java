@@ -27,6 +27,14 @@ public class SoalAdminController {
         return new ResponseEntity<>(response, httpStatus);
     }
 
+    @GetMapping("/findit")
+    public ResponseEntity<ResponseWithMessageAndData<SoalDto>> getSoalById(@RequestParam String idSoal) {
+        ResponseWithMessageAndData<SoalDto> response = soalService.soalById(idSoal);
+        System.out.println(response.getData());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        return new ResponseEntity<>(response, httpStatus);
+    }
+
     @PostMapping("/create")
     public ResponseEntity<ResponseWithMessageAndData<SoalDto>> createSoal(@Valid @RequestBody SoalRequest soalRequest){
         ResponseWithMessageAndData<SoalDto> response = soalService.createSoal(soalRequest);
