@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+## data test
+src/main/resources/data/json/auth_jwt.json
