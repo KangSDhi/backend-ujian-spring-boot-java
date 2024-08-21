@@ -2,7 +2,6 @@ package dev.kangsdhi.backendujianspringbootjava.controllers.siswa;
 
 import dev.kangsdhi.backendujianspringbootjava.dto.data.SoalDto;
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessageAndData;
-import dev.kangsdhi.backendujianspringbootjava.entities.Soal;
 import dev.kangsdhi.backendujianspringbootjava.services.SoalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/siswa")
 @RequiredArgsConstructor
-public class SoalController {
+public class SoalSiswaController {
 
     private final SoalService soalService;
 

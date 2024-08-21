@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/siswa/nilai")
 @RequiredArgsConstructor
-public class NilaiUjianController {
+public class NilaiUjianSiswaController {
 
     private final NilaiUjianService nilaiUjianService;
 
