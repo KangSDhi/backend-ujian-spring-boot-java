@@ -23,6 +23,9 @@ public class DatabaseSeeder {
     AdminSeeder adminSeeder;
 
     @Autowired
+    GuruSeeder guruSeeder;
+
+    @Autowired
     SiswaSeeder siswaSeeder;
 
     @Autowired
@@ -40,6 +43,7 @@ public class DatabaseSeeder {
         jurusanSeeder.seedJurusan();
         kelasSeeder.seedKelas();
         adminSeeder.seedAdmin();
+        guruSeeder.seedGuru();
         siswaSeeder.seedSiswa();
         soalSeeder.seedSoal();
         bankSoalSeeder.seedBankSoal();
