@@ -9,6 +9,7 @@ import java.util.UUID;
 public class UjianMappingDto {
     private UUID idBank;
     private String pertanyaan;
+    private String gambarPertanyaan;
     private String pilihanA;
     private String pilihanB;
     private String pilihanC;

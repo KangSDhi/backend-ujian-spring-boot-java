@@ -159,6 +159,7 @@ public class UjianServiceImplementation implements UjianService {
             UjianMappingDto ujianMappingDto = new UjianMappingDto();
             ujianMappingDto.setIdBank(bankSoalItem.getId());
             ujianMappingDto.setPertanyaan(bankSoalItem.getPertanyaanBankSoal());
+            ujianMappingDto.setGambarPertanyaan(bankSoalItem.getGambarPertanyaanBankSoal());
             ujianMappingDto.setStatusPertanyaan(StatusPertanyaan.BELUM_DIJAWAB);
 
             List<String> listPilihan = Arrays.asList(
