@@ -11,6 +11,7 @@ import java.util.Date;
 @Data
 public class SoalBaruSeeder {
     private String namaSoal;
+    private String tokenSoal;
     private Integer butirSoal;
     private AcakSoal acakSoal;
     private Date waktuMulaiSoal;

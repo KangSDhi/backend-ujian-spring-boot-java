@@ -8,6 +8,7 @@ import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessageA
 import java.util.List;
 
 public interface SoalService {
+    ResponseWithMessage checkTokenSoal(String idSoal, String token);
     ResponseWithMessageAndData<List<SoalDto>> listAllSoal();
     ResponseWithMessageAndData<SoalDto> soalById(String idSoal);
     ResponseWithMessageAndData<SoalDto> createSoal(SoalRequest soalRequest);

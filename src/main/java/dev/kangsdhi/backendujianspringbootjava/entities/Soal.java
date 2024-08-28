@@ -36,6 +36,9 @@ public class Soal {
     @Column(name = "nama_soal", nullable = false, unique = true)
     private String namaSoal;
 
+    @Column(name = "token_soal", nullable = false)
+    private String tokenSoal;
+
     @Column(name = "butir_soal", nullable = false)
     private Integer butirSoal;
 

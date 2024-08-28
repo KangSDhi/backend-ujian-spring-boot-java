@@ -10,6 +10,7 @@ import dev.kangsdhi.backendujianspringbootjava.repository.JurusanRepository;
 import dev.kangsdhi.backendujianspringbootjava.repository.SoalRepository;
 import dev.kangsdhi.backendujianspringbootjava.repository.TingkatRepository;
 import dev.kangsdhi.backendujianspringbootjava.utils.ConvertUtils;
+import dev.kangsdhi.backendujianspringbootjava.utils.GenerateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,7 @@ public class SoalSeeder {
     private JurusanRepository jurusanRepository;
 
     ConvertUtils convertUtils = new ConvertUtils();
+    GenerateUtils generateUtils = new GenerateUtils();
 
     public void seedSoal(){
         List<Soal> dataSoal = soalRepository.findAll();
@@ -53,6 +55,7 @@ public class SoalSeeder {
             List<SoalBaruSeeder> dataSoalBaruSeeder = new ArrayList<>(List.of(
                     new SoalBaruSeeder(
                             "Matematika X",
+                            generateUtils.generatedSixDigitRandomStringNumeric(),
                             10,
                             AcakSoal.ACAK,
                             convertUtils.convertStringToDatetimeOrTime(waktuMulaiFullString),
@@ -63,6 +66,7 @@ public class SoalSeeder {
                             TipeSoal.PILIHAN_GANDA),
                     new SoalBaruSeeder(
                             "Dasar Kejuruan TKJ",
+                            generateUtils.generatedSixDigitRandomStringNumeric(),
                             40,
                             AcakSoal.ACAK,
                             convertUtils.convertStringToDatetimeOrTime(waktuMulaiSiangString),
@@ -73,6 +77,7 @@ public class SoalSeeder {
                             TipeSoal.PILIHAN_GANDA),
                     new SoalBaruSeeder(
                             "Konsentrasi Kejuruan GMT",
+                            generateUtils.generatedSixDigitRandomStringNumeric(),
                             40,
                             AcakSoal.ACAK,
                             convertUtils.convertStringToDatetimeOrTime(waktuMulaiPagiString),
@@ -83,6 +88,7 @@ public class SoalSeeder {
                             TipeSoal.PILIHAN_GANDA),
                     new SoalBaruSeeder(
                             "Pilihan GMT Kejuruan GMT",
+                            generateUtils.generatedSixDigitRandomStringNumeric(),
                             40,
                             AcakSoal.ACAK,
                             convertUtils.convertStringToDatetimeOrTime(waktuMulaiSoreString),
@@ -99,6 +105,7 @@ public class SoalSeeder {
 
                 Soal soalBaru = new Soal();
                 soalBaru.setNamaSoal(soalBaruSeederItem.getNamaSoal());
+                soalBaru.setTokenSoal(soalBaruSeederItem.getTokenSoal());
                 soalBaru.setButirSoal(soalBaruSeederItem.getButirSoal());
                 soalBaru.setAcakSoal(soalBaruSeederItem.getAcakSoal());
                 soalBaru.setWaktuMulaiSoal(soalBaruSeederItem.getWaktuMulaiSoal());

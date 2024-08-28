@@ -18,6 +18,8 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -72,7 +74,11 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ResponseError<String>> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException e) {
         ResponseError<String> responseError = new ResponseError<>();
         responseError.setHttpCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        responseError.setErrors(e.getMessage());
+
+        String errorMessage = e.getMessage();
+        String duplicateData = extractDuplicateData(errorMessage);
+
+        responseError.setErrors(duplicateData != null ? duplicateData : errorMessage);
         return new ResponseEntity<>(responseError, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -90,5 +96,14 @@ public class GlobalExceptionHandler {
         responseError.setHttpCode(HttpStatus.BAD_REQUEST.value());
         responseError.setErrors(e.getMessage());
         return new ResponseEntity<>(responseError, HttpStatus.BAD_REQUEST);
+    }
+
+    private String extractDuplicateData(String errorMessage) {
+        Pattern pattern = Pattern.compile("Duplicate entry '(.+?)' for key");
+        Matcher matcher = pattern.matcher(errorMessage);
+        if (matcher.find()) {
+            return "Duplikasi Data " +matcher.group(1);
+        }
+        return null;
     }
 }

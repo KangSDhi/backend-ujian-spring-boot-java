@@ -12,6 +12,7 @@ import dev.kangsdhi.backendujianspringbootjava.repository.SoalRepository;
 import dev.kangsdhi.backendujianspringbootjava.repository.TingkatRepository;
 import dev.kangsdhi.backendujianspringbootjava.services.SoalService;
 import dev.kangsdhi.backendujianspringbootjava.utils.ConvertUtils;
+import dev.kangsdhi.backendujianspringbootjava.utils.GenerateUtils;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -28,6 +29,27 @@ public class SoalServiceImplementation implements SoalService {
     private final TingkatRepository tingkatRepository;
     private final JurusanRepository jurusanRepository;
     private final SoalRepository soalRepository;
+
+    @Override
+    public ResponseWithMessage checkTokenSoal(String idSoal, String token) {
+        UUID uuid = UUID.fromString(idSoal);
+        Soal soal = soalRepository.findById(uuid).orElse(null);
+        ResponseWithMessage responseWithMessage = new ResponseWithMessage();
+        if (soal == null) {
+            responseWithMessage.setHttpCode(HttpStatus.NOT_FOUND.value());
+            responseWithMessage.setMessage("Soal Tidak Ditemukan");
+        } else {
+            if (!soal.getTokenSoal().equals(token)) {
+                responseWithMessage.setHttpCode(HttpStatus.BAD_REQUEST.value());
+                responseWithMessage.setMessage("Token Salah!");
+            } else {
+                responseWithMessage.setHttpCode(HttpStatus.OK.value());
+                responseWithMessage.setMessage("Token Benar!");
+            }
+        }
+
+        return responseWithMessage;
+    }
 
     @Override
     public ResponseWithMessageAndData<List<SoalDto>> listAllSoal() {
@@ -115,7 +137,9 @@ public class SoalServiceImplementation implements SoalService {
 
     private Soal prepareSoalEntity(Soal soal, SoalRequest soalRequest, Tingkat tingkat, Jurusan jurusan) {
         ConvertUtils convertUtils = new ConvertUtils();
+        GenerateUtils generateUtils = new GenerateUtils();
         soal.setNamaSoal(soalRequest.getNamaSoal());
+        soal.setTokenSoal(generateUtils.generatedSixDigitRandomStringNumeric());
         soal.setTingkat(tingkat);
         soal.setJurusan(jurusan);
         soal.setAcakSoal(soalRequest.getAcakSoal());
