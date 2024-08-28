@@ -39,6 +39,4 @@ public class MinioAdminController {
         HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
         return new ResponseEntity<>(response, httpStatus);
     }
-
-
 }

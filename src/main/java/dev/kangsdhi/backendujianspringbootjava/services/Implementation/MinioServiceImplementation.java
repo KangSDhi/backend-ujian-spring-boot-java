@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -27,142 +26,78 @@ public class MinioServiceImplementation implements MinioService {
 
     @Override
     public ResponseWithMessageAndData<Map<String, String>> uploadGambarPertanyaan(MultipartFile file) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        String randomUUID = UUID.randomUUID().toString();
-        String originalFilename = file.getOriginalFilename();
-
-        String extension = "";
-        if (originalFilename != null && originalFilename.contains(".")) {
-            extension = originalFilename.substring(originalFilename.lastIndexOf("."));
-        }
-
-        String newFilename = randomUUID + extension;
-
-        if (!minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build())){
-            minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
-        }
-
-        minioClient.putObject(
-                PutObjectArgs.builder()
-                        .bucket(bucketName)
-                        .object("pertanyaan/" + newFilename)
-                        .stream(file.getInputStream(), file.getSize(), -1)
-                        .contentType(file.getContentType())
-                        .build()
-        );
-
-        ResponseWithMessageAndData<Map<String, String>> responseWithMessageAndData = new ResponseWithMessageAndData<>();
-        responseWithMessageAndData.setHttpCode(HttpStatus.CREATED.value());
-        responseWithMessageAndData.setMessage("Upload Gambar Pertanyaan successful");
-        responseWithMessageAndData.setData(Map.of("gambar_pertanyaan", newFilename));
-
-        return responseWithMessageAndData;
+        String newFilename = generateFilename(file);
+        uploadFile(file, "pertanyaan/" + newFilename);
+        return buildResponse(HttpStatus.CREATED, "Upload Gambar Pertanyaan Sukses!", Map.of("gambar_pertanyaan", newFilename));
     }
 
     @Override
     public ResponseWithMessageAndData<Map<String, String>> getUrlGambarPertanyaan(String gambarPertanyaan) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-
-        ResponseWithMessageAndData<Map<String, String>> response = new ResponseWithMessageAndData<>();
-
-        try {
-            minioClient.statObject(
-                    StatObjectArgs.builder()
-                            .bucket(bucketName)
-                            .object("pertanyaan/" + gambarPertanyaan)
-                            .build()
-            );
-
-            String urlImage = minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder()
-                    .bucket(bucketName)
-                    .object("pertanyaan/" + gambarPertanyaan)
-                    .method(Method.GET)
-                    .expiry(60)
-                    .build());
-            Map<String, String> data = new HashMap<>();
-            data.put("url", urlImage);
-
-            response.setHttpCode(HttpStatus.OK.value());
-            response.setMessage("Berhasil Mengambil URL Gambar Pertanyaan");
-            response.setData(data);
-        } catch (MinioException exception) {
-            if (exception.getMessage().contains("Object does not exist")){
-                response.setHttpCode(HttpStatus.NOT_FOUND.value());
-                response.setMessage("Gambar Pertanyaan Tidak Ditemukan!");
-            } else {
-                response.setHttpCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-                response.setMessage(exception.getMessage());
-            }
-        }
-
-        return response;
+        return generateUrlResponse("pertanyaan/" + gambarPertanyaan, "Berhasil Mengambil URL Gambar Pertanyaan", "Gambar Pertanyaan Tidak Ditemukan!");
     }
 
     @Override
     public ResponseWithMessageAndData<Map<String, String>> uploadGambarJawaban(MultipartFile file) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        String randomUUID = UUID.randomUUID().toString();
-        String originalFilename = file.getOriginalFilename();
-
-        String extension = "";
-        if (originalFilename != null && originalFilename.contains(".")) {
-            extension = originalFilename.substring(originalFilename.lastIndexOf("."));
-        }
-
-        String newFilename = randomUUID + extension;
-
-        if (!minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build())){
-            minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
-        }
-
-        minioClient.putObject(
-                PutObjectArgs.builder()
-                        .bucket(bucketName)
-                        .object("jawaban/" + newFilename)
-                        .stream(file.getInputStream(), file.getSize(), -1)
-                        .contentType(file.getContentType())
-                        .build()
-        );
-
-        ResponseWithMessageAndData<Map<String, String>> responseWithMessageAndData = new ResponseWithMessageAndData<>();
-        responseWithMessageAndData.setHttpCode(HttpStatus.CREATED.value());
-        responseWithMessageAndData.setMessage("Upload Gambar Jawaban successful");
-        responseWithMessageAndData.setData(Map.of("gambar_jawaban", newFilename));
-
-        return responseWithMessageAndData;
+        String newFilename = generateFilename(file);
+        uploadFile(file, "jawaban/" + newFilename);
+        return buildResponse(HttpStatus.CREATED, "Upload Gambar Jawaban Sukses!", Map.of("jawaban", newFilename));
     }
 
     @Override
     public ResponseWithMessageAndData<Map<String, String>> getUrlGambarJawaban(String gambarJawaban) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        ResponseWithMessageAndData<Map<String, String>> response = new ResponseWithMessageAndData<>();
+        return generateUrlResponse("jawaban/" + gambarJawaban, "Berhasil Mengambil URL Gambar Jawaban", "Gambar Jawaban Tidak Ditemukan!");
+    }
 
-        try {
-            minioClient.statObject(
-                    StatObjectArgs.builder()
-                            .bucket(bucketName)
-                            .object("jawaban/" + gambarJawaban)
-                            .build()
-            );
+    private String generateFilename(MultipartFile file){
+        String originalFilename = file.getOriginalFilename();
+        String extension = (originalFilename != null && originalFilename.contains("."))
+                ? originalFilename.substring(originalFilename.lastIndexOf("."))
+                : "";
+        return UUID.randomUUID() + extension;
+    }
 
-            String urlImage = minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder()
-                    .bucket(bucketName)
-                    .object("jawaban/" + gambarJawaban)
-                    .method(Method.GET)
-                    .expiry(60)
-                    .build());
-            Map<String, String> data = new HashMap<>();
-            data.put("url", urlImage);
-
-            response.setHttpCode(HttpStatus.OK.value());
-            response.setMessage("Berhasil Mengambil URL Gambar Jawaban");
-            response.setData(data);
-        } catch (MinioException exception) {
-            if (exception.getMessage().contains("Object does not exist")){
-                response.setHttpCode(HttpStatus.NOT_FOUND.value());
-                response.setMessage("Gambar Jawaban Tidak Ditemukan!");
-            } else {
-                response.setHttpCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-                response.setMessage(exception.getMessage());
-            }
+    private void ensureBucketExists() throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        if (!minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build())) {
+            minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
         }
+    }
 
-        return response;
+    private void uploadFile(MultipartFile file, String path) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        ensureBucketExists();
+        minioClient.putObject(
+                PutObjectArgs.builder()
+                        .bucket(bucketName)
+                        .object(path)
+                        .stream(file.getInputStream(), file.getSize(), -1)
+                        .contentType(file.getContentType())
+                        .build()
+        );
+    }
+
+    private ResponseWithMessageAndData<Map<String, String>> buildResponse(HttpStatus httpStatus, String message, Map<String, String> data) {
+        ResponseWithMessageAndData<Map<String, String>> responseWithMessageAndData = new ResponseWithMessageAndData<>();
+        responseWithMessageAndData.setHttpCode(httpStatus.value());
+        responseWithMessageAndData.setMessage(message);
+        responseWithMessageAndData.setData(data);
+        return responseWithMessageAndData;
+    }
+
+    private ResponseWithMessageAndData<Map<String, String>> generateUrlResponse(String objectPath, String successMessage, String notFoundMessage) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        try {
+            minioClient.statObject(StatObjectArgs.builder().bucket(bucketName).object(objectPath).build());
+
+            String url = minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder()
+                            .bucket(bucketName)
+                            .object(objectPath)
+                            .method(Method.GET)
+                            .expiry(60)
+                    .build());
+
+            return buildResponse(HttpStatus.OK, successMessage, Map.of("url", url));
+        } catch (MinioException exception) {
+            String errorMessage = exception.getMessage().contains("Object does not exist") ? notFoundMessage : exception.getMessage();
+            HttpStatus httpStatus = exception.getMessage().contains("Object does not exist") ? HttpStatus.NOT_FOUND : HttpStatus.INTERNAL_SERVER_ERROR;
+            return buildResponse(httpStatus, errorMessage, null);
+        }
     }
 }

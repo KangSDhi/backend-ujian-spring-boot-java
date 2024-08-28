@@ -71,14 +71,14 @@ public class UjianSiswaController {
         return new ResponseEntity<>(response, httpStatus);
     }
 
-    @GetMapping("/ujian/gambarpertanyaan/geturl")
+    @GetMapping("/ujian/gambarpertanyaan/url")
     public ResponseEntity<ResponseWithMessageAndData<Map<String, String>>> getURLGambarPertanyaan(@RequestParam String gambarPertanyaan) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         ResponseWithMessageAndData<Map<String, String>> response = minioService.getUrlGambarPertanyaan(gambarPertanyaan);
         HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
         return new ResponseEntity<>(response, httpStatus);
     }
 
-    @GetMapping("/ujian/gambarjawaban/geturl")
+    @GetMapping("/ujian/gambarjawaban/url")
     public ResponseEntity<ResponseWithMessageAndData<Map<String, String>>> getURLGambarJawaban(@RequestParam String gambarJawaban) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         ResponseWithMessageAndData<Map<String, String>> response = minioService.getUrlGambarJawaban(gambarJawaban);
         HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());

@@ -72,7 +72,7 @@ public class BankSoalSeeder {
                     new BankSoalSeederDto(
                             "Matematika X",
                             "3 - 4 =",
-                            null,
+                            "6613da9c-0832-478b-bce2-2fb084eb5432.jpeg",
                             "-4",
                             "-1",
                             "3",
