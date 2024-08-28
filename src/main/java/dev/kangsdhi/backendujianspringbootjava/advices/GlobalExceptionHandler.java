@@ -2,6 +2,7 @@ package dev.kangsdhi.backendujianspringbootjava.advices;
 
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseError;
 import jakarta.persistence.EntityNotFoundException;
+import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -81,5 +82,13 @@ public class GlobalExceptionHandler {
         responseError.setHttpCode(HttpStatus.NOT_FOUND.value());
         responseError.setErrors(e.getMessage());
         return new ResponseEntity<>(responseError, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    protected ResponseEntity<ResponseError<String>> handleBadRequestException(BadRequestException e) {
+        ResponseError<String> responseError = new ResponseError<>();
+        responseError.setHttpCode(HttpStatus.BAD_REQUEST.value());
+        responseError.setErrors(e.getMessage());
+        return new ResponseEntity<>(responseError, HttpStatus.BAD_REQUEST);
     }
 }
