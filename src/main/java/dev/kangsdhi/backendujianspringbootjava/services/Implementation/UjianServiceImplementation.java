@@ -74,7 +74,9 @@ public class UjianServiceImplementation implements UjianService {
             return createResponseWithMessage(HttpStatus.BAD_REQUEST, "Butir Soal Melebihi Banyak Bank Soal, Gagal Generate Ujian!");
         }
 
-        List<UjianMappingDto> ujianMappingDtoList = generateJawabanDtoList(soal, bankSoalList);
+        List<BankSoal> bankSoalListLimit = bankSoalList.stream().limit(soal.getButirSoal()).toList();
+
+        List<UjianMappingDto> ujianMappingDtoList = generateJawabanDtoList(soal, bankSoalListLimit);
         if (soal.getAcakSoal() == AcakSoal.ACAK){
             Collections.shuffle(ujianMappingDtoList);
         }
