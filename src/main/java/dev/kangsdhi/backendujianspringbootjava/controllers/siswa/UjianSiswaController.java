@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -29,8 +28,8 @@ public class UjianSiswaController {
     private final MinioService minioService;
 
     @PostMapping("/list")
-    public ResponseEntity<ResponseWithMessageAndData<List<MataUjianDto>>> mataUjian(@Valid @RequestBody MataUjianRequest mataUjianRequest) {
-        ResponseWithMessageAndData<List<MataUjianDto>> response = ujianService.listMataUjian(mataUjianRequest);
+    public ResponseEntity<ResponseWithMessageAndData<Object>> mataUjian(@Valid @RequestBody MataUjianRequest mataUjianRequest) {
+        ResponseWithMessageAndData<Object> response = ujianService.listMataUjian(mataUjianRequest);
         HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
         return new ResponseEntity<>(response, httpStatus);
     }

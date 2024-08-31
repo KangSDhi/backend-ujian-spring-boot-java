@@ -40,46 +40,19 @@ public class UjianServiceImplementation implements UjianService {
     private final BankSoalRepository bankSoalRepository;
 
     @Override
-    public ResponseWithMessageAndData<List<MataUjianDto>> listMataUjian(MataUjianRequest mataUjianRequest) {
-        ConvertUtils convertUtils = new ConvertUtils();
-        ZonedDateTime jakartaTime = ZonedDateTime.now(ZoneId.of("Asia/Jakarta"));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public ResponseWithMessageAndData<Object> listMataUjian(MataUjianRequest mataUjianRequest) {
         Tingkat tingkat = tingkatRepository.findTingkatByTingkat(mataUjianRequest.getTingkat());
         Jurusan jurusan = jurusanRepository.findJurusanByJurusan(mataUjianRequest.getJurusan());
-        List<Soal> soal = soalRepository.findSoalForSiswa(jakartaTime.format(formatter), tingkat, jurusan);
-        ResponseWithMessageAndData<List<MataUjianDto>> responseWithMessageAndData = new ResponseWithMessageAndData<>();
+        List<Soal> soalList = soalRepository.findSoalForSiswa(getCurrentDate(), tingkat, jurusan);
 
-        if (soal.isEmpty()){
-            responseWithMessageAndData.setHttpCode(HttpStatus.NOT_FOUND.value());
-            responseWithMessageAndData.setMessage("Maaf Daftar Ujian Tidak Ditemukan!");
-            return responseWithMessageAndData;
+        if (soalList.isEmpty()){
+            return createResponseWithMessageAndData(HttpStatus.NOT_FOUND, "Maaf Daftar Ujian Tidak Ditemukan!", null);
         }
-        List<MataUjianDto> mataUjianDtoList = new ArrayList<>();
-        for (Soal soalItem: soal) {
+        List<MataUjianDto> mataUjianDtoList = soalList.stream()
+                        .map(this::mapToMataUjianDto)
+                .collect(Collectors.toList());
 
-            MataUjianDto mataUjianDto = new MataUjianDto();
-            mataUjianDto.setIdSoal(soalItem.getId().toString());
-            mataUjianDto.setNamaSoal(soalItem.getNamaSoal());
-            mataUjianDto.setButirSoal(soalItem.getButirSoal());
-            mataUjianDto.setAcakSoal(soalItem.getAcakSoal());
-            mataUjianDto.setWaktuMulaiSoal(convertUtils.convertDateToDatetimeStringFormat(soalItem.getWaktuMulaiSoal()));
-            mataUjianDto.setWaktuSelesaiSoal(convertUtils.convertDateToDatetimeStringFormat(soalItem.getWaktuSelesaiSoal()));
-            long jakartaTimeInTimeMilis = jakartaTime.toInstant().toEpochMilli();
-            long waktuMulaiInTimeMilis = soalItem.getWaktuMulaiSoal().getTime();
-            long waktuSelesaiInTimeMilis = soalItem.getWaktuSelesaiSoal().getTime();
-            if (jakartaTimeInTimeMilis >= waktuMulaiInTimeMilis && jakartaTimeInTimeMilis <= waktuSelesaiInTimeMilis) {
-                mataUjianDto.setStatusMataUjian(StatusMataUjian.MULAI);
-            } else if (jakartaTimeInTimeMilis >= waktuMulaiInTimeMilis) {
-                mataUjianDto.setStatusMataUjian(StatusMataUjian.SELESAI);
-            } else {
-                mataUjianDto.setStatusMataUjian(StatusMataUjian.BELUM_MULAI);
-            }
-            mataUjianDtoList.add(mataUjianDto);
-        }
-        responseWithMessageAndData.setHttpCode(HttpStatus.OK.value());
-        responseWithMessageAndData.setMessage("Berhasil Mengambil Daftar Ujian!");
-        responseWithMessageAndData.setData(mataUjianDtoList);
-        return responseWithMessageAndData;
+        return createResponseWithMessageAndData(HttpStatus.OK, "Berhasil Mengambil Daftar Ujian!", mataUjianDtoList);
     }
 
     @Override
@@ -231,6 +204,14 @@ public class UjianServiceImplementation implements UjianService {
         }).collect(Collectors.toList());
     }
 
+    private Soal getSoalById(String idSoal){
+        return soalRepository.findById(UUID.fromString(idSoal)).orElse(null);
+    }
+
+    private boolean isUjianExist(Soal soal) {
+        return ujianRepository.findBySoalAndPengguna(soal, getCurrentPengguna()).isPresent();
+    }
+
     private Ujian createUjian(Soal soal, Pengguna pengguna, List<UjianMappingDto> ujianMappingDtoList){
         String listJawabanJson = convertListJawabanUjianToJsonString(ujianMappingDtoList);
 
@@ -256,8 +237,7 @@ public class UjianServiceImplementation implements UjianService {
     }
 
     private Pengguna getCurrentPengguna(){
-        String namaPengguna = userService.getCurrentUser().getUsername();
-        return penggunaRepository.findByNamaPengguna(namaPengguna).orElse(null);
+        return penggunaRepository.findByNamaPengguna(userService.getCurrentUser().getUsername()).orElse(null);
     }
 
     private String convertListJawabanUjianToJsonString(List<UjianMappingDto> ujianMappingDtoList){
@@ -267,6 +247,53 @@ public class UjianServiceImplementation implements UjianService {
         } catch (JsonProcessingException e){
             return null;
         }
+    }
+
+    private String serializeJson(Object data) {
+        try {
+            return new ObjectMapper().writeValueAsString(data);
+        } catch (JsonProcessingException e) {
+            return null;
+        }
+    }
+
+    private <T> T deserializeJson(String json, Class<T> type) {
+        try {
+            return new ObjectMapper().readValue(json, type);
+        } catch (JsonProcessingException e) {
+            return null;
+        }
+    }
+
+    private String getCurrentDate(){
+        return ZonedDateTime.now(ZoneId.of("Asia/Jakarta"))
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
+
+    private MataUjianDto mapToMataUjianDto(Soal soal){
+        ConvertUtils convertUtils = new ConvertUtils();
+        MataUjianDto dto = new MataUjianDto();
+        dto.setIdSoal(soal.getId().toString());
+        dto.setNamaSoal(soal.getNamaSoal());
+        dto.setButirSoal(soal.getButirSoal());
+        dto.setAcakSoal(soal.getAcakSoal());
+        dto.setWaktuMulaiSoal(convertUtils.convertDateToDatetimeStringFormat(soal.getWaktuMulaiSoal()));
+        dto.setWaktuSelesaiSoal(convertUtils.convertDateToDatetimeStringFormat(soal.getWaktuSelesaiSoal()));
+
+        ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Jakarta"));
+        long currentMillis = now.toInstant().toEpochMilli();
+        long startMillis = soal.getWaktuMulaiSoal().getTime();
+        long endMillis = soal.getWaktuSelesaiSoal().getTime();
+
+        if (currentMillis >= startMillis && currentMillis <= endMillis) {
+            dto.setStatusMataUjian(StatusMataUjian.MULAI);
+        } else if (currentMillis >= startMillis) {
+            dto.setStatusMataUjian(StatusMataUjian.SELESAI);
+        } else {
+            dto.setStatusMataUjian(StatusMataUjian.BELUM_MULAI);
+        }
+
+        return dto;
     }
 
     private ResponseWithMessage createResponseWithMessage(HttpStatus httpStatus, String message) {
