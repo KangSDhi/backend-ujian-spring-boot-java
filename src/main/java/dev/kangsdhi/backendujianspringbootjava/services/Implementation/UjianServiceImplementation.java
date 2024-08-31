@@ -2,21 +2,18 @@ package dev.kangsdhi.backendujianspringbootjava.services.Implementation;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.kangsdhi.backendujianspringbootjava.dto.data.MataUjianDto;
 import dev.kangsdhi.backendujianspringbootjava.dto.data.UjianMappingDto;
 import dev.kangsdhi.backendujianspringbootjava.dto.request.JawabanUjianRequest;
+import dev.kangsdhi.backendujianspringbootjava.dto.request.MataUjianRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessage;
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessageAndData;
-import dev.kangsdhi.backendujianspringbootjava.entities.BankSoal;
-import dev.kangsdhi.backendujianspringbootjava.entities.Pengguna;
-import dev.kangsdhi.backendujianspringbootjava.entities.Soal;
-import dev.kangsdhi.backendujianspringbootjava.entities.Ujian;
+import dev.kangsdhi.backendujianspringbootjava.entities.*;
 import dev.kangsdhi.backendujianspringbootjava.enums.AcakSoal;
+import dev.kangsdhi.backendujianspringbootjava.enums.StatusMataUjian;
 import dev.kangsdhi.backendujianspringbootjava.enums.StatusPertanyaan;
 import dev.kangsdhi.backendujianspringbootjava.enums.StatusUjian;
-import dev.kangsdhi.backendujianspringbootjava.repository.BankSoalRepository;
-import dev.kangsdhi.backendujianspringbootjava.repository.PenggunaRepository;
-import dev.kangsdhi.backendujianspringbootjava.repository.SoalRepository;
-import dev.kangsdhi.backendujianspringbootjava.repository.UjianRepository;
+import dev.kangsdhi.backendujianspringbootjava.repository.*;
 import dev.kangsdhi.backendujianspringbootjava.services.UjianService;
 import dev.kangsdhi.backendujianspringbootjava.services.UserService;
 import dev.kangsdhi.backendujianspringbootjava.utils.ConvertUtils;
@@ -24,6 +21,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,8 +34,53 @@ public class UjianServiceImplementation implements UjianService {
     private final UserService userService;
     private final UjianRepository ujianRepository;
     private final PenggunaRepository penggunaRepository;
+    private final TingkatRepository tingkatRepository;
+    private final JurusanRepository jurusanRepository;
     private final SoalRepository soalRepository;
     private final BankSoalRepository bankSoalRepository;
+
+    @Override
+    public ResponseWithMessageAndData<List<MataUjianDto>> listMataUjian(MataUjianRequest mataUjianRequest) {
+        ConvertUtils convertUtils = new ConvertUtils();
+        ZonedDateTime jakartaTime = ZonedDateTime.now(ZoneId.of("Asia/Jakarta"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        Tingkat tingkat = tingkatRepository.findTingkatByTingkat(mataUjianRequest.getTingkat());
+        Jurusan jurusan = jurusanRepository.findJurusanByJurusan(mataUjianRequest.getJurusan());
+        List<Soal> soal = soalRepository.findSoalForSiswa(jakartaTime.format(formatter), tingkat, jurusan);
+        ResponseWithMessageAndData<List<MataUjianDto>> responseWithMessageAndData = new ResponseWithMessageAndData<>();
+
+        if (soal.isEmpty()){
+            responseWithMessageAndData.setHttpCode(HttpStatus.NOT_FOUND.value());
+            responseWithMessageAndData.setMessage("Maaf Daftar Ujian Tidak Ditemukan!");
+            return responseWithMessageAndData;
+        }
+        List<MataUjianDto> mataUjianDtoList = new ArrayList<>();
+        for (Soal soalItem: soal) {
+
+            MataUjianDto mataUjianDto = new MataUjianDto();
+            mataUjianDto.setIdSoal(soalItem.getId().toString());
+            mataUjianDto.setNamaSoal(soalItem.getNamaSoal());
+            mataUjianDto.setButirSoal(soalItem.getButirSoal());
+            mataUjianDto.setAcakSoal(soalItem.getAcakSoal());
+            mataUjianDto.setWaktuMulaiSoal(convertUtils.convertDateToDatetimeStringFormat(soalItem.getWaktuMulaiSoal()));
+            mataUjianDto.setWaktuSelesaiSoal(convertUtils.convertDateToDatetimeStringFormat(soalItem.getWaktuSelesaiSoal()));
+            long jakartaTimeInTimeMilis = jakartaTime.toInstant().toEpochMilli();
+            long waktuMulaiInTimeMilis = soalItem.getWaktuMulaiSoal().getTime();
+            long waktuSelesaiInTimeMilis = soalItem.getWaktuSelesaiSoal().getTime();
+            if (jakartaTimeInTimeMilis >= waktuMulaiInTimeMilis && jakartaTimeInTimeMilis <= waktuSelesaiInTimeMilis) {
+                mataUjianDto.setStatusMataUjian(StatusMataUjian.MULAI);
+            } else if (jakartaTimeInTimeMilis >= waktuMulaiInTimeMilis) {
+                mataUjianDto.setStatusMataUjian(StatusMataUjian.SELESAI);
+            } else {
+                mataUjianDto.setStatusMataUjian(StatusMataUjian.BELUM_MULAI);
+            }
+            mataUjianDtoList.add(mataUjianDto);
+        }
+        responseWithMessageAndData.setHttpCode(HttpStatus.OK.value());
+        responseWithMessageAndData.setMessage("Berhasil Mengambil Daftar Ujian!");
+        responseWithMessageAndData.setData(mataUjianDtoList);
+        return responseWithMessageAndData;
+    }
 
     @Override
     public ResponseWithMessage checkInUjian(String idSoal) {
