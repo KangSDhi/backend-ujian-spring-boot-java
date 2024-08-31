@@ -45,11 +45,11 @@ public class UjianServiceImplementation implements UjianService {
         Jurusan jurusan = jurusanRepository.findJurusanByJurusan(mataUjianRequest.getJurusan());
         List<Soal> soalList = soalRepository.findSoalForSiswa(getCurrentDate(), tingkat, jurusan);
 
-        if (soalList.isEmpty()){
+        if (soalList.isEmpty()) {
             return createResponseWithMessageAndData(HttpStatus.NOT_FOUND, "Maaf Daftar Ujian Tidak Ditemukan!", null);
         }
         List<MataUjianDto> mataUjianDtoList = soalList.stream()
-                        .map(this::mapToMataUjianDto)
+                .map(this::mapToMataUjianDto)
                 .collect(Collectors.toList());
 
         return createResponseWithMessageAndData(HttpStatus.OK, "Berhasil Mengambil Daftar Ujian!", mataUjianDtoList);
@@ -70,36 +70,22 @@ public class UjianServiceImplementation implements UjianService {
 
     @Override
     public ResponseWithMessage generateUjian(String idSoal) {
-        UUID soalId = UUID.fromString(idSoal);
-        Pengguna pengguna = getCurrentPengguna();
+        Soal soal = getSoalById(idSoal);
 
-        Soal soal = soalRepository.findById(soalId).orElse(null);
-        if (soal == null){
-            return createResponseWithMessage(HttpStatus.BAD_REQUEST, "Soal Tidak Ada, Gagal Generate Ujian!");
-        }
-
-        Ujian ujian = ujianRepository.findBySoalAndPengguna(soal, pengguna).orElse(null);
-        if (ujian != null) {
-            return createResponseWithMessage(HttpStatus.BAD_REQUEST, "Ujian Sudah Ada, Gagal Generate Ujian!");
+        if (soal == null || isUjianExist(soal)) {
+            return createResponseWithMessage(HttpStatus.BAD_REQUEST, "Soal Tidak Ada atau Ujian Sudah Ada!");
         }
 
         List<BankSoal> bankSoalList = bankSoalRepository.findBySoal(soal);
-        if (bankSoalList.isEmpty()){
-            return createResponseWithMessage(HttpStatus.BAD_REQUEST, "Bank Soal Kosong, Gagal Generate Ujian!");
-        }
-
-        if (bankSoalList.size() < soal.getButirSoal()){
-            return createResponseWithMessage(HttpStatus.BAD_REQUEST, "Butir Soal Melebihi Banyak Bank Soal, Gagal Generate Ujian!");
+        if (bankSoalList.isEmpty() || bankSoalList.size() < soal.getButirSoal()) {
+            return createResponseWithMessage(HttpStatus.BAD_REQUEST, "Bank Soal Tidak Memadai!");
         }
 
         List<BankSoal> bankSoalListLimit = bankSoalList.stream().limit(soal.getButirSoal()).toList();
 
-        List<UjianMappingDto> ujianMappingDtoList = generateJawabanDtoList(soal, bankSoalListLimit);
-        if (soal.getAcakSoal() == AcakSoal.ACAK){
-            Collections.shuffle(ujianMappingDtoList);
-        }
+        List<UjianMappingDto> ujianMappingDtoList = prepareUjianMapping(soal, bankSoalListLimit);
 
-        Ujian ujianGenerate = createUjian(soal, pengguna, ujianMappingDtoList);
+        Ujian ujianGenerate = createUjian(soal, getCurrentPengguna(), ujianMappingDtoList);
         ujianRepository.save(ujianGenerate);
 
         String message = soal.getAcakSoal() == AcakSoal.ACAK ? "Ujian Berhasil Dibuat - Acak!" : "Ujian Berhasil Dibuat - Tidak Acak!";
@@ -122,7 +108,7 @@ public class UjianServiceImplementation implements UjianService {
         List<UjianMappingDto> ujianMappingDtoList;
         try {
             ujianMappingDtoList = Arrays.asList(objectMapper.readValue(ujian.getListJawabanUjian(), UjianMappingDto[].class));
-        }catch (Exception e){
+        } catch (Exception e) {
             return createResponseWithMessageAndData(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null);
         }
 
@@ -146,23 +132,23 @@ public class UjianServiceImplementation implements UjianService {
         Pengguna pengguna = getCurrentPengguna();
         UUID idSoal = UUID.fromString(jawabanUjianRequest.getIdSoal());
         Soal soal = soalRepository.findById(idSoal).orElse(null);
-        if (soal == null){
+        if (soal == null) {
             return createResponseWithMessage(HttpStatus.NOT_FOUND, "Soal Tidak Ditemukan!");
         }
         Ujian ujian = ujianRepository.findBySoalAndPengguna(soal, pengguna).orElse(null);
-        if (ujian == null){
+        if (ujian == null) {
             return createResponseWithMessage(HttpStatus.NOT_FOUND, "Ujian Tidak Ditemukan!");
         }
         ObjectMapper objectMapper = new ObjectMapper();
         List<UjianMappingDto> ujianMappingDtoList;
         try {
             ujianMappingDtoList = Arrays.asList(objectMapper.readValue(ujian.getListJawabanUjian(), UjianMappingDto[].class));
-        }catch (Exception e){
+        } catch (Exception e) {
             return createResponseWithMessage(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
         String idBank = jawabanUjianRequest.getIdBank();
-        for (UjianMappingDto dto : ujianMappingDtoList){
-            if (dto.getIdBank().equals(UUID.fromString(idBank))){
+        for (UjianMappingDto dto : ujianMappingDtoList) {
+            if (dto.getIdBank().equals(UUID.fromString(idBank))) {
                 dto.setJawaban(jawabanUjianRequest.getJawaban());
                 dto.setStatusPertanyaan(jawabanUjianRequest.getStatusPertanyaan());
                 break;
@@ -174,7 +160,7 @@ public class UjianServiceImplementation implements UjianService {
         return createResponseWithMessage(HttpStatus.CREATED, "Berhasil Memperbarui Jawaban");
     }
 
-    private List<UjianMappingDto> generateJawabanDtoList(Soal soal, List<BankSoal> bankSoalList){
+    private List<UjianMappingDto> generateJawabanDtoList(Soal soal, List<BankSoal> bankSoalList) {
         return bankSoalList.stream().map(bankSoalItem -> {
             UjianMappingDto ujianMappingDto = new UjianMappingDto();
             ujianMappingDto.setIdBank(bankSoalItem.getId());
@@ -204,7 +190,15 @@ public class UjianServiceImplementation implements UjianService {
         }).collect(Collectors.toList());
     }
 
-    private Soal getSoalById(String idSoal){
+    private List<UjianMappingDto> prepareUjianMapping(Soal soal, List<BankSoal> bankSoalList) {
+        List<UjianMappingDto> ujianMappingDtoList = generateJawabanDtoList(soal, bankSoalList);
+        if (soal.getAcakSoal() == AcakSoal.ACAK) {
+            Collections.shuffle(ujianMappingDtoList);
+        }
+        return ujianMappingDtoList;
+    }
+
+    private Soal getSoalById(String idSoal) {
         return soalRepository.findById(UUID.fromString(idSoal)).orElse(null);
     }
 
@@ -212,7 +206,7 @@ public class UjianServiceImplementation implements UjianService {
         return ujianRepository.findBySoalAndPengguna(soal, getCurrentPengguna()).isPresent();
     }
 
-    private Ujian createUjian(Soal soal, Pengguna pengguna, List<UjianMappingDto> ujianMappingDtoList){
+    private Ujian createUjian(Soal soal, Pengguna pengguna, List<UjianMappingDto> ujianMappingDtoList) {
         String listJawabanJson = convertListJawabanUjianToJsonString(ujianMappingDtoList);
 
         Calendar calendar = Calendar.getInstance();
@@ -236,15 +230,15 @@ public class UjianServiceImplementation implements UjianService {
         return ujian;
     }
 
-    private Pengguna getCurrentPengguna(){
+    private Pengguna getCurrentPengguna() {
         return penggunaRepository.findByNamaPengguna(userService.getCurrentUser().getUsername()).orElse(null);
     }
 
-    private String convertListJawabanUjianToJsonString(List<UjianMappingDto> ujianMappingDtoList){
+    private String convertListJawabanUjianToJsonString(List<UjianMappingDto> ujianMappingDtoList) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.writeValueAsString(ujianMappingDtoList);
-        } catch (JsonProcessingException e){
+        } catch (JsonProcessingException e) {
             return null;
         }
     }
@@ -265,12 +259,12 @@ public class UjianServiceImplementation implements UjianService {
         }
     }
 
-    private String getCurrentDate(){
+    private String getCurrentDate() {
         return ZonedDateTime.now(ZoneId.of("Asia/Jakarta"))
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
-    private MataUjianDto mapToMataUjianDto(Soal soal){
+    private MataUjianDto mapToMataUjianDto(Soal soal) {
         ConvertUtils convertUtils = new ConvertUtils();
         MataUjianDto dto = new MataUjianDto();
         dto.setIdSoal(soal.getId().toString());
@@ -303,7 +297,7 @@ public class UjianServiceImplementation implements UjianService {
         return responseWithMessage;
     }
 
-    private ResponseWithMessageAndData<Object> createResponseWithMessageAndData(HttpStatus httpStatus, String message, Object data){
+    private ResponseWithMessageAndData<Object> createResponseWithMessageAndData(HttpStatus httpStatus, String message, Object data) {
         ResponseWithMessageAndData<Object> responseWithMessageAndData = new ResponseWithMessageAndData<>();
         responseWithMessageAndData.setHttpCode(httpStatus.value());
         responseWithMessageAndData.setMessage(message);
