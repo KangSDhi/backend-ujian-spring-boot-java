@@ -1,6 +1,5 @@
 package dev.kangsdhi.backendujianspringbootjava.controllers.siswa;
 
-import dev.kangsdhi.backendujianspringbootjava.dto.data.MataUjianDto;
 import dev.kangsdhi.backendujianspringbootjava.dto.request.JawabanUjianRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.request.MataUjianRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessage;
