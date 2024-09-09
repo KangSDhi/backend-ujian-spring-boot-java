@@ -40,7 +40,7 @@ public class SoalSeeder {
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-        String waktuMulaiPagiString = currentDate.format(formatter) + " 08:30:00";
+        String waktuMulaiPagiString = currentDate.format(formatter) + " 05:00:00";
         String waktuSelesaiPagiString = currentDate.format(formatter) + " 11:00:00";
         String waktuMulaiSiangString = currentDate.format(formatter) + " 12:00:00";
         String waktuSelesaiSiangString = currentDate.format(formatter) + " 14:00:00";
@@ -58,9 +58,9 @@ public class SoalSeeder {
                             generateUtils.generatedSixDigitRandomStringNumeric(),
                             10,
                             AcakSoal.ACAK,
-                            convertUtils.convertStringToDatetimeOrTime(waktuMulaiFullString),
-                            convertUtils.convertStringToDatetimeOrTime("17:00:00"),
-                            convertUtils.convertStringToDatetimeOrTime(waktuSelesaiFullString),
+                            convertUtils.convertStringToDatetimeOrTime(waktuMulaiPagiString),
+                            convertUtils.convertStringToDatetimeOrTime("06:00:00"),
+                            convertUtils.convertStringToDatetimeOrTime(waktuSelesaiPagiString),
                             "X",
                             null,
                             TipeSoal.PILIHAN_GANDA),
