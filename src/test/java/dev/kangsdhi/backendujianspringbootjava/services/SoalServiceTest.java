@@ -12,6 +12,7 @@ import dev.kangsdhi.backendujianspringbootjava.repository.SoalRepository;
 import dev.kangsdhi.backendujianspringbootjava.repository.TingkatRepository;
 import dev.kangsdhi.backendujianspringbootjava.services.Implementation.SoalServiceImplementation;
 import dev.kangsdhi.backendujianspringbootjava.utils.ConvertUtils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -47,27 +48,47 @@ class SoalServiceTest {
     @InjectMocks
     private SoalServiceImplementation soalService;
 
-    @Test
-    void soalServiceGetAllSoalReturnResponseWithMessageAndData(){
-        // Create mock data
+    private Soal mockSoal;
+
+    private SoalRequest mockSoalRequest;
+
+    private Tingkat mockTingkat;
+
+    @BeforeEach
+    void Init(){
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-        Tingkat tingkat = new Tingkat();
-        tingkat.setId(UUID.randomUUID());
-        tingkat.setTingkat("X");
-
         ConvertUtils convertUtils = new ConvertUtils();
-        List<Soal> soalList = new ArrayList<>();
-        Soal mockSoal = new Soal();
+
+        mockTingkat = new Tingkat();
+        mockTingkat.setId(UUID.randomUUID());
+        mockTingkat.setTingkat("X");
+
+        mockSoal = new Soal();
         mockSoal.setId(UUID.randomUUID());
         mockSoal.setNamaSoal("Soal Test");
-        mockSoal.setTingkat(tingkat);
+        mockSoal.setTingkat(mockTingkat);
         mockSoal.setAcakSoal(AcakSoal.ACAK);
         mockSoal.setButirSoal(100);
         mockSoal.setWaktuMulaiSoal(convertUtils.convertStringToDatetimeOrTime(currentDate.format(formatter) + " 05:00:00"));
         mockSoal.setDurasiSoal(convertUtils.convertStringToDatetimeOrTime("03:00:00"));
         mockSoal.setWaktuSelesaiSoal(convertUtils.convertStringToDatetimeOrTime(currentDate.format(formatter) + " 04:00:00"));
+
+        mockSoalRequest = new SoalRequest();
+        mockSoalRequest.setNamaSoal("Soal Test Update");
+        mockSoalRequest.setTingkatSoal("X");
+        mockSoalRequest.setAcakSoal(AcakSoal.ACAK);
+        mockSoalRequest.setButirSoal(100);
+        mockSoalRequest.setDurasiSoal("01:00:00");
+        mockSoalRequest.setTipeSoal(TipeSoal.PILIHAN_GANDA);
+        mockSoalRequest.setWaktuMulaiSoal(currentDate.format(formatter) + " 01:00:00");
+        mockSoalRequest.setWaktuSelesaiSoal(currentDate.format(formatter) + " 04:00:00");
+    }
+
+    @Test
+    void soalServiceGetAllSoalReturnResponseWithMessageAndData(){
+        List<Soal> soalList = new ArrayList<>();
         soalList.add(mockSoal);
 
         // Sort Specification
@@ -90,27 +111,22 @@ class SoalServiceTest {
     }
 
     @Test
-    void soalServiceGetSoalByIdReturnResponseWithMessageAndData(){
-        LocalDate currentDate = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        Tingkat tingkat = new Tingkat();
-        tingkat.setId(UUID.randomUUID());
-        tingkat.setTingkat("X");
+    void soalServiceCreateSoalReturnResponseWithMessageAndData(){
+        when(tingkatRepository.findTingkatByTingkat("X")).thenReturn(mockTingkat);
+        when(soalRepository.save(Mockito.any(Soal.class))).thenReturn(mockSoal);
 
+        ResponseWithMessageAndData<SoalDto> response = soalService.createSoal(mockSoalRequest);
+        System.out.println(response);
+        assertNotNull(response);
+    }
+
+    @Test
+    void soalServiceGetSoalByIdReturnResponseWithMessageAndData(){
         String stringId = "f823ba29-b657-4516-bc2e-e9ef45333a5e";
 
         UUID uuid = UUID.fromString(stringId);
 
-        ConvertUtils convertUtils = new ConvertUtils();
-        Soal mockSoal = new Soal();
         mockSoal.setId(uuid);
-        mockSoal.setNamaSoal("Soal Test");
-        mockSoal.setTingkat(tingkat);
-        mockSoal.setAcakSoal(AcakSoal.ACAK);
-        mockSoal.setButirSoal(100);
-        mockSoal.setWaktuMulaiSoal(convertUtils.convertStringToDatetimeOrTime(currentDate.format(formatter) + " 05:00:00"));
-        mockSoal.setDurasiSoal(convertUtils.convertStringToDatetimeOrTime("03:00:00"));
-        mockSoal.setWaktuSelesaiSoal(convertUtils.convertStringToDatetimeOrTime(currentDate.format(formatter) + " 04:00:00"));
 
         when(soalRepository.findById(uuid)).thenReturn(Optional.of(mockSoal));
 
@@ -121,69 +137,29 @@ class SoalServiceTest {
 
     @Test
     void soalServiceUpdateSoalReturnResponseWithMessageAndData(){
-        LocalDate currentDate = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        Tingkat tingkat = new Tingkat();
-        tingkat.setId(UUID.randomUUID());
-        tingkat.setTingkat("X");
-
         String stringId = "f823ba29-b657-4516-bc2e-e9ef45333a5e";
 
         UUID uuid = UUID.fromString(stringId);
 
-        ConvertUtils convertUtils = new ConvertUtils();
-        Soal mockSoal = new Soal();
         mockSoal.setId(uuid);
-        mockSoal.setNamaSoal("Soal Test");
-        mockSoal.setTingkat(tingkat);
-        mockSoal.setAcakSoal(AcakSoal.ACAK);
-        mockSoal.setButirSoal(100);
-        mockSoal.setWaktuMulaiSoal(convertUtils.convertStringToDatetimeOrTime(currentDate.format(formatter) + " 05:00:00"));
-        mockSoal.setDurasiSoal(convertUtils.convertStringToDatetimeOrTime("03:00:00"));
-        mockSoal.setWaktuSelesaiSoal(convertUtils.convertStringToDatetimeOrTime(currentDate.format(formatter) + " 04:00:00"));
-
-        SoalRequest soalRequest = new SoalRequest();
-        soalRequest.setNamaSoal("Soal Test Update");
-        soalRequest.setTingkatSoal("X");
-        soalRequest.setAcakSoal(AcakSoal.ACAK);
-        soalRequest.setButirSoal(100);
-        soalRequest.setDurasiSoal("01:00:00");
-        soalRequest.setTipeSoal(TipeSoal.PILIHAN_GANDA);
-        soalRequest.setWaktuMulaiSoal(currentDate.format(formatter) + " 01:00:00");
-        soalRequest.setWaktuSelesaiSoal(currentDate.format(formatter) + " 04:00:00");
 
         when(soalRepository.findById(uuid)).thenReturn(Optional.of(mockSoal));
-        lenient().when(tingkatRepository.findTingkatByTingkat(soalRequest.getTingkatSoal())).thenReturn(tingkat);
+        lenient().when(tingkatRepository.findTingkatByTingkat(mockSoalRequest.getTingkatSoal())).thenReturn(mockTingkat);
         lenient().when(jurusanRepository.findJurusanByJurusan(null)).thenReturn(null);
         when(soalRepository.save(Mockito.any(Soal.class))).thenReturn(mockSoal);
 
-        ResponseWithMessageAndData<SoalDto> response = soalService.updateSoal(stringId, soalRequest);
+        ResponseWithMessageAndData<SoalDto> response = soalService.updateSoal(stringId, mockSoalRequest);
 
         assertNotNull(response);
     }
 
     @Test
     void soalServiceDeleteSoalReturnResponseWithMessage(){
-        LocalDate currentDate = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        Tingkat tingkat = new Tingkat();
-        tingkat.setId(UUID.randomUUID());
-        tingkat.setTingkat("X");
-
         String stringId = "f823ba29-b657-4516-bc2e-e9ef45333a5e";
 
         UUID uuid = UUID.fromString(stringId);
 
-        ConvertUtils convertUtils = new ConvertUtils();
-        Soal mockSoal = new Soal();
         mockSoal.setId(uuid);
-        mockSoal.setNamaSoal("Soal Test");
-        mockSoal.setTingkat(tingkat);
-        mockSoal.setAcakSoal(AcakSoal.ACAK);
-        mockSoal.setButirSoal(100);
-        mockSoal.setWaktuMulaiSoal(convertUtils.convertStringToDatetimeOrTime(currentDate.format(formatter) + " 05:00:00"));
-        mockSoal.setDurasiSoal(convertUtils.convertStringToDatetimeOrTime("03:00:00"));
-        mockSoal.setWaktuSelesaiSoal(convertUtils.convertStringToDatetimeOrTime(currentDate.format(formatter) + " 04:00:00"));
 
         when(soalRepository.findById(uuid)).thenReturn(Optional.of(mockSoal));
 
