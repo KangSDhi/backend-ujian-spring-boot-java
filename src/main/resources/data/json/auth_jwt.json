@@ -1,5 +1,5 @@
 {
-    "jwt_admin": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJLYW5nIEFkbWluIiwiaWF0IjoxNzI2Mjc4MTk3LCJleHAiOjE3MjYzNjQ1OTd9.YNv2QBN_2XQ_E2TthRshCchb-yPnd6leLcHqzYvx_UQ",
-    "jwt_guru": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJLYW5nIEd1cnUiLCJpYXQiOjE3MjYyNzgxOTgsImV4cCI6MTcyNjM2NDU5OH0.Iw7X1zLxbJ2OP-Iyzk6woYV-kXwD6oL7CE9iT45xIwE",
-    "jwt_siswa": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTaWdpdCBCb3dvcmFoYXJqbyIsImlhdCI6MTcyNjI3ODE5OCwiZXhwIjoxNzI2MzY0NTk4fQ.MgAK5mS3X7_OcVn_1C4ssDD5lw5M18FlrYhf9mvb2BA"
+    "jwt_admin": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJLYW5nIEFkbWluIiwiaWF0IjoxNzI2Mjc4Nzk1LCJleHAiOjE3MjYzNjUxOTV9.2pVgbKjogFYdFSKhZF9cub6vhNYcqvWf94wxsYfVeh0",
+    "jwt_guru": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJLYW5nIEd1cnUiLCJpYXQiOjE3MjYyNzg3OTUsImV4cCI6MTcyNjM2NTE5NX0.PwvktfqEKCHfz5K1V973x9XtOad4WiaWXErWoRe2z_c",
+    "jwt_siswa": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTaWdpdCBCb3dvcmFoYXJqbyIsImlhdCI6MTcyNjI3ODc5NiwiZXhwIjoxNzI2MzY1MTk2fQ.HbvaeKuklPz3novM8_iwHGiSYoqiv7CaWnWnnX7483g"
 }
