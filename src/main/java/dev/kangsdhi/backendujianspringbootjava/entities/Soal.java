@@ -33,7 +33,7 @@ public class Soal {
     @OneToMany(mappedBy = "soal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BankSoal> bankSoalList;
 
-    @Column(name = "nama_soal", nullable = false, unique = true)
+    @Column(name = "nama_soal", nullable = false)
     private String namaSoal;
 
     @Column(name = "token_soal", nullable = false)

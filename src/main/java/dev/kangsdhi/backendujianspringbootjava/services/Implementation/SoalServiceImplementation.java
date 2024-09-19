@@ -53,7 +53,9 @@ public class SoalServiceImplementation implements SoalService {
 
     @Override
     public ResponseWithMessageAndData<List<SoalDto>> listAllSoal() {
-        List<Soal> soalList = soalRepository.findAll(Sort.by(Sort.Direction.ASC, "waktuMulaiSoal"));
+        List<Soal> soalList = soalRepository.findAll(Sort.by(Sort.Direction.DESC, "waktuMulaiSoal")
+                .and(Sort.by(Sort.Direction.ASC, "tingkat.tingkat"))
+                .and(Sort.by(Sort.Direction.ASC, "jurusan.jurusan")));
 
         List<SoalDto> soalDtoList = soalList.stream().map(this::convertSoalToDto).collect(Collectors.toList());
 
