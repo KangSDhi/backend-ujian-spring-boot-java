@@ -2,11 +2,13 @@ package dev.kangsdhi.backendujianspringbootjava.dto.request;
 
 import dev.kangsdhi.backendujianspringbootjava.enums.AcakSoal;
 import dev.kangsdhi.backendujianspringbootjava.enums.TipeSoal;
+import dev.kangsdhi.backendujianspringbootjava.validators.WaktuSoalValid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
+@WaktuSoalValid(message = "Waktu Mulai Soal Tidak Boleh Melebihi Waktu Selesai Soal!")
 @Data
 public class SoalRequest {
     @NotNull(message = "Nama Soal Kosong!")

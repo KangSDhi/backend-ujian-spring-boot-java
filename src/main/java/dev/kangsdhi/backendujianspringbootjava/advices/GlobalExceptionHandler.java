@@ -3,6 +3,7 @@ package dev.kangsdhi.backendujianspringbootjava.advices;
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseError;
 import jakarta.persistence.EntityNotFoundException;
 import org.apache.coyote.BadRequestException;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -18,6 +20,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,14 +55,27 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ResponseError<Map<String, String>>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         ResponseError<Map<String, String>> responseError = new ResponseError<>();
         responseError.setHttpCode(HttpStatus.BAD_REQUEST.value());
-        Map<String, String> errorMessage = new HashMap<>();
-        for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
-            errorMessage.put(fieldError.getField(), fieldError.getDefaultMessage());
-        }
+        Map<String, String> errorMessage = getMappingError(e);
         responseError.setErrors(errorMessage);
         logger.warn(e.getMessage());
         logger.warn(String.valueOf(responseError));
         return new ResponseEntity<>(responseError, HttpStatus.BAD_REQUEST);
+    }
+
+    @NotNull
+    private static Map<String, String> getMappingError(MethodArgumentNotValidException e) {
+        Map<String, String> errorMessage = new HashMap<>();
+
+        for (ObjectError objectError : e.getBindingResult().getGlobalErrors()) {
+            if (Objects.requireNonNull(objectError.getDefaultMessage()).contains("Waktu Mulai Soal")){
+                errorMessage.put("waktuMulaiSoal", objectError.getDefaultMessage());
+            }
+        }
+
+        for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
+            errorMessage.put(fieldError.getField(), fieldError.getDefaultMessage());
+        }
+        return errorMessage;
     }
 
     @ExceptionHandler(NoSuchElementException.class)

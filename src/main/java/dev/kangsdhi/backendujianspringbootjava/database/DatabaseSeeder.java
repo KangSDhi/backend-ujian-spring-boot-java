@@ -43,10 +43,10 @@ public class DatabaseSeeder {
         jurusanSeeder.seedJurusan();
         kelasSeeder.seedKelas();
         adminSeeder.seedAdmin();
-        guruSeeder.seedGuru();
-        siswaSeeder.seedSiswa();
-        soalSeeder.seedSoal();
-        bankSoalSeeder.seedBankSoal();
+//        guruSeeder.seedGuru();
+//        siswaSeeder.seedSiswa();
+//        soalSeeder.seedSoal();
+//        bankSoalSeeder.seedBankSoal();
 //        ujianSeeder.seedUjian();
     }
 }
