@@ -1,6 +1,8 @@
 package dev.kangsdhi.backendujianspringbootjava.services;
 
 import dev.kangsdhi.backendujianspringbootjava.dto.data.SoalDto;
+import dev.kangsdhi.backendujianspringbootjava.dto.request.SoalCreateRequest;
+import dev.kangsdhi.backendujianspringbootjava.dto.request.SoalEditRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.request.SoalRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessageAndData;
 import dev.kangsdhi.backendujianspringbootjava.entities.Soal;
@@ -12,6 +14,7 @@ import dev.kangsdhi.backendujianspringbootjava.repository.SoalRepository;
 import dev.kangsdhi.backendujianspringbootjava.repository.TingkatRepository;
 import dev.kangsdhi.backendujianspringbootjava.services.Implementation.SoalServiceImplementation;
 import dev.kangsdhi.backendujianspringbootjava.utils.ConvertUtils;
+import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,7 +53,9 @@ class SoalServiceTest {
 
     private Soal mockSoal;
 
-    private SoalRequest mockSoalRequest;
+    private SoalCreateRequest mockSoalCreateRequest;
+
+    private SoalEditRequest mockSoalEditRequest;
 
     private Tingkat mockTingkat;
 
@@ -75,15 +80,26 @@ class SoalServiceTest {
         mockSoal.setDurasiSoal(convertUtils.convertStringToDatetimeOrTime("03:00:00"));
         mockSoal.setWaktuSelesaiSoal(convertUtils.convertStringToDatetimeOrTime(currentDate.format(formatter) + " 04:00:00"));
 
-        mockSoalRequest = new SoalRequest();
-        mockSoalRequest.setNamaSoal("Soal Test Update");
-        mockSoalRequest.setTingkatSoal("X");
-        mockSoalRequest.setAcakSoal(AcakSoal.ACAK);
-        mockSoalRequest.setButirSoal(100);
-        mockSoalRequest.setDurasiSoal("01:00:00");
-        mockSoalRequest.setTipeSoal(TipeSoal.PILIHAN_GANDA);
-        mockSoalRequest.setWaktuMulaiSoal(currentDate.format(formatter) + " 01:00:00");
-        mockSoalRequest.setWaktuSelesaiSoal(currentDate.format(formatter) + " 04:00:00");
+        mockSoalCreateRequest = new SoalCreateRequest();
+        mockSoalCreateRequest.setNamaSoal("Soal Test Create");
+        mockSoalCreateRequest.setTingkatSoal("X");
+        mockSoalCreateRequest.setAcakSoal(AcakSoal.ACAK);
+        mockSoalCreateRequest.setButirSoal(100);
+        mockSoalCreateRequest.setDurasiSoal("01:00:00");
+        mockSoalCreateRequest.setTipeSoal(TipeSoal.PILIHAN_GANDA);
+        mockSoalCreateRequest.setWaktuMulaiSoal(currentDate.format(formatter) + " 01:00:00");
+        mockSoalCreateRequest.setWaktuSelesaiSoal(currentDate.format(formatter) + " 04:00:00");
+
+        mockSoalEditRequest = new SoalEditRequest();
+        mockSoalEditRequest.setIdSoal("f823ba29-b657-4516-bc2e-e9ef45333a5e");
+        mockSoalEditRequest.setNamaSoal("Soal Test Edit");
+        mockSoalEditRequest.setTingkatSoal("XI");
+        mockSoalEditRequest.setAcakSoal(AcakSoal.ACAK);
+        mockSoalEditRequest.setButirSoal(100);
+        mockSoalEditRequest.setDurasiSoal("02:00:00");
+        mockSoalEditRequest.setTipeSoal(TipeSoal.PILIHAN_GANDA);
+        mockSoalEditRequest.setWaktuMulaiSoal(currentDate.format(formatter) + " 02:00:00");
+        mockSoalEditRequest.setWaktuSelesaiSoal(currentDate.format(formatter) + " 04:00:00");
     }
 
     @Test
@@ -92,7 +108,9 @@ class SoalServiceTest {
         soalList.add(mockSoal);
 
         // Sort Specification
-        Sort sort = Sort.by(Sort.Direction.ASC, "waktuMulaiSoal");
+        Sort sort = Sort.by(Sort.Direction.DESC, "waktuMulaiSoal")
+                .and(Sort.by(Sort.Direction.ASC, "tingkat.tingkat"))
+                .and(Sort.by(Sort.Direction.ASC, "jurusan.jurusan"));
 
         // Mock the repository behavior
         when(soalRepository.findAll(sort)).thenReturn(soalList);
@@ -115,7 +133,7 @@ class SoalServiceTest {
         when(tingkatRepository.findTingkatByTingkat("X")).thenReturn(mockTingkat);
         when(soalRepository.save(Mockito.any(Soal.class))).thenReturn(mockSoal);
 
-        ResponseWithMessageAndData<SoalDto> response = soalService.createSoal(mockSoalRequest);
+        ResponseWithMessageAndData<SoalDto> response = soalService.createSoal(mockSoalCreateRequest);
         System.out.println(response);
         assertNotNull(response);
     }
@@ -144,11 +162,11 @@ class SoalServiceTest {
         mockSoal.setId(uuid);
 
         when(soalRepository.findById(uuid)).thenReturn(Optional.of(mockSoal));
-        lenient().when(tingkatRepository.findTingkatByTingkat(mockSoalRequest.getTingkatSoal())).thenReturn(mockTingkat);
+        lenient().when(tingkatRepository.findTingkatByTingkat(mockSoalEditRequest.getTingkatSoal())).thenReturn(mockTingkat);
         lenient().when(jurusanRepository.findJurusanByJurusan(null)).thenReturn(null);
         when(soalRepository.save(Mockito.any(Soal.class))).thenReturn(mockSoal);
 
-        ResponseWithMessageAndData<SoalDto> response = soalService.updateSoal(stringId, mockSoalRequest);
+        ResponseWithMessageAndData<SoalDto> response = soalService.updateSoal(mockSoalEditRequest);
 
         assertNotNull(response);
     }

@@ -18,7 +18,7 @@ public class WaktuSoalValidator implements ConstraintValidator<WaktuSoalValid, S
             return true;
         }
 
-        if (soalRequest.getWaktuMulaiSoal().contains("Nan") || soalRequest.getWaktuSelesaiSoal().contains("Nan")) {
+        if (soalRequest.getWaktuMulaiSoal().contains("NaN") || soalRequest.getWaktuSelesaiSoal().contains("NaN")) {
             return true;
         }
 

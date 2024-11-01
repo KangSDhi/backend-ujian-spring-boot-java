@@ -1,6 +1,8 @@
 package dev.kangsdhi.backendujianspringbootjava.services.Implementation;
 
 import dev.kangsdhi.backendujianspringbootjava.dto.data.SoalDto;
+import dev.kangsdhi.backendujianspringbootjava.dto.request.SoalCreateRequest;
+import dev.kangsdhi.backendujianspringbootjava.dto.request.SoalEditRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.request.SoalRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessage;
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessageAndData;
@@ -70,7 +72,7 @@ public class SoalServiceImplementation implements SoalService {
     public ResponseWithMessageAndData<SoalDto> soalById(String idSoal) {
 
         UUID idFromRequest = UUID.fromString(idSoal);
-        Soal soal = soalRepository.findById(idFromRequest).orElseThrow(() -> new EntityNotFoundException("Id Soal "+idSoal+" Tidak Ditemukan"));
+        Soal soal = soalRepository.findById(idFromRequest).orElseThrow(() -> new EntityNotFoundException("Id Soal " + idSoal + " Tidak Ditemukan"));
 
         SoalDto soalDtoFindById = convertSoalToDto(soal);
         ResponseWithMessageAndData<SoalDto> responseSoal = new ResponseWithMessageAndData<>();
@@ -81,16 +83,16 @@ public class SoalServiceImplementation implements SoalService {
     }
 
     @Override
-    public ResponseWithMessageAndData<SoalDto> createSoal(SoalRequest soalRequest) {
+    public ResponseWithMessageAndData<SoalDto> createSoal(SoalCreateRequest soalCreateRequest) {
 
-        Tingkat tingkat = Optional.ofNullable(tingkatRepository.findTingkatByTingkat(soalRequest.getTingkatSoal()))
+        Tingkat tingkat = Optional.ofNullable(tingkatRepository.findTingkatByTingkat(soalCreateRequest.getTingkatSoal()))
                 .orElseThrow(() -> new EntityNotFoundException("Tingkat tidak Ditemukan"));
 
-        Jurusan jurusan = Optional.ofNullable(soalRequest.getJurusanSoal())
+        Jurusan jurusan = Optional.ofNullable(soalCreateRequest.getJurusanSoal())
                 .map(jurusanRepository::findJurusanByJurusan)
                 .orElse(null);
 
-        Soal newSoal = prepareSoalEntity(new Soal(), soalRequest, tingkat, jurusan);
+        Soal newSoal = prepareSoalEntity(new Soal(), soalCreateRequest, tingkat, jurusan);
         Soal soalStore = soalRepository.save(newSoal);
 
         SoalDto soalDtoCreate = convertSoalToDto(soalStore);
@@ -103,18 +105,17 @@ public class SoalServiceImplementation implements SoalService {
     }
 
     @Override
-    public ResponseWithMessageAndData<SoalDto> updateSoal(String idSoal, SoalRequest soalRequest) {
-        Tingkat tingkat = Optional.ofNullable(tingkatRepository.findTingkatByTingkat(soalRequest.getTingkatSoal()))
+    public ResponseWithMessageAndData<SoalDto> updateSoal(SoalEditRequest soalEditRequest) {
+        Tingkat tingkat = Optional.ofNullable(tingkatRepository.findTingkatByTingkat(soalEditRequest.getTingkatSoal()))
                 .orElseThrow(() -> new EntityNotFoundException("Tingkat tidak Ditemukan"));
 
-        Jurusan jurusan = Optional.ofNullable(soalRequest.getJurusanSoal())
+        Jurusan jurusan = Optional.ofNullable(soalEditRequest.getJurusanSoal())
                 .map(jurusanRepository::findJurusanByJurusan)
                 .orElse(null);
 
-        UUID soalId = UUID.fromString(idSoal);
-        Soal findSoal = soalRepository.findById(soalId).orElseThrow(() -> new EntityNotFoundException("Soal "+soalId+" tidak Ditemukan!"));
-        Soal editSoal = prepareSoalEntity(findSoal, soalRequest, tingkat, jurusan);
-
+        UUID soalId = UUID.fromString(soalEditRequest.getIdSoal());
+        Soal findSoal = soalRepository.findById(soalId).orElseThrow(() -> new EntityNotFoundException("Soal " + soalId + " tidak Ditemukan!"));
+        Soal editSoal = prepareSoalEntity(findSoal, soalEditRequest, tingkat, jurusan);
         Soal soalUpdate = soalRepository.save(editSoal);
         SoalDto soalDtoUpdate = convertSoalToDto(soalUpdate);
 
@@ -123,12 +124,13 @@ public class SoalServiceImplementation implements SoalService {
         responseSoal.setMessage("Berhasil Memperbarui Soal");
         responseSoal.setData(soalDtoUpdate);
         return responseSoal;
+
     }
 
     @Override
     public ResponseWithMessage deleteSoal(String idSoal) {
         UUID soalId = UUID.fromString(idSoal);
-        Soal soal = soalRepository.findById(soalId).orElseThrow(() -> new EntityNotFoundException("Soal "+idSoal+" tidak Ditemukan!"));
+        Soal soal = soalRepository.findById(soalId).orElseThrow(() -> new EntityNotFoundException("Soal " + idSoal + " tidak Ditemukan!"));
         soalRepository.delete(soal);
 
         ResponseWithMessage responseWithMessage = new ResponseWithMessage();
@@ -150,7 +152,7 @@ public class SoalServiceImplementation implements SoalService {
         soal.setDurasiSoal(convertUtils.convertStringToDatetimeOrTime(soalRequest.getDurasiSoal()));
         soal.setWaktuMulaiSoal(convertUtils.convertStringToDatetimeOrTime(soalRequest.getWaktuMulaiSoal()));
         soal.setWaktuSelesaiSoal(convertUtils.convertStringToDatetimeOrTime(soalRequest.getWaktuSelesaiSoal()));
-        if (soal.getWaktuMulaiSoal().getTime() > soal.getWaktuSelesaiSoal().getTime()){
+        if (soal.getWaktuMulaiSoal().getTime() > soal.getWaktuSelesaiSoal().getTime()) {
             throw new IllegalArgumentException("Waktu mulai lebih besar daripada waktu selesai!");
         }
         return soal;

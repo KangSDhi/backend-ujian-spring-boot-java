@@ -23,4 +23,8 @@ public interface SoalRepository extends JpaRepository<Soal, UUID> {
     List<Soal> findSoalForSiswa(@Param("today") String today,
                                 @Param("tingkat") Tingkat tingkat,
                                 @Param("jurusan") Jurusan jurusan);
+
+    boolean existsByIdAndNamaSoal(UUID id, String namaSoal);
+
+    boolean existsByNamaSoal(String namaSoal);
 }

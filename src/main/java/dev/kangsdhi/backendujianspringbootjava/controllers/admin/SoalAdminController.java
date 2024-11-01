@@ -1,7 +1,8 @@
 package dev.kangsdhi.backendujianspringbootjava.controllers.admin;
 
 import dev.kangsdhi.backendujianspringbootjava.dto.data.SoalDto;
-import dev.kangsdhi.backendujianspringbootjava.dto.request.SoalRequest;
+import dev.kangsdhi.backendujianspringbootjava.dto.request.SoalCreateRequest;
+import dev.kangsdhi.backendujianspringbootjava.dto.request.SoalEditRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessage;
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessageAndData;
 import dev.kangsdhi.backendujianspringbootjava.services.SoalService;
@@ -36,15 +37,15 @@ public class SoalAdminController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseWithMessageAndData<SoalDto>> createSoal(@Valid @RequestBody SoalRequest soalRequest){
-        ResponseWithMessageAndData<SoalDto> response = soalService.createSoal(soalRequest);
+    public ResponseEntity<ResponseWithMessageAndData<SoalDto>> createSoal(@Valid @RequestBody SoalCreateRequest soalCreateRequest) {
+        ResponseWithMessageAndData<SoalDto> response = soalService.createSoal(soalCreateRequest);
         HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
         return new ResponseEntity<>(response, httpStatus);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ResponseWithMessageAndData<SoalDto>> updateSoal(@RequestParam String idSoal, @Valid @RequestBody SoalRequest soalRequest){
-        ResponseWithMessageAndData<SoalDto> response = soalService.updateSoal(idSoal, soalRequest);
+    public ResponseEntity<ResponseWithMessageAndData<SoalDto>> updateSoal(@Valid @RequestBody SoalEditRequest soalEditRequest) {
+        ResponseWithMessageAndData<SoalDto> response = soalService.updateSoal(soalEditRequest);
         HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
         return new ResponseEntity<>(response, httpStatus);
     }
