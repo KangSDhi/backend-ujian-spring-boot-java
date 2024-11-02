@@ -12,7 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/admin/soal")
@@ -28,8 +31,8 @@ public class SoalAdminController {
         return new ResponseEntity<>(response, httpStatus);
     }
 
-    @GetMapping("/findit")
-    public ResponseEntity<ResponseWithMessageAndData<SoalDto>> getSoalById(@RequestParam String idSoal) {
+    @GetMapping("/findbyid/{idSoal}")
+    public ResponseEntity<ResponseWithMessageAndData<SoalDto>> getSoalById(@PathVariable String idSoal) {
         ResponseWithMessageAndData<SoalDto> response = soalService.soalById(idSoal);
         System.out.println(response.getData());
         HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
