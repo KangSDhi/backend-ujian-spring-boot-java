@@ -16,9 +16,9 @@ public class NilaiUjianSiswaController {
 
     private final NilaiUjianService nilaiUjianService;
 
-    @GetMapping("/findit")
-    public ResponseEntity<ResponseWithMessageAndData<Object>> findItByNilaiId(@RequestParam String idNilaiUjian){
-        ResponseWithMessageAndData<Object> response = nilaiUjianService.findByIdNilaiUjian(idNilaiUjian);
+    @GetMapping("/findbyid/{idNilai}")
+    public ResponseEntity<ResponseWithMessageAndData<Object>> getNilaiById(@PathVariable String idNilai){
+        ResponseWithMessageAndData<Object> response = nilaiUjianService.findByIdNilaiUjian(idNilai);
         HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
         return new ResponseEntity<>(response, httpStatus);
     }
