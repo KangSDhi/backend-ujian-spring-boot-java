@@ -9,4 +9,6 @@ import java.util.UUID;
 @Repository
 public interface JurusanRepository extends JpaRepository<Jurusan, UUID> {
     Jurusan findJurusanByJurusan(String namaJurusan);
+    boolean existsByJurusan(String namaJurusan);
+    boolean existsByIdAndJurusan(UUID id, String namaJurusan);
 }

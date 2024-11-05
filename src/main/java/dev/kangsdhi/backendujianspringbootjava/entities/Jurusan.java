@@ -28,6 +28,6 @@ public class Jurusan extends BaseEntity {
         }
     }
 
-    @Column(name = "nama_jurusan", unique = true)
+    @Column(name = "nama_jurusan", unique = true, nullable = false)
     private String jurusan;
 }
