@@ -33,6 +33,14 @@ public class JurusanServiceImplementation implements JurusanService {
     }
 
     @Override
+    public ResponseWithMessageAndData<JurusanDto> findJurusanById(String idJurusan) {
+        UUID jurusanId = UUID.fromString(idJurusan);
+        Jurusan existingJurusan = jurusanRepository.findById(jurusanId)
+                .orElseThrow(() -> new EntityNotFoundException("Jurusan Tidak Ditemukan!"));
+        return createResponse(HttpStatus.OK.value(), "Berhasil Menemukan Jurusan!", mapToJurusanDto(existingJurusan));
+    }
+
+    @Override
     public ResponseWithMessageAndData<JurusanDto> storeJurusan(JurusanCreateRequest jurusanCreateRequest) {
         Jurusan jurusan = prepareJurusanEntity(new Jurusan(), jurusanCreateRequest.getNamaJurusan());
         Jurusan savedJurusan = jurusanRepository.save(jurusan);

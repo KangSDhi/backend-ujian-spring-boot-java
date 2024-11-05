@@ -5,7 +5,6 @@ import dev.kangsdhi.backendujianspringbootjava.dto.request.TingkatCreateRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.request.TingkatEditRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessage;
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessageAndData;
-import dev.kangsdhi.backendujianspringbootjava.entities.Tingkat;
 import dev.kangsdhi.backendujianspringbootjava.services.TingkatService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,14 +23,21 @@ public class TingkatAdminController {
 
     @GetMapping("")
     public ResponseEntity<ResponseWithMessageAndData<List<TingkatDto>>> getAllTingkat() {
-        ResponseWithMessageAndData<List<TingkatDto>> response = tingkatService.getAllTingkat();
+        ResponseWithMessageAndData<List<TingkatDto>> response = tingkatService.allTingkat();
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        return new ResponseEntity<>(response, httpStatus);
+    }
+
+    @GetMapping("/findbyid/{idTingkat}")
+    public ResponseEntity<ResponseWithMessageAndData<TingkatDto>> getTingkatById(@PathVariable String idTingkat) {
+        ResponseWithMessageAndData<TingkatDto> response = tingkatService.findTingkatById(idTingkat);
         HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
         return new ResponseEntity<>(response, httpStatus);
     }
 
     @PostMapping("/create")
     public ResponseEntity<ResponseWithMessageAndData<TingkatDto>> createTingkat(@Valid @RequestBody TingkatCreateRequest tingkatCreateRequest) {
-        ResponseWithMessageAndData<TingkatDto> response = tingkatService.createTingkat(tingkatCreateRequest);
+        ResponseWithMessageAndData<TingkatDto> response = tingkatService.storeTingkat(tingkatCreateRequest);
         HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
         return new ResponseEntity<>(response, httpStatus);
     }
@@ -45,7 +51,7 @@ public class TingkatAdminController {
 
     @DeleteMapping("/delete/{idTingkat}")
     public ResponseEntity<ResponseWithMessage> deleteTingkat(@PathVariable String idTingkat) {
-        ResponseWithMessage response = tingkatService.deleteTingkat(idTingkat);
+        ResponseWithMessage response = tingkatService.destroyTingkat(idTingkat);
         HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
         return new ResponseEntity<>(response, httpStatus);
     }

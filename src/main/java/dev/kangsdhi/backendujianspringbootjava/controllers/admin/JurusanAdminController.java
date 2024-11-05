@@ -28,6 +28,13 @@ public class JurusanAdminController {
         return new ResponseEntity<>(response, httpStatus);
     }
 
+    @GetMapping("/findbyid/{idJurusan}")
+    public ResponseEntity<ResponseWithMessageAndData<JurusanDto>> getJurusanById(@PathVariable String idJurusan) {
+        ResponseWithMessageAndData<JurusanDto> response = jurusanService.findJurusanById(idJurusan);
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        return new ResponseEntity<>(response, httpStatus);
+    }
+
     @PostMapping("/create")
     public ResponseEntity<ResponseWithMessageAndData<JurusanDto>> createJurusan(@Valid @RequestBody JurusanCreateRequest jurusanCreateRequest) {
         ResponseWithMessageAndData<JurusanDto> response = jurusanService.storeJurusan(jurusanCreateRequest);

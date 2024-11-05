@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface JurusanService {
     ResponseWithMessageAndData<List<JurusanDto>> allJurusan();
+    ResponseWithMessageAndData<JurusanDto> findJurusanById(String idJurusan);
     ResponseWithMessageAndData<JurusanDto> storeJurusan(JurusanCreateRequest jurusanCreateRequest);
     ResponseWithMessageAndData<JurusanDto> updateJurusan(JurusanEditRequest jurusanEditRequest);
     ResponseWithMessage destroyJurusan(String idJurusan);

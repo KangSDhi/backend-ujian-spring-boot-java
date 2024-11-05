@@ -25,79 +25,78 @@ public class TingkatServiceImplementation implements TingkatService {
     private TingkatRepository tingkatRepository;
 
     @Override
-    public ResponseWithMessageAndData<List<TingkatDto>> getAllTingkat() {
-        List<Tingkat> tingkatList = tingkatRepository.findAll();
-        List<TingkatDto> tingkatDtoList = tingkatList.stream().map(tingkat -> {
-            TingkatDto tingkatDto = new TingkatDto();
-            tingkatDto.setId(tingkat.getId().toString());
-            tingkatDto.setNamaTingkat(tingkat.getTingkat());
-            tingkatDto.setCreatedAt(tingkat.getCreatedAt());
-            tingkatDto.setUpdatedAt(tingkat.getUpdatedAt());
-            return tingkatDto;
-        }).toList();
-        ResponseWithMessageAndData<List<TingkatDto>> response = new ResponseWithMessageAndData<>();
-        response.setHttpCode(HttpStatus.OK.value());
-        response.setMessage("Berhasil Mengambil Data Tingkat");
-        response.setData(tingkatDtoList);
-        return response;
+    public ResponseWithMessageAndData<List<TingkatDto>> allTingkat() {
+        List<TingkatDto> tingkatDtoList = tingkatRepository.findAll().stream()
+                .map(this::mapToTingkatDto)
+                .collect(Collectors.toList());
+        return createResponse(HttpStatus.OK.value(), "Berhasil Mengambil Data Tingkat", tingkatDtoList);
     }
 
     @Override
-    public ResponseWithMessageAndData<TingkatDto> createTingkat(TingkatCreateRequest tingkatCreateRequest) {
+    public ResponseWithMessageAndData<TingkatDto> findTingkatById(String id) {
+        UUID tingkatId = UUID.fromString(id);
+        Tingkat existingTingkat = tingkatRepository.findById(tingkatId)
+                .orElseThrow(() -> new EntityNotFoundException("Tingkat Tidak Ditemukan!"));
+        return createResponse(HttpStatus.OK.value(), "Berhasil Menemukan Data!", mapToTingkatDto(existingTingkat));
+    }
 
+    @Override
+    public ResponseWithMessageAndData<TingkatDto> storeTingkat(TingkatCreateRequest tingkatCreateRequest) {
         Tingkat tingkat = prepareTingkatEntity(new Tingkat(), tingkatCreateRequest.getNamaTingkat());
         Tingkat tingkatStore = tingkatRepository.save(tingkat);
 
-        TingkatDto tingkatDto = new TingkatDto();
-        tingkatDto.setId(tingkatStore.getId().toString());
-        tingkatDto.setNamaTingkat(tingkatStore.getTingkat());
-        tingkatDto.setCreatedAt(tingkatStore.getCreatedAt());
-        tingkatDto.setUpdatedAt(tingkatStore.getUpdatedAt());
-
-        ResponseWithMessageAndData<TingkatDto> response = new ResponseWithMessageAndData<>();
-        response.setHttpCode(HttpStatus.CREATED.value());
-        response.setMessage("Berhasil Membuat Tingkat");
-        response.setData(tingkatDto);
-
-        return response;
+        return createResponse(HttpStatus.CREATED.value(), "Berhasil Membuat Tingkat", mapToTingkatDto(tingkatStore));
     }
 
     @Override
     public ResponseWithMessageAndData<TingkatDto> updateTingkat(TingkatEditRequest tingkatEditRequest) {
-
         UUID tingkatId = UUID.fromString(tingkatEditRequest.getIdTingkat());
-        Tingkat findTingkat = tingkatRepository.findById(tingkatId).orElseThrow(() -> new EntityNotFoundException("Tingkat id: " + tingkatId + " Tidak Ditemukan!"));
-        Tingkat editTingkat = prepareTingkatEntity(findTingkat, tingkatEditRequest.getNamaTingkat());
-        Tingkat tingkatUpdate = tingkatRepository.save(editTingkat);
+        Tingkat existingTingkat = tingkatRepository.findById(tingkatId)
+                .orElseThrow(() -> new EntityNotFoundException("Tingkat Tidak Ditemukan!"));
 
-        TingkatDto tingkatDto = new TingkatDto();
-        tingkatDto.setId(tingkatUpdate.getId().toString());
-        tingkatDto.setNamaTingkat(tingkatUpdate.getTingkat());
-        tingkatDto.setCreatedAt(tingkatUpdate.getCreatedAt());
-        tingkatDto.setUpdatedAt(tingkatUpdate.getUpdatedAt());
+        Tingkat updatedTingkat = prepareTingkatEntity(existingTingkat, tingkatEditRequest.getNamaTingkat());
+        Tingkat savedTingkat = tingkatRepository.save(updatedTingkat);
 
-        ResponseWithMessageAndData<TingkatDto> response = new ResponseWithMessageAndData<>();
-        response.setHttpCode(HttpStatus.CREATED.value());
-        response.setMessage("Berhasil Memperbarui Tingkat");
-        response.setData(tingkatDto);
-
-        return response;
+        return createResponse(HttpStatus.CREATED.value(), "Berhasil Memperbarui Tingkat", mapToTingkatDto(savedTingkat));
     }
 
     @Override
-    public ResponseWithMessage deleteTingkat(String idTingkat) {
+    public ResponseWithMessage destroyTingkat(String idTingkat) {
         UUID tingkatId = UUID.fromString(idTingkat);
         Tingkat tingkat = tingkatRepository.findById(tingkatId).orElseThrow(() -> new EntityNotFoundException("Tingkat Tidak Ditemukan!"));
-        tingkatRepository.delete(tingkat);
 
-        ResponseWithMessage response = new ResponseWithMessage();
-        response.setHttpCode(HttpStatus.OK.value());
-        response.setMessage("Berhasil Menghapus Tingkat");
-        return response;
+        tingkatRepository.delete(tingkat);
+        return createResponse(HttpStatus.OK.value(), "Berhasil Menghapus Tingkat");
+    }
+
+    private TingkatDto mapToTingkatDto(Tingkat tingkat){
+        TingkatDto tingkatDto = new TingkatDto();
+        tingkatDto.setId(tingkat.getId().toString());
+        tingkatDto.setNamaTingkat(tingkat.getTingkat());
+        tingkatDto.setCreatedAt(tingkat.getCreatedAt());
+        tingkatDto.setUpdatedAt(tingkat.getUpdatedAt());
+        return tingkatDto;
     }
 
     private Tingkat prepareTingkatEntity(Tingkat tingkat, String namaTingkat) {
         tingkat.setTingkat(namaTingkat);
         return tingkat;
     }
+
+    private <T> ResponseWithMessageAndData<T> createResponse(int httpCode, String message, T data) {
+        ResponseWithMessageAndData<T> response = new ResponseWithMessageAndData<>();
+        response.setHttpCode(httpCode);
+        response.setMessage(message);
+        response.setData(data);
+        return response;
+    }
+
+    private ResponseWithMessage createResponse(int httpCode, String message) {
+        ResponseWithMessage response = new ResponseWithMessage();
+        response.setHttpCode(httpCode);
+        response.setMessage(message);
+        return response;
+    }
+
+
 }
