@@ -46,7 +46,7 @@ public class DatabaseSeeder {
         guruSeeder.seedGuru();
         siswaSeeder.seedSiswa();
         soalSeeder.seedSoal();
-//        bankSoalSeeder.seedBankSoal();
+        bankSoalSeeder.seedBankSoal();
 //        ujianSeeder.seedUjian();
     }
 }

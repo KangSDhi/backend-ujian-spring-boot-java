@@ -9,4 +9,6 @@ import java.util.UUID;
 @Repository
 public interface TingkatRepository extends JpaRepository<Tingkat, UUID> {
     Tingkat findTingkatByTingkat(String tingkat);
+    boolean existsByTingkat(String tingkat);
+    boolean existsByIdAndTingkat(UUID id, String tingkat);
 }

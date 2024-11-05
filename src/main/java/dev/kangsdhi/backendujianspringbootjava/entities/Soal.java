@@ -4,6 +4,7 @@ import dev.kangsdhi.backendujianspringbootjava.enums.AcakSoal;
 import dev.kangsdhi.backendujianspringbootjava.enums.TipeSoal;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UuidGenerator;
@@ -16,7 +17,8 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "soal")
-public class Soal {
+@EqualsAndHashCode(callSuper = true)
+public class Soal extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

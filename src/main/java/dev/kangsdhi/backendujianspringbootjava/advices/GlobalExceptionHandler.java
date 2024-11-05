@@ -74,6 +74,10 @@ public class GlobalExceptionHandler {
             if (Objects.requireNonNull(objectError.getDefaultMessage()).contains("Nama Soal Sudah Terdaftar")){
                 errorMessage.put("namaSoal", objectError.getDefaultMessage());
             }
+
+            if (Objects.requireNonNull(objectError.getDefaultMessage()).contains("Nama Tingkat Sudah Terdaftar")){
+                errorMessage.put("namaTingkat", objectError.getDefaultMessage());
+            }
         }
 
         for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
