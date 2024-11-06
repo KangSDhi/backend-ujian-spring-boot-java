@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class KelasSeeder {
@@ -26,82 +27,42 @@ public class KelasSeeder {
 
     public void seedKelas() {
         int countDataKelas = kelasRepository.findAll().toArray().length;
-        if (countDataKelas == 0){
+        if (countDataKelas == 0) {
 
             List<Tingkat> tingkats = tingkatRepository.findAll();
+            List<Jurusan> jurusans = jurusanRepository.findAll();
 
-            String jurusan = "";
+            Map<String, String> jurusanMap = Map.of(
+                    "Teknik Konstruksi dan Properti", "TKP",
+                    "Desain Pemodelan dan Informasi Bangunan", "DPIB",
+                    "Kimia Industri", "KI",
+                    "Teknik Geomatika", "GMT",
+                    "Teknik Installasi Tenaga Listrik", "TITL",
+                    "Teknik Komputer dan Jaringan", "TKJ",
+                    "Teknik Mekatronika", "MEKA",
+                    "Teknik Kendaraan Ringan Otomotif", "TKRO",
+                    "Teknik Pengelasan", "TP",
+                    "Teknik Elektronika Industri", "TEI"
+            );
 
-            for (Tingkat itemTingkat : tingkats){
-                List<Jurusan> jurusans = jurusanRepository.findAll();
+            for (Tingkat itemTingkat : tingkats) {
+                for (Jurusan itemJurusan : jurusans) {
+                    String jurusan = jurusanMap.getOrDefault(itemJurusan.getJurusan(), "");
 
-                for (Jurusan itemJurusan : jurusans){
+                    int classCount = switch (jurusan) {
+                        case "TKRO" -> 3;
+                        case "KI", "MEKA", "TP" -> 1;
+                        default -> 2;
+                    };
 
-                    if (itemJurusan.getJurusan().equals("Teknik Konstruksi dan Properti")){
-                        jurusan = "TKP";
-                    }
-
-                    if (itemJurusan.getJurusan().equals("Desain Pemodelan dan Informasi Bangunan")){
-                        jurusan = "DPIB";
-                    }
-
-                    if (itemJurusan.getJurusan().equals("Kimia Industri")){
-                        jurusan = "KI";
-                    }
-
-                    if (itemJurusan.getJurusan().equals("Teknik Geomatika")){
-                        jurusan = "GMT";
-                    }
-
-                    if (itemJurusan.getJurusan().equals("Teknik Installasi Tenaga Listrik")){
-                        jurusan = "TITL";
-                    }
-
-                    if (itemJurusan.getJurusan().equals("Teknik Komputer dan Jaringan")){
-                        jurusan = "TKJ";
-                    }
-
-                    if (itemJurusan.getJurusan().equals("Teknik Mekatronika")) {
-                        jurusan = "MEKA";
-                    }
-
-                    if (itemJurusan.getJurusan().equals("Teknik Kendaraan Ringan Otomotif")) {
-                        jurusan = "TKRO";
-                    }
-
-                    if (itemJurusan.getJurusan().equals("Teknik Pengelasan")){
-                        jurusan = "TP";
-                    }
-
-                    if (itemJurusan.getJurusan().equals("Teknik Elektronika Industri")){
-                        jurusan = "TEI";
-                    }
-
-                    if (jurusan.equals("TKRO")){
-                        for (int i = 0; i < 3; i++) {
-                            Kelas kelasBaru = new Kelas();
-                            kelasBaru.setKelas(itemTingkat.getTingkat()+"-"+jurusan+"-"+String.valueOf(i+1));
-                            kelasBaru.setTingkat(itemTingkat);
-                            kelasBaru.setJurusan(itemJurusan);
-                            kelasRepository.save(kelasBaru);
-                            System.out.println("Membuat Data Kelas Baru : "+itemTingkat.getTingkat()+"-"+jurusan+"-"+String.valueOf(i+1)+" ✅");
-                        }
-                    }else if (jurusan.equals("KI") || jurusan.equals("MEKA") || jurusan.equals("TP")){
+                    for (int i = 0; i < classCount; i++) {
                         Kelas kelasBaru = new Kelas();
-                        kelasBaru.setKelas(itemTingkat.getTingkat()+"-"+jurusan);
+                        String classSuffix = classCount > 1 ? "-" + (i + 1) : "";
+                        kelasBaru.setKelas(itemTingkat.getTingkat() + "-" + jurusan + classSuffix);
                         kelasBaru.setTingkat(itemTingkat);
                         kelasBaru.setJurusan(itemJurusan);
                         kelasRepository.save(kelasBaru);
-                        System.out.println("Membuat Data Kelas Baru : "+itemTingkat.getTingkat()+"-"+jurusan+" ✅");
-                    } else {
-                        for (int i = 0; i < 2; i++) {
-                            Kelas kelasBaru = new Kelas();
-                            kelasBaru.setKelas(itemTingkat.getTingkat()+"-"+jurusan+"-"+String.valueOf(i+1));
-                            kelasBaru.setTingkat(itemTingkat);
-                            kelasBaru.setJurusan(itemJurusan);
-                            kelasRepository.save(kelasBaru);
-                            System.out.println("Membuat Data Kelas Baru : "+itemTingkat.getTingkat()+"-"+jurusan+"-"+String.valueOf(i+1)+" ✅");
-                        }
+                        System.out.println("Membuat Data Kelas Baru: " + itemTingkat.getTingkat() + "-" + jurusan + classSuffix + " ✅");
                     }
                 }
             }
