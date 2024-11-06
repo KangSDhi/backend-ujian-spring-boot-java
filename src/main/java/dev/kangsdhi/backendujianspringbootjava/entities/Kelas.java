@@ -28,6 +28,9 @@ public class Kelas extends BaseEntity {
         }
     }
 
+    @Column(name = "nama_kelas", nullable = false, unique = true)
+    private String kelas;
+
     @ManyToOne
     @JoinColumn(name = "tingkat_id", referencedColumnName = "id", nullable = false)
     private Tingkat tingkat;
