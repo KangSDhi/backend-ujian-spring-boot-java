@@ -16,4 +16,6 @@ public interface PenggunaRepository extends JpaRepository<Pengguna, UUID> {
     Optional<Pengguna> findByNamaPengguna(String namaPengguna);
     Optional<Pengguna> findByIdSiswa(String idSiswa);
     Optional<Pengguna> findByEmailPengguna(String emailPengguna);
+    boolean existsByIdSiswa(String idSiswa);
+    boolean existsByNamaPengguna(String namaPengguna);
 }

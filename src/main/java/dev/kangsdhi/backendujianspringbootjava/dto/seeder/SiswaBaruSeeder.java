@@ -9,6 +9,5 @@ public class SiswaBaruSeeder {
     private String idSiswa;
     private String namaSiswa;
     private String passwordSiswa;
-    private String tingkatSiswa;
-    private String jurusanSiswa;
+    private String kelasSiswa;
 }

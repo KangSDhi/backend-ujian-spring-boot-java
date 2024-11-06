@@ -85,7 +85,15 @@ public class GlobalExceptionHandler {
         }
 
         for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
-            errorMessage.put(fieldError.getField(), fieldError.getDefaultMessage());
+            if (fieldError.getField().contains("data.data") && fieldError.getField().contains("idSiswa")){
+                String fieldName = fieldError.getField().replaceAll("data\\.data\\[(\\d+)]\\.idSiswa", "data[$1].idSiswa");
+                errorMessage.put(fieldName, fieldError.getDefaultMessage());
+            } else if (fieldError.getField().contains("data.data") && fieldError.getField().contains("namaSiswa")){
+                String fieldName = fieldError.getField().replaceAll("data\\.data\\[(\\d+)]\\.namaSiswa", "data[$1].namaSiswa");
+                errorMessage.put(fieldName, fieldError.getDefaultMessage());
+            } else {
+                errorMessage.put(fieldError.getField(), fieldError.getDefaultMessage());
+            }
         }
         return errorMessage;
     }

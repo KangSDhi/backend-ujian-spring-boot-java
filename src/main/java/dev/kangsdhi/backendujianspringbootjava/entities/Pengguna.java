@@ -29,7 +29,7 @@ public class Pengguna extends BaseEntity implements UserDetails {
     @Column(name = "id_siswa", nullable = true, unique = true)
     private String idSiswa;
 
-    @Column(name = "nama_pengguna", nullable = false)
+    @Column(name = "nama_pengguna", nullable = false, unique = true)
     private String namaPengguna;
 
     @Column(name = "email_pengguna", nullable = true, unique = true)

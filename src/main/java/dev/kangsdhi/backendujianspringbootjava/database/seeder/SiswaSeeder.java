@@ -39,20 +39,16 @@ public class SiswaSeeder {
                             "X-TKJ-1-2343",
                             "Sigit Boworaharjo",
                             "qwerty",
-                            "X",
-                            "Teknik Komputer dan Jaringan"),
+                            "X-TKJ-2"),
                     new SiswaBaruSeeder(
                             "X-TSP-1-34333",
                             "Dhini Aprilia Budiarti",
                             "qwerty3",
-                            "XII",
-                            "Teknik Geomatika")
+                            "XII-GMT-2")
             ));
 
             for (SiswaBaruSeeder siswaBaruSeederItem : siswaBaruSeederList){
-                Tingkat tingkat = tingkatRepository.findTingkatByTingkat(siswaBaruSeederItem.getTingkatSiswa());
-                Jurusan jurusan = jurusanRepository.findJurusanByJurusan(siswaBaruSeederItem.getJurusanSiswa());
-                Kelas kelas = kelasRepository.findByTingkatAndJurusan(tingkat, jurusan);
+                Kelas kelas = kelasRepository.findByKelas(siswaBaruSeederItem.getKelasSiswa());
 
                 Pengguna siswaBaru = new Pengguna();
                 siswaBaru.setIdSiswa(siswaBaruSeederItem.getIdSiswa());
