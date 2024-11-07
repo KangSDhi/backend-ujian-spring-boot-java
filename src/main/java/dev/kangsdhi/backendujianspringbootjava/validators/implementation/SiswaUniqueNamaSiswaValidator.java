@@ -26,24 +26,29 @@ public class SiswaUniqueNamaSiswaValidator implements ConstraintValidator<SiswaU
         Set<String> uniqueSiswaNames = new HashSet<>();
         boolean hasDuplicates = false;
 
+        constraintValidatorContext.disableDefaultConstraintViolation();
+
         for (int i = 0; i < siswaRequestList.size(); i++) {
             String namaSiswa = siswaRequestList.get(i).getNamaSiswa();
-            if (!uniqueSiswaNames.add(namaSiswa) && namaSiswa != null) {
-                hasDuplicates = true;
-                constraintValidatorContext.disableDefaultConstraintViolation();
-                constraintValidatorContext.buildConstraintViolationWithTemplate("Duplikasi Nama Siswa "+namaSiswa+"!")
-                        .addPropertyNode("data["+i+"].namaSiswa")
-                        .addConstraintViolation();
-            }
 
-            if (penggunaRepository.existsByNamaPengguna(namaSiswa) && namaSiswa != null) {
-                hasDuplicates = true;
-                constraintValidatorContext.disableDefaultConstraintViolation();
-                constraintValidatorContext.buildConstraintViolationWithTemplate("Nama Siswa "+namaSiswa+" Sudah Terdaftar!")
+            if (namaSiswa != null) {
+
+                if (!uniqueSiswaNames.add(namaSiswa)) {
+                    hasDuplicates = true;
+                    constraintValidatorContext.buildConstraintViolationWithTemplate("Duplikasi Nama Siswa "+namaSiswa+"!")
                         .addPropertyNode("data["+i+"].namaSiswa")
                         .addConstraintViolation();
+                }
+
+                if (penggunaRepository.existsByNamaPengguna(namaSiswa)) {
+                    hasDuplicates = true;
+                    constraintValidatorContext.buildConstraintViolationWithTemplate("Nama Siswa "+namaSiswa+" Sudah Terdaftar!")
+                        .addPropertyNode("data["+i+"].namaSiswa")
+                        .addConstraintViolation();
+                }
             }
         }
+
         return !hasDuplicates;
     }
 }

@@ -26,23 +26,25 @@ public class SiswaUniqueIDSiswaValidator implements ConstraintValidator<SiswaUni
         Set<String> uniqueIdSiswa = new HashSet<>();
         boolean hasDuplicates = false;
 
+        constraintValidatorContext.disableDefaultConstraintViolation();
+
         for (int i = 0; i < siswaRequests.size(); i++) {
             String idSiswa = siswaRequests.get(i).getIdSiswa();
 
-            if (!uniqueIdSiswa.add(idSiswa) && idSiswa != null) {
-                hasDuplicates = true;
-                constraintValidatorContext.disableDefaultConstraintViolation();
-                constraintValidatorContext.buildConstraintViolationWithTemplate("Duplikasi ID Siswa "+idSiswa+"!")
-                        .addPropertyNode("data["+i+"].idSiswa")
-                        .addConstraintViolation();
-            }
+            if (idSiswa != null){
+                if (!uniqueIdSiswa.add(idSiswa)) {
+                    hasDuplicates = true;
+                    constraintValidatorContext.buildConstraintViolationWithTemplate("Duplikasi ID Siswa "+idSiswa+"!")
+                            .addPropertyNode("data["+i+"].idSiswa")
+                            .addConstraintViolation();
+                }
 
-            if (penggunaRepository.existsByIdSiswa(idSiswa) && idSiswa != null) {
-                hasDuplicates = true;
-                constraintValidatorContext.disableDefaultConstraintViolation();
-                constraintValidatorContext.buildConstraintViolationWithTemplate("ID Siswa "+idSiswa+" Sudah Terdaftar!")
-                        .addPropertyNode("data["+i+"].idSiswa")
-                        .addConstraintViolation();
+                if (penggunaRepository.existsByIdSiswa(idSiswa)) {
+                    hasDuplicates = true;
+                    constraintValidatorContext.buildConstraintViolationWithTemplate("ID Siswa "+idSiswa+" Sudah Terdaftar!")
+                            .addPropertyNode("data["+i+"].idSiswa")
+                            .addConstraintViolation();
+                }
             }
         }
 
