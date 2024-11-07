@@ -31,7 +31,7 @@ public class SiswaUniqueNamaSiswaValidator implements ConstraintValidator<SiswaU
             if (!uniqueSiswaNames.add(namaSiswa) && namaSiswa != null) {
                 hasDuplicates = true;
                 constraintValidatorContext.disableDefaultConstraintViolation();
-                constraintValidatorContext.buildConstraintViolationWithTemplate("Duplikat Nama Siswa Pada Index [" + i + "]")
+                constraintValidatorContext.buildConstraintViolationWithTemplate("Duplikasi Nama Siswa "+namaSiswa+"!")
                         .addPropertyNode("data["+i+"].namaSiswa")
                         .addConstraintViolation();
             }
@@ -39,7 +39,7 @@ public class SiswaUniqueNamaSiswaValidator implements ConstraintValidator<SiswaU
             if (penggunaRepository.existsByNamaPengguna(namaSiswa) && namaSiswa != null) {
                 hasDuplicates = true;
                 constraintValidatorContext.disableDefaultConstraintViolation();
-                constraintValidatorContext.buildConstraintViolationWithTemplate("Nama Siswa Sudah Terdaftar Pada Index [" + i + "]")
+                constraintValidatorContext.buildConstraintViolationWithTemplate("Nama Siswa "+namaSiswa+" Sudah Terdaftar!")
                         .addPropertyNode("data["+i+"].namaSiswa")
                         .addConstraintViolation();
             }

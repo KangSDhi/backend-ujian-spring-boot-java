@@ -1,6 +1,5 @@
 package dev.kangsdhi.backendujianspringbootjava.dto.request;
 
-import dev.kangsdhi.backendujianspringbootjava.validators.SiswaDuplicateID;
 import dev.kangsdhi.backendujianspringbootjava.validators.SiswaUniqueIDSiswa;
 import dev.kangsdhi.backendujianspringbootjava.validators.SiswaUniqueNamaSiswa;
 import jakarta.validation.Valid;
@@ -12,9 +11,8 @@ import java.util.List;
 public class SiswaCreateBatchRequest {
 
     @Valid
-    @SiswaDuplicateID(message = "Duplicated ID Siswa detected in the batch!")
-    @SiswaUniqueIDSiswa(message = "Duplicated Unique ID Siswa detected in the batch!")
-    @SiswaUniqueNamaSiswa(message = "Unique")
+    @SiswaUniqueIDSiswa(message = "ID Siswa Sudah Terdaftar!")
+    @SiswaUniqueNamaSiswa(message = "Nama Siswa Sudah Terdaftar!")
     List<SiswaRequest> data;
 
 }

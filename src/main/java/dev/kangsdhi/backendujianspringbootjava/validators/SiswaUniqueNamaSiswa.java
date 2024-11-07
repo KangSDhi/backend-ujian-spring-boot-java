@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = SiswaUniqueNamaSiswaValidator.class)
 public @interface SiswaUniqueNamaSiswa {
-    String message() default "Siswa Unique Nama Siswa";
+    String message() default "Nama Siswa Sudah Terdaftar";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

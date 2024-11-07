@@ -7,7 +7,9 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class SiswaUniqueIDSiswaValidator implements ConstraintValidator<SiswaUniqueIDSiswa, List<SiswaRequest>> {
 
@@ -21,19 +23,29 @@ public class SiswaUniqueIDSiswaValidator implements ConstraintValidator<SiswaUni
             return true;
         }
 
-        boolean hasNonUnique = false;
+        Set<String> uniqueIdSiswa = new HashSet<>();
+        boolean hasDuplicates = false;
 
         for (int i = 0; i < siswaRequests.size(); i++) {
             String idSiswa = siswaRequests.get(i).getIdSiswa();
-            if (penggunaRepository.existsByIdSiswa(idSiswa) && idSiswa != null) {
-                hasNonUnique = true;
+
+            if (!uniqueIdSiswa.add(idSiswa) && idSiswa != null) {
+                hasDuplicates = true;
                 constraintValidatorContext.disableDefaultConstraintViolation();
-                constraintValidatorContext.buildConstraintViolationWithTemplate("Duplicate Unique ID Siswa at index [" + i + "]")
+                constraintValidatorContext.buildConstraintViolationWithTemplate("Duplikasi ID Siswa "+idSiswa+"!")
+                        .addPropertyNode("data["+i+"].idSiswa")
+                        .addConstraintViolation();
+            }
+
+            if (penggunaRepository.existsByIdSiswa(idSiswa) && idSiswa != null) {
+                hasDuplicates = true;
+                constraintValidatorContext.disableDefaultConstraintViolation();
+                constraintValidatorContext.buildConstraintViolationWithTemplate("ID Siswa "+idSiswa+" Sudah Terdaftar!")
                         .addPropertyNode("data["+i+"].idSiswa")
                         .addConstraintViolation();
             }
         }
 
-        return !hasNonUnique;
+        return !hasDuplicates;
     }
 }
