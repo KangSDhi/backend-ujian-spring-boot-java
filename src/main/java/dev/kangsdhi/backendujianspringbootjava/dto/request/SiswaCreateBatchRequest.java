@@ -1,5 +1,6 @@
 package dev.kangsdhi.backendujianspringbootjava.dto.request;
 
+import dev.kangsdhi.backendujianspringbootjava.validators.SiswaRequestMax;
 import dev.kangsdhi.backendujianspringbootjava.validators.SiswaUniqueIDSiswa;
 import dev.kangsdhi.backendujianspringbootjava.validators.SiswaUniqueNamaSiswa;
 import jakarta.validation.Valid;
@@ -11,8 +12,9 @@ import java.util.List;
 public class SiswaCreateBatchRequest {
 
     @Valid
-    @SiswaUniqueIDSiswa(message = "ID Siswa Sudah Terdaftar!")
-    @SiswaUniqueNamaSiswa(message = "Nama Siswa Sudah Terdaftar!")
+    @SiswaUniqueIDSiswa()
+    @SiswaUniqueNamaSiswa()
+    @SiswaRequestMax()
     List<SiswaRequest> data;
 
 }
