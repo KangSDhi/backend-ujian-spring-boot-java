@@ -91,6 +91,9 @@ public class GlobalExceptionHandler {
             } else if (fieldError.getField().contains("data.data") && fieldError.getField().contains("namaSiswa")){
                 String fieldName = fieldError.getField().replaceAll("data\\.data\\[(\\d+)]\\.namaSiswa", "data[$1].namaSiswa");
                 errorMessage.put(fieldName, fieldError.getDefaultMessage());
+            } else if (fieldError.getField().contains("data.data") && fieldError.getField().contains("namaKelas")) {
+                String fieldName = fieldError.getField().replaceAll("data\\.data\\[(\\d+)]\\.namaKelas", "data[$1].namaKelas");
+                errorMessage.put(fieldName, fieldError.getDefaultMessage());
             } else {
                 errorMessage.put(fieldError.getField(), fieldError.getDefaultMessage());
             }

@@ -12,4 +12,5 @@ import java.util.UUID;
 public interface KelasRepository extends JpaRepository<Kelas, UUID> {
     Kelas findByTingkatAndJurusan(Tingkat tingkat, Jurusan jurusan);
     Kelas findByKelas(String kelas);
+    boolean existsByKelas(String kelas);
 }

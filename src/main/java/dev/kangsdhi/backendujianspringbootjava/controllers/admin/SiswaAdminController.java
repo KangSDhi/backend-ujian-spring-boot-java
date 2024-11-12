@@ -29,7 +29,6 @@ public class SiswaAdminController {
 
     @PostMapping("/create/batch")
     public ResponseEntity<ResponseWithMessageAndData<List<SiswaDto>>> createBatchSiswa(@Valid @RequestBody SiswaCreateBatchRequest siswaCreateBatchRequest){
-//        System.out.println(Arrays.toString(siswaCreateBatchRequest.getData().toArray()));
         ResponseWithMessageAndData<List<SiswaDto>> response = penggunaService.storeSiswaBatch(siswaCreateBatchRequest);
         HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
         return new ResponseEntity<>(response, httpStatus);

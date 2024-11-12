@@ -1,8 +1,6 @@
 package dev.kangsdhi.backendujianspringbootjava.dto.request;
 
-import dev.kangsdhi.backendujianspringbootjava.validators.SiswaRequestMax;
-import dev.kangsdhi.backendujianspringbootjava.validators.SiswaUniqueIDSiswa;
-import dev.kangsdhi.backendujianspringbootjava.validators.SiswaUniqueNamaSiswa;
+import dev.kangsdhi.backendujianspringbootjava.validators.*;
 import jakarta.validation.Valid;
 import lombok.Data;
 
@@ -14,7 +12,9 @@ public class SiswaCreateBatchRequest {
     @Valid
     @SiswaUniqueIDSiswa()
     @SiswaUniqueNamaSiswa()
+    @SiswaRequestMin(message = "Jumlah Item Tidak Boleh Kosong!")
     @SiswaRequestMax()
+    @SiswaRequestCheckKelas()
     List<SiswaRequest> data;
 
 }
