@@ -49,41 +49,9 @@ public class PenggunaServiceImplementation implements PenggunaService {
     @Override
     public ResponseWithMessageAndData<List<SiswaDto>> storeSiswaBatch(SiswaCreateBatchRequest siswaCreateBatchRequest) {
         List<Pengguna> siswaList = prepareListSiswaEntity(siswaCreateBatchRequest.getData());
-        int batchSize = 8;
-
-        ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-        System.out.println(Runtime.getRuntime().availableProcessors());
-
-        List<SiswaDto> siswaDtoList = new ArrayList<>();
-        List<Callable<List<SiswaDto>>> tasks = new ArrayList<>();
-        
-        for (int i = 0; i < siswaList.size(); i+= batchSize) {
-
-            List<Pengguna> batch = siswaList.subList(i, Math.min(i + batchSize, siswaList.size()));
-
-            tasks.add(() -> {
-                List<SiswaDto> batchResult = new ArrayList<>();
-                for (Pengguna pengguna : batch) {
-                    Pengguna savedPengguna = penggunaRepository.save(pengguna);
-                    batchResult.add(mapToSiswaDto(savedPengguna));
-                }
-                return batchResult;
-            });
-        }
-        
-        try {
-            List<Future<List<SiswaDto>>> futures = executorService.invokeAll(tasks);
-            for (Future<List<SiswaDto>> future : futures) {
-                siswaDtoList.addAll(future.get());
-            }
-        } catch (InterruptedException | ExecutionException e) {
-            Thread.currentThread().interrupt();
-            return createResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage(), null);
-        } finally {
-            executorService.shutdown();
-        }
-
-        return createResponse(HttpStatus.CREATED.value(), "Berhasil Menyimpan Data Batch", siswaDtoList);
+        List<Pengguna> siswaListSaved = penggunaRepository.saveAll(siswaList);
+        List<SiswaDto> siswaDtoList = siswaListSaved.stream().map(this::mapToSiswaDto).toList();
+        return createResponse(HttpStatus.CREATED.value(), "Berhasil Menyimpan Data", siswaDtoList);
     }
 
     @Override

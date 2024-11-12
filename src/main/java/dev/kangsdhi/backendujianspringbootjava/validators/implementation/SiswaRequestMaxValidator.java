@@ -16,7 +16,7 @@ public class SiswaRequestMaxValidator implements ConstraintValidator<SiswaReques
         }
 
         boolean hasMoreThanTheMaxValue = false;
-        int maxValue = 50;
+        int maxValue = 100;
 
         constraintValidatorContext.disableDefaultConstraintViolation();
 
