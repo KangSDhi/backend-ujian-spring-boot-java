@@ -5,17 +5,17 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class SiswaRequest {
+public class SiswaItemBatchRequest {
 
     @NotNull(message = "Nama Siswa Kosong!")
     @NotBlank(message = "Nama Siswa Kosong!")
-    private String namaSiswa;
+    private String nama_siswa;
 
     @NotNull(message = "ID Siswa Kosong!")
     @NotBlank(message = "ID Siswa Kosong!")
-    private String idSiswa;
+    private String id_siswa;
 
     @NotNull(message = "Kelas Siswa Kosong!")
     @NotBlank(message = "Kelas Siswa Kosong!")
-    private String kelasSiswa;
+    private String kelas;
 }

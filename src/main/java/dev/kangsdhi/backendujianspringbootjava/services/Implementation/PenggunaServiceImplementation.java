@@ -4,7 +4,7 @@ import dev.kangsdhi.backendujianspringbootjava.dto.data.SiswaDto;
 import dev.kangsdhi.backendujianspringbootjava.dto.request.CreatePenggunaAdminRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.request.SiswaCreateBatchRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.request.SiswaCreateRequest;
-import dev.kangsdhi.backendujianspringbootjava.dto.request.SiswaRequest;
+import dev.kangsdhi.backendujianspringbootjava.dto.request.SiswaItemBatchRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessageAndData;
 import dev.kangsdhi.backendujianspringbootjava.entities.Kelas;
 import dev.kangsdhi.backendujianspringbootjava.entities.Pengguna;
@@ -92,14 +92,14 @@ public class PenggunaServiceImplementation implements PenggunaService {
         return responseWithMessageAndData;
     }
 
-    private List<Pengguna> prepareListSiswaEntity(List<SiswaRequest> siswaRequestList) {
+    private List<Pengguna> prepareListSiswaEntity(List<SiswaItemBatchRequest> siswaItemBatchRequestList) {
         List<Pengguna> penggunaList = new ArrayList<>();
-        for (SiswaRequest siswaRequest : siswaRequestList) {
+        for (SiswaItemBatchRequest siswaItemBatchRequest : siswaItemBatchRequestList) {
             String password = generateUtils.generatedSixDigitRandomStringNumeric();
-            Kelas kelas = kelasRepository.findByKelas(siswaRequest.getKelasSiswa());
+            Kelas kelas = kelasRepository.findByKelas(siswaItemBatchRequest.getKelas());
             Pengguna pengguna = new Pengguna();
-            pengguna.setIdSiswa(siswaRequest.getIdSiswa());
-            pengguna.setNamaPengguna(siswaRequest.getNamaSiswa());
+            pengguna.setIdSiswa(siswaItemBatchRequest.getId_siswa());
+            pengguna.setNamaPengguna(siswaItemBatchRequest.getNama_siswa());
             pengguna.setPasswordPengguna(passwordEncoder.encode(password));
             pengguna.setPasswordPlain(password);
             pengguna.setRolePengguna(RolePengguna.SISWA);

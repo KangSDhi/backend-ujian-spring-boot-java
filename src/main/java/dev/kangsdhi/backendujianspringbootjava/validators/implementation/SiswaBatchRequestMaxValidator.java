@@ -1,17 +1,17 @@
 package dev.kangsdhi.backendujianspringbootjava.validators.implementation;
 
-import dev.kangsdhi.backendujianspringbootjava.dto.request.SiswaRequest;
-import dev.kangsdhi.backendujianspringbootjava.validators.SiswaRequestMax;
+import dev.kangsdhi.backendujianspringbootjava.dto.request.SiswaItemBatchRequest;
+import dev.kangsdhi.backendujianspringbootjava.validators.SiswaBatchRequestMax;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 import java.util.List;
 
-public class SiswaRequestMaxValidator implements ConstraintValidator<SiswaRequestMax, List<SiswaRequest>> {
+public class SiswaBatchRequestMaxValidator implements ConstraintValidator<SiswaBatchRequestMax, List<SiswaItemBatchRequest>> {
 
     @Override
-    public boolean isValid(List<SiswaRequest> siswaRequestList, ConstraintValidatorContext constraintValidatorContext) {
-        if (siswaRequestList == null || siswaRequestList.isEmpty()) {
+    public boolean isValid(List<SiswaItemBatchRequest> siswaItemBatchRequestList, ConstraintValidatorContext constraintValidatorContext) {
+        if (siswaItemBatchRequestList == null || siswaItemBatchRequestList.isEmpty()) {
             return true;
         }
 
@@ -20,7 +20,7 @@ public class SiswaRequestMaxValidator implements ConstraintValidator<SiswaReques
 
         constraintValidatorContext.disableDefaultConstraintViolation();
 
-        if (siswaRequestList.size() > maxValue) {
+        if (siswaItemBatchRequestList.size() > maxValue) {
             hasMoreThanTheMaxValue = true;
             constraintValidatorContext.buildConstraintViolationWithTemplate("Jumlah Item Lebih Dari "+maxValue+" Item")
                     .addConstraintViolation();

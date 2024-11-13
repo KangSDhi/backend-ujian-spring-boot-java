@@ -89,14 +89,15 @@ public class GlobalExceptionHandler {
         }
 
         for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
-            if (fieldError.getField().contains("data.data") && fieldError.getField().contains("idSiswa")){
-                String fieldName = fieldError.getField().replaceAll("data\\.data\\[(\\d+)]\\.idSiswa", "data[$1].idSiswa");
+            System.out.println(fieldError.getField());
+            if (fieldError.getField().contains("data.data") && fieldError.getField().contains("id_siswa")){
+                String fieldName = fieldError.getField().replaceAll("data\\.data\\[(\\d+)]\\.id_siswa", "data[$1].id_siswa");
                 errorMessage.put(fieldName, fieldError.getDefaultMessage());
-            } else if (fieldError.getField().contains("data.data") && fieldError.getField().contains("namaSiswa")){
-                String fieldName = fieldError.getField().replaceAll("data\\.data\\[(\\d+)]\\.namaSiswa", "data[$1].namaSiswa");
+            } else if (fieldError.getField().contains("data.data") && fieldError.getField().contains("nama_siswa")){
+                String fieldName = fieldError.getField().replaceAll("data\\.data\\[(\\d+)]\\.nama_siswa", "data[$1].nama_siswa");
                 errorMessage.put(fieldName, fieldError.getDefaultMessage());
-            } else if (fieldError.getField().contains("data.data") && fieldError.getField().contains("namaKelas")) {
-                String fieldName = fieldError.getField().replaceAll("data\\.data\\[(\\d+)]\\.namaKelas", "data[$1].namaKelas");
+            } else if (fieldError.getField().contains("data.data") && fieldError.getField().contains("kelas")) {
+                String fieldName = fieldError.getField().replaceAll("data\\.data\\[(\\d+)]\\.kelas", "data[$1].kelas");
                 errorMessage.put(fieldName, fieldError.getDefaultMessage());
             } else {
                 errorMessage.put(fieldError.getField(), fieldError.getDefaultMessage());

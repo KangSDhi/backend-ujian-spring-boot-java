@@ -10,11 +10,11 @@ import java.util.List;
 public class SiswaCreateBatchRequest {
 
     @Valid
-    @SiswaUniqueIDSiswa()
-    @SiswaUniqueNamaSiswa()
-    @SiswaRequestMin(message = "Jumlah Item Tidak Boleh Kosong!")
-    @SiswaRequestMax()
-    @SiswaRequestCheckKelas()
-    List<SiswaRequest> data;
+    @SiswaBatchRequestUniqueIDSiswa()
+    @SiswaBatchRequestUniqueNamaSiswa()
+    @SiswaBatchRequestMin(message = "Jumlah Item Tidak Boleh Kosong!")
+    @SiswaBatchRequestMax()
+    @SiswaBatchRequestCheckKelas()
+    List<SiswaItemBatchRequest> data;
 
 }
