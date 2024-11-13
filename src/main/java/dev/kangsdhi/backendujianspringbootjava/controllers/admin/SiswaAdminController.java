@@ -2,6 +2,7 @@ package dev.kangsdhi.backendujianspringbootjava.controllers.admin;
 
 import dev.kangsdhi.backendujianspringbootjava.dto.data.SiswaDto;
 import dev.kangsdhi.backendujianspringbootjava.dto.request.SiswaCreateBatchRequest;
+import dev.kangsdhi.backendujianspringbootjava.dto.request.SiswaCreateRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessageAndData;
 import dev.kangsdhi.backendujianspringbootjava.services.PenggunaService;
 import jakarta.validation.Valid;
@@ -10,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -23,6 +23,13 @@ public class SiswaAdminController {
     @GetMapping("")
     public ResponseEntity<ResponseWithMessageAndData<List<SiswaDto>>> getAllSiswa(){
         ResponseWithMessageAndData<List<SiswaDto>> response = penggunaService.allSiswa();
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        return new ResponseEntity<>(response, httpStatus);
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<ResponseWithMessageAndData<SiswaDto>> createSiswa(@RequestBody @Valid SiswaCreateRequest siswaCreateRequest){
+        ResponseWithMessageAndData<SiswaDto> response = penggunaService.storeSiswa(siswaCreateRequest);
         HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
         return new ResponseEntity<>(response, httpStatus);
     }

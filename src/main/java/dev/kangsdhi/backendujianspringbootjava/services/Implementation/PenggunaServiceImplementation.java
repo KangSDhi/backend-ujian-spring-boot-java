@@ -3,6 +3,7 @@ package dev.kangsdhi.backendujianspringbootjava.services.Implementation;
 import dev.kangsdhi.backendujianspringbootjava.dto.data.SiswaDto;
 import dev.kangsdhi.backendujianspringbootjava.dto.request.CreatePenggunaAdminRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.request.SiswaCreateBatchRequest;
+import dev.kangsdhi.backendujianspringbootjava.dto.request.SiswaCreateRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.request.SiswaRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessageAndData;
 import dev.kangsdhi.backendujianspringbootjava.entities.Kelas;
@@ -20,8 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.concurrent.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -52,6 +51,14 @@ public class PenggunaServiceImplementation implements PenggunaService {
         List<Pengguna> siswaListSaved = penggunaRepository.saveAll(siswaList);
         List<SiswaDto> siswaDtoList = siswaListSaved.stream().map(this::mapToSiswaDto).toList();
         return createResponse(HttpStatus.CREATED.value(), "Berhasil Menyimpan Data", siswaDtoList);
+    }
+
+    @Override
+    public ResponseWithMessageAndData<SiswaDto> storeSiswa(SiswaCreateRequest siswaCreateRequest) {
+        Pengguna siswa = prepareCreateSiswaEntity(siswaCreateRequest);
+        Pengguna siswaSaved = penggunaRepository.save(siswa);
+        SiswaDto siswaDto = mapToSiswaDto(siswaSaved);
+        return createResponse(HttpStatus.CREATED.value(), "Berhasil Menyimpan Data", siswaDto);
     }
 
     @Override
@@ -100,6 +107,18 @@ public class PenggunaServiceImplementation implements PenggunaService {
             penggunaList.add(pengguna);
         }
         return penggunaList;
+    }
+
+    private Pengguna prepareCreateSiswaEntity(SiswaCreateRequest siswaCreateRequest) {
+        Kelas kelas = kelasRepository.findByKelas(siswaCreateRequest.getKelas());
+        Pengguna pengguna = new Pengguna();
+        pengguna.setNamaPengguna(siswaCreateRequest.getNama_siswa());
+        pengguna.setIdSiswa(siswaCreateRequest.getId_siswa());
+        pengguna.setPasswordPengguna(passwordEncoder.encode(siswaCreateRequest.getPassword()));
+        pengguna.setPasswordPlain(siswaCreateRequest.getPassword());
+        pengguna.setRolePengguna(RolePengguna.SISWA);
+        pengguna.setKelas(kelas);
+        return pengguna;
     }
 
 
