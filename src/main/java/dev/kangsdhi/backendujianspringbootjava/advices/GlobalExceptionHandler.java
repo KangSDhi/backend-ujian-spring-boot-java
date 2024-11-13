@@ -89,7 +89,6 @@ public class GlobalExceptionHandler {
         }
 
         for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
-            System.out.println(fieldError.getField());
             if (fieldError.getField().contains("data.data") && fieldError.getField().contains("id_siswa")){
                 String fieldName = fieldError.getField().replaceAll("data\\.data\\[(\\d+)]\\.id_siswa", "data[$1].id_siswa");
                 errorMessage.put(fieldName, fieldError.getDefaultMessage());

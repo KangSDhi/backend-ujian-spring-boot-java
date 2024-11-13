@@ -128,7 +128,7 @@ public class PenggunaServiceImplementation implements PenggunaService {
         siswaDto.setId(pengguna.getId().toString());
         siswaDto.setIdSiswa(pengguna.getIdSiswa());
         siswaDto.setNamaSiswa(pengguna.getNamaPengguna());
-        siswaDto.setPasswordSiswa(pengguna.getPasswordPlain());
+        siswaDto.setPasswordSiswa(pengguna.getPassword());
         siswaDto.setKelasSiswa(pengguna.getKelas().getKelas());
         siswaDto.setTingkatSiswa(pengguna.getKelas().getTingkat().getTingkat());
         siswaDto.setJurusanSiswa(pengguna.getKelas().getJurusan().getJurusan());
