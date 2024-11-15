@@ -4,10 +4,12 @@ import dev.kangsdhi.backendujianspringbootjava.dto.data.SiswaDto;
 import dev.kangsdhi.backendujianspringbootjava.dto.request.SiswaCreateBatchRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.request.SiswaCreateRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.request.SiswaEditRequest;
+import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessage;
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessageAndData;
 import dev.kangsdhi.backendujianspringbootjava.services.PenggunaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +47,20 @@ public class SiswaAdminController {
     @PutMapping("/update")
     public ResponseEntity<ResponseWithMessageAndData<SiswaDto>> updateSiswa(@RequestBody @Valid SiswaEditRequest siswaEditRequest){
         ResponseWithMessageAndData<SiswaDto> response = penggunaService.updateSiswa(siswaEditRequest);
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        return new ResponseEntity<>(response, httpStatus);
+    }
+
+    @GetMapping("/findbyid/{idSiswa}")
+    public ResponseEntity<ResponseWithMessageAndData<SiswaDto>> getSiswaById(@PathVariable String idSiswa) throws BadRequestException {
+        ResponseWithMessageAndData<SiswaDto> response = penggunaService.findSiswaById(idSiswa);
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        return new ResponseEntity<>(response, httpStatus);
+    }
+
+    @DeleteMapping("/delete/{idSiswa}")
+    public ResponseEntity<ResponseWithMessage> deleteSiswa(@PathVariable String idSiswa) throws BadRequestException {
+        ResponseWithMessage response = penggunaService.deleteSiswa(idSiswa);
         HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
         return new ResponseEntity<>(response, httpStatus);
     }

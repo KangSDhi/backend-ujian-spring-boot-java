@@ -2,6 +2,7 @@ package dev.kangsdhi.backendujianspringbootjava.services.Implementation;
 
 import dev.kangsdhi.backendujianspringbootjava.dto.data.SiswaDto;
 import dev.kangsdhi.backendujianspringbootjava.dto.request.*;
+import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessage;
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessageAndData;
 import dev.kangsdhi.backendujianspringbootjava.entities.Kelas;
 import dev.kangsdhi.backendujianspringbootjava.entities.Pengguna;
@@ -65,6 +66,29 @@ public class PenggunaServiceImplementation implements PenggunaService {
         Pengguna siswaUpdated = penggunaRepository.save(siswa);
         SiswaDto siswaDto = mapToSiswaDto(siswaUpdated);
         return createResponse(HttpStatus.CREATED.value(), "Berhasil Mengupdate Data", siswaDto);
+    }
+
+    @Override
+    public ResponseWithMessageAndData<SiswaDto> findSiswaById(String id) throws BadRequestException {
+        try {
+            UUID siswaId = UUID.fromString(id);
+            Pengguna siswa = penggunaRepository.findById(siswaId).orElseThrow(() -> new EntityNotFoundException("Siswa Tidak Ditemukan!"));
+            SiswaDto siswaDto = mapToSiswaDto(siswa);
+            return createResponse(HttpStatus.OK.value(), "Siswa Ditemukan!", siswaDto);
+        } catch (IllegalArgumentException e) {
+            throw new BadRequestException("Format ID Tidak Valid!");
+        }
+    }
+
+    @Override
+    public ResponseWithMessage deleteSiswa(String id) throws BadRequestException {
+        try {
+            UUID siswaId = UUID.fromString(id);
+            penggunaRepository.deleteById(siswaId);
+            return createResponse(HttpStatus.OK.value(), "Berhasil Menghapus Siswa!");
+        } catch (IllegalArgumentException e){
+            throw new BadRequestException("Format ID TIdak Valid!");
+        }
     }
 
     @Override
@@ -141,8 +165,6 @@ public class PenggunaServiceImplementation implements PenggunaService {
         return pengguna;
     }
 
-
-
     private SiswaDto mapToSiswaDto(Pengguna pengguna){
         SiswaDto siswaDto = new SiswaDto();
         siswaDto.setId(pengguna.getId().toString());
@@ -162,6 +184,13 @@ public class PenggunaServiceImplementation implements PenggunaService {
         response.setHttpCode(httpCode);
         response.setMessage(message);
         response.setData(data);
+        return response;
+    }
+
+    private ResponseWithMessage createResponse(int httpCode, String message) {
+        ResponseWithMessage response = new ResponseWithMessage();
+        response.setHttpCode(httpCode);
+        response.setMessage(message);
         return response;
     }
 }

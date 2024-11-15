@@ -5,6 +5,7 @@ import dev.kangsdhi.backendujianspringbootjava.dto.request.CreatePenggunaAdminRe
 import dev.kangsdhi.backendujianspringbootjava.dto.request.SiswaCreateBatchRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.request.SiswaCreateRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.request.SiswaEditRequest;
+import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessage;
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessageAndData;
 import org.apache.coyote.BadRequestException;
 
@@ -16,4 +17,6 @@ public interface PenggunaService {
     ResponseWithMessageAndData<List<SiswaDto>> storeSiswaBatch(SiswaCreateBatchRequest siswaCreateBatchRequest);
     ResponseWithMessageAndData<SiswaDto> storeSiswa(SiswaCreateRequest siswaCreateRequest);
     ResponseWithMessageAndData<SiswaDto> updateSiswa(SiswaEditRequest siswaEditRequest);
+    ResponseWithMessageAndData<SiswaDto> findSiswaById(String id) throws BadRequestException;
+    ResponseWithMessage deleteSiswa(String id) throws BadRequestException;
 }
