@@ -86,6 +86,14 @@ public class GlobalExceptionHandler {
             if (objectError.getDefaultMessage().contains("Konfirmasi Password Tidak Sama Dengan Password!")){
                 errorMessage.put("konfirmasi_password", objectError.getDefaultMessage());
             }
+
+            if (Objects.requireNonNull(objectError.getDefaultMessage()).contains("ID Siswa Sudah Terdaftar!")){
+                errorMessage.put("id_siswa", objectError.getDefaultMessage());
+            }
+
+            if (Objects.requireNonNull(objectError.getDefaultMessage()).contains("Nama Siswa Sudah Terdaftar!")){
+                errorMessage.put("nama_siswa", objectError.getDefaultMessage());
+            }
         }
 
         for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {

@@ -1,5 +1,6 @@
 package dev.kangsdhi.backendujianspringbootjava.dto.request;
 
+import dev.kangsdhi.backendujianspringbootjava.validators.CheckKelasExist;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -13,6 +14,7 @@ public class SiswaRequest {
 
     @NotBlank(message = "Kelas Kosong!")
     @NotNull(message = "Kelas Kosong!")
+    @CheckKelasExist(message = "Kelas Tidak Tersedia!")
     private String kelas;
 
     private String password;

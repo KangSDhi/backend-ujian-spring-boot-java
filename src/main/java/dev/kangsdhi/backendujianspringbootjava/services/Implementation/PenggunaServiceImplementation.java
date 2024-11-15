@@ -1,10 +1,7 @@
 package dev.kangsdhi.backendujianspringbootjava.services.Implementation;
 
 import dev.kangsdhi.backendujianspringbootjava.dto.data.SiswaDto;
-import dev.kangsdhi.backendujianspringbootjava.dto.request.CreatePenggunaAdminRequest;
-import dev.kangsdhi.backendujianspringbootjava.dto.request.SiswaCreateBatchRequest;
-import dev.kangsdhi.backendujianspringbootjava.dto.request.SiswaCreateRequest;
-import dev.kangsdhi.backendujianspringbootjava.dto.request.SiswaItemBatchRequest;
+import dev.kangsdhi.backendujianspringbootjava.dto.request.*;
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessageAndData;
 import dev.kangsdhi.backendujianspringbootjava.entities.Kelas;
 import dev.kangsdhi.backendujianspringbootjava.entities.Pengguna;
@@ -13,6 +10,7 @@ import dev.kangsdhi.backendujianspringbootjava.repository.KelasRepository;
 import dev.kangsdhi.backendujianspringbootjava.repository.PenggunaRepository;
 import dev.kangsdhi.backendujianspringbootjava.services.PenggunaService;
 import dev.kangsdhi.backendujianspringbootjava.utils.GenerateUtils;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +57,14 @@ public class PenggunaServiceImplementation implements PenggunaService {
         Pengguna siswaSaved = penggunaRepository.save(siswa);
         SiswaDto siswaDto = mapToSiswaDto(siswaSaved);
         return createResponse(HttpStatus.CREATED.value(), "Berhasil Menyimpan Data", siswaDto);
+    }
+
+    @Override
+    public ResponseWithMessageAndData<SiswaDto> updateSiswa(SiswaEditRequest siswaEditRequest) {
+        Pengguna siswa = prepareUpdateSiswaEntity(siswaEditRequest);
+        Pengguna siswaUpdated = penggunaRepository.save(siswa);
+        SiswaDto siswaDto = mapToSiswaDto(siswaUpdated);
+        return createResponse(HttpStatus.CREATED.value(), "Berhasil Mengupdate Data", siswaDto);
     }
 
     @Override
@@ -121,6 +127,20 @@ public class PenggunaServiceImplementation implements PenggunaService {
         return pengguna;
     }
 
+    private Pengguna prepareUpdateSiswaEntity(SiswaEditRequest siswaEditRequest) {
+        Kelas kelas = kelasRepository.findByKelas(siswaEditRequest.getKelas());
+        UUID siswaId = UUID.fromString(siswaEditRequest.getId());
+        Pengguna pengguna = penggunaRepository.findById(siswaId).orElseThrow(() -> new EntityNotFoundException("Pengguna Tidak Ditemukan!"));
+        pengguna.setNamaPengguna(siswaEditRequest.getNama_siswa());
+        pengguna.setIdSiswa(siswaEditRequest.getId_siswa());
+        pengguna.setKelas(kelas);
+        if (siswaEditRequest.getPassword() != null) {
+            pengguna.setPasswordPengguna(passwordEncoder.encode(siswaEditRequest.getPassword()));
+            pengguna.setPasswordPlain(siswaEditRequest.getPassword());
+        }
+        return pengguna;
+    }
+
 
 
     private SiswaDto mapToSiswaDto(Pengguna pengguna){
@@ -128,7 +148,7 @@ public class PenggunaServiceImplementation implements PenggunaService {
         siswaDto.setId(pengguna.getId().toString());
         siswaDto.setIdSiswa(pengguna.getIdSiswa());
         siswaDto.setNamaSiswa(pengguna.getNamaPengguna());
-        siswaDto.setPasswordSiswa(pengguna.getPassword());
+        siswaDto.setPasswordSiswa(pengguna.getPasswordPlain());
         siswaDto.setKelasSiswa(pengguna.getKelas().getKelas());
         siswaDto.setTingkatSiswa(pengguna.getKelas().getTingkat().getTingkat());
         siswaDto.setJurusanSiswa(pengguna.getKelas().getJurusan().getJurusan());
