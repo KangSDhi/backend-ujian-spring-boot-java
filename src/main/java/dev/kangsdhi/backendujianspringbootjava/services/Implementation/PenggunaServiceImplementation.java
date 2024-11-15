@@ -168,12 +168,12 @@ public class PenggunaServiceImplementation implements PenggunaService {
     private SiswaDto mapToSiswaDto(Pengguna pengguna){
         SiswaDto siswaDto = new SiswaDto();
         siswaDto.setId(pengguna.getId().toString());
-        siswaDto.setIdSiswa(pengguna.getIdSiswa());
-        siswaDto.setNamaSiswa(pengguna.getNamaPengguna());
-        siswaDto.setPasswordSiswa(pengguna.getPasswordPlain());
-        siswaDto.setKelasSiswa(pengguna.getKelas().getKelas());
-        siswaDto.setTingkatSiswa(pengguna.getKelas().getTingkat().getTingkat());
-        siswaDto.setJurusanSiswa(pengguna.getKelas().getJurusan().getJurusan());
+        siswaDto.setId_siswa(pengguna.getIdSiswa());
+        siswaDto.setNama_siswa(pengguna.getNamaPengguna());
+        siswaDto.setPassword(pengguna.getPasswordPlain());
+        siswaDto.setKelas(pengguna.getKelas().getKelas());
+        siswaDto.setTingkat(pengguna.getKelas().getTingkat().getTingkat());
+        siswaDto.setJurusan(pengguna.getKelas().getJurusan().getJurusan());
         siswaDto.setCreatedAt(pengguna.getCreatedAt());
         siswaDto.setUpdatedAt(pengguna.getUpdatedAt());
         return siswaDto;
