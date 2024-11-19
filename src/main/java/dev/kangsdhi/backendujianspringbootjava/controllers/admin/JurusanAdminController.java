@@ -52,7 +52,7 @@ public class JurusanAdminController {
     @DeleteMapping("/delete/{idJurusan}")
     public ResponseEntity<ResponseWithMessage> deleteJurusan(@PathVariable String idJurusan) {
         ResponseWithMessage response = jurusanService.destroyJurusan(idJurusan);
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 }

@@ -14,7 +14,7 @@ public class HealthController {
     @GetMapping("/ping")
     public ResponseEntity<ResponseWithMessage> ping() {
         ResponseWithMessage responsePing = new ResponseWithMessage();
-        responsePing.setHttpCode(HttpStatus.OK.value());
+        responsePing.setHttp_code(HttpStatus.OK.value());
         responsePing.setMessage("Pong From Health");
         return ResponseEntity.ok(responsePing);
     }

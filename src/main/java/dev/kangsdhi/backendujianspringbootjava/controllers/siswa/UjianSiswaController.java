@@ -44,21 +44,21 @@ public class UjianSiswaController {
     public ResponseEntity<ResponseWithMessage> checkInUjian(@RequestParam String idSoal){
         ResponseWithMessage response = ujianService.checkInUjian(idSoal);
         HttpStatus httpStatus = response.getMessage().equals("Ujian Ada!") ? HttpStatus.OK : HttpStatus.NOT_FOUND;
-        response.setHttpCode(httpStatus.value());
+        response.setHttp_code(httpStatus.value());
         return new ResponseEntity<>(response, httpStatus);
     }
 
     @GetMapping("/generate")
     public ResponseEntity<ResponseWithMessage> generateUjian(@RequestParam String idSoal){
         ResponseWithMessage response = ujianService.generateUjian(idSoal);
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 
     @PostMapping("/jawab")
     public ResponseEntity<ResponseWithMessage> jawabUjian(@Valid @RequestBody JawabanUjianRequest jawabanUjianRequest){
         ResponseWithMessage response = ujianService.jawabUjian(jawabanUjianRequest);
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 

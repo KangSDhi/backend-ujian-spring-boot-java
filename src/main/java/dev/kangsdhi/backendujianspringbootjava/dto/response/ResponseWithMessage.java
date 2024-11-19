@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class ResponseWithMessage {
-    private Integer httpCode;
+    private Integer http_code;
     private String message;
 }

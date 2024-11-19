@@ -26,7 +26,7 @@ public class SoalSiswaController {
     @GetMapping("/check/token")
     public ResponseEntity<ResponseWithMessage> checkTokenSoal(@RequestParam String token, @RequestParam String idSoal) {
         ResponseWithMessage responseWithMessage = soalService.checkTokenSoal(idSoal, token);
-        HttpStatus httpStatus = HttpStatus.valueOf(responseWithMessage.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(responseWithMessage.getHttp_code());
         return new ResponseEntity<>(responseWithMessage, httpStatus);
     }
 }

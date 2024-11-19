@@ -77,7 +77,7 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
     @Override
     public ResponseWithMessage signOut() {
         ResponseWithMessage signOutResponse = new ResponseWithMessage();
-        signOutResponse.setHttpCode(HttpStatus.OK.value());
+        signOutResponse.setHttp_code(HttpStatus.OK.value());
         signOutResponse.setMessage("Berhasil Logout");
         return signOutResponse;
     }

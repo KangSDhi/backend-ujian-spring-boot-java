@@ -52,7 +52,7 @@ public class TingkatAdminController {
     @DeleteMapping("/delete/{idTingkat}")
     public ResponseEntity<ResponseWithMessage> deleteTingkat(@PathVariable String idTingkat) {
         ResponseWithMessage response = tingkatService.destroyTingkat(idTingkat);
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 }

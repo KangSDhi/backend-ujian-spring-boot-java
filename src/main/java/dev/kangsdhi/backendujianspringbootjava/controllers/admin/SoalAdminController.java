@@ -56,7 +56,7 @@ public class SoalAdminController {
     @DeleteMapping("/delete")
     public ResponseEntity<ResponseWithMessage> deleteSoal(@RequestParam String idSoal){
         ResponseWithMessage response = soalService.deleteSoal(idSoal);
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 }

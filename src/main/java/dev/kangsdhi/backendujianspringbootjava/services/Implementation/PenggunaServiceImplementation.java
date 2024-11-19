@@ -189,7 +189,7 @@ public class PenggunaServiceImplementation implements PenggunaService {
 
     private ResponseWithMessage createResponse(int httpCode, String message) {
         ResponseWithMessage response = new ResponseWithMessage();
-        response.setHttpCode(httpCode);
+        response.setHttp_code(httpCode);
         response.setMessage(message);
         return response;
     }

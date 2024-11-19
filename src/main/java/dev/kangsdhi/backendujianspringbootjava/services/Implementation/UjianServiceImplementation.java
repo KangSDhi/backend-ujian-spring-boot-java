@@ -302,7 +302,7 @@ public class UjianServiceImplementation implements UjianService {
 
     private ResponseWithMessage createResponseWithMessage(HttpStatus httpStatus, String message) {
         ResponseWithMessage responseWithMessage = new ResponseWithMessage();
-        responseWithMessage.setHttpCode(httpStatus.value());
+        responseWithMessage.setHttp_code(httpStatus.value());
         responseWithMessage.setMessage(message);
         return responseWithMessage;
     }

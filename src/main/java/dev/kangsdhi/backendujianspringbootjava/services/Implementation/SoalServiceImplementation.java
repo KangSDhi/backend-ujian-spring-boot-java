@@ -38,14 +38,14 @@ public class SoalServiceImplementation implements SoalService {
         Soal soal = soalRepository.findById(uuid).orElse(null);
         ResponseWithMessage responseWithMessage = new ResponseWithMessage();
         if (soal == null) {
-            responseWithMessage.setHttpCode(HttpStatus.NOT_FOUND.value());
+            responseWithMessage.setHttp_code(HttpStatus.NOT_FOUND.value());
             responseWithMessage.setMessage("Soal Tidak Ditemukan");
         } else {
             if (!soal.getTokenSoal().equals(token)) {
-                responseWithMessage.setHttpCode(HttpStatus.BAD_REQUEST.value());
+                responseWithMessage.setHttp_code(HttpStatus.BAD_REQUEST.value());
                 responseWithMessage.setMessage("Token Salah!");
             } else {
-                responseWithMessage.setHttpCode(HttpStatus.OK.value());
+                responseWithMessage.setHttp_code(HttpStatus.OK.value());
                 responseWithMessage.setMessage("Token Benar!");
             }
         }
@@ -134,7 +134,7 @@ public class SoalServiceImplementation implements SoalService {
         soalRepository.delete(soal);
 
         ResponseWithMessage responseWithMessage = new ResponseWithMessage();
-        responseWithMessage.setHttpCode(HttpStatus.OK.value());
+        responseWithMessage.setHttp_code(HttpStatus.OK.value());
         responseWithMessage.setMessage("Berhasil Menghapus Soal");
         return responseWithMessage;
     }

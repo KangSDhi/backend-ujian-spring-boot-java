@@ -61,7 +61,7 @@ public class SiswaAdminController {
     @DeleteMapping("/delete/{idSiswa}")
     public ResponseEntity<ResponseWithMessage> deleteSiswa(@PathVariable String idSiswa) throws BadRequestException {
         ResponseWithMessage response = penggunaService.deleteSiswa(idSiswa);
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 }
