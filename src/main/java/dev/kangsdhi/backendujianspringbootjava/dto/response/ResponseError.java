@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class ResponseError<T> {
-    private Integer httpCode;
+    private Integer http_code;
     private T errors;
 }

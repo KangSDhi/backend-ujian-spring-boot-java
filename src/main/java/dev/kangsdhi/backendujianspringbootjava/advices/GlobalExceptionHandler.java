@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UsernameNotFoundException.class)
     protected ResponseEntity<ResponseError<String>> handleUsernameNotFoundException(UsernameNotFoundException e) {
         ResponseError<String> responseError = new ResponseError<>();
-        responseError.setHttpCode(HttpStatus.NOT_FOUND.value());
+        responseError.setHttp_code(HttpStatus.NOT_FOUND.value());
         responseError.setErrors(e.getMessage());
         logger.warn(e.getMessage());
         logger.warn(String.valueOf(responseError));
@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     protected ResponseEntity<ResponseError<String>> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
         ResponseError<String> responseError = new ResponseError<>();
-        responseError.setHttpCode(HttpStatus.BAD_REQUEST.value());
+        responseError.setHttp_code(HttpStatus.BAD_REQUEST.value());
         String errorMessage = e.getMessage();
         int colonIndex = errorMessage.indexOf(':');
         responseError.setErrors(errorMessage.substring(0, colonIndex));
@@ -54,7 +54,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<ResponseError<Map<String, String>>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         ResponseError<Map<String, String>> responseError = new ResponseError<>();
-        responseError.setHttpCode(HttpStatus.BAD_REQUEST.value());
+        responseError.setHttp_code(HttpStatus.BAD_REQUEST.value());
         Map<String, String> errorMessage = getMappingError(e);
         responseError.setErrors(errorMessage);
         logger.warn(e.getMessage());
@@ -116,7 +116,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoSuchElementException.class)
     protected ResponseEntity<ResponseError<String>> handleNoSuchElementException(NoSuchElementException e) {
         ResponseError<String> responseError = new ResponseError<>();
-        responseError.setHttpCode(HttpStatus.NOT_FOUND.value());
+        responseError.setHttp_code(HttpStatus.NOT_FOUND.value());
         responseError.setErrors(e.getMessage());
         return new ResponseEntity<>(responseError, HttpStatus.NOT_FOUND);
     }
@@ -124,7 +124,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
     protected ResponseEntity<ResponseError<String>> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException e) {
         ResponseError<String> responseError = new ResponseError<>();
-        responseError.setHttpCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        responseError.setHttp_code(HttpStatus.INTERNAL_SERVER_ERROR.value());
 
         String errorMessage = e.getMessage();
         String duplicateData = extractDuplicateData(errorMessage);
@@ -136,7 +136,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     protected ResponseEntity<ResponseError<String>> handleEntityNotFoundException(EntityNotFoundException e) {
         ResponseError<String> responseError = new ResponseError<>();
-        responseError.setHttpCode(HttpStatus.NOT_FOUND.value());
+        responseError.setHttp_code(HttpStatus.NOT_FOUND.value());
         responseError.setErrors(e.getMessage());
         return new ResponseEntity<>(responseError, HttpStatus.NOT_FOUND);
     }
@@ -144,7 +144,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadRequestException.class)
     protected ResponseEntity<ResponseError<String>> handleBadRequestException(BadRequestException e) {
         ResponseError<String> responseError = new ResponseError<>();
-        responseError.setHttpCode(HttpStatus.BAD_REQUEST.value());
+        responseError.setHttp_code(HttpStatus.BAD_REQUEST.value());
         responseError.setErrors(e.getMessage());
         return new ResponseEntity<>(responseError, HttpStatus.BAD_REQUEST);
     }

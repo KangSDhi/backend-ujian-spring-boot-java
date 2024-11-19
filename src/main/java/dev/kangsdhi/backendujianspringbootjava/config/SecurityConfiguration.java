@@ -56,7 +56,7 @@ public class SecurityConfiguration {
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .accessDeniedHandler((request, response, accessDeniedException) -> {
                             ResponseError<String> responseError = new ResponseError<>();
-                            responseError.setHttpCode(HttpStatus.FORBIDDEN.value());
+                            responseError.setHttp_code(HttpStatus.FORBIDDEN.value());
                             responseError.setErrors(accessDeniedException.getMessage());
                             ResponseEntity<ResponseError<String>> responseEntity = ResponseEntity.status(HttpStatus.FORBIDDEN)
                                     .body(responseError);
@@ -70,7 +70,7 @@ public class SecurityConfiguration {
                         })
                         .authenticationEntryPoint((request, response, authException) -> {
                             ResponseError<String> responseError = new ResponseError<>();
-                            responseError.setHttpCode(HttpStatus.UNAUTHORIZED.value());
+                            responseError.setHttp_code(HttpStatus.UNAUTHORIZED.value());
                             responseError.setErrors(authException.getMessage());
                             ResponseEntity<ResponseError<String>> responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                                     .body(responseError);
