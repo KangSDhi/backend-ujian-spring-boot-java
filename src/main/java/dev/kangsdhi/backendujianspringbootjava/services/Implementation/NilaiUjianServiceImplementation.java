@@ -125,7 +125,7 @@ public class NilaiUjianServiceImplementation implements NilaiUjianService {
 
     private ResponseWithMessageAndData<Object> createResponseWithMessageAndData(HttpStatus httpStatus, String message, Object data){
         ResponseWithMessageAndData<Object> responseWithMessageAndData = new ResponseWithMessageAndData<>();
-        responseWithMessageAndData.setHttpCode(httpStatus.value());
+        responseWithMessageAndData.setHttp_code(httpStatus.value());
         responseWithMessageAndData.setMessage(message);
         responseWithMessageAndData.setData(data);
         return responseWithMessageAndData;

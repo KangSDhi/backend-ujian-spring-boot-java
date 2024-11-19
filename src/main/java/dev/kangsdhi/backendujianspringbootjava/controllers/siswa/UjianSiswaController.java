@@ -29,14 +29,14 @@ public class UjianSiswaController {
     @PostMapping("/list")
     public ResponseEntity<ResponseWithMessageAndData<Object>> mataUjian(@Valid @RequestBody MataUjianRequest mataUjianRequest) {
         ResponseWithMessageAndData<Object> response = ujianService.listMataUjian(mataUjianRequest);
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 
     @GetMapping("")
     public ResponseEntity<ResponseWithMessageAndData<Object>> loadSoal(@RequestParam String idSoal){
         ResponseWithMessageAndData<Object> response = ujianService.loadDataJawabanSoal(idSoal);
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 
@@ -65,14 +65,14 @@ public class UjianSiswaController {
     @GetMapping("/gambarpertanyaan/url")
     public ResponseEntity<ResponseWithMessageAndData<Map<String, String>>> getURLGambarPertanyaan(@RequestParam String gambarPertanyaan) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         ResponseWithMessageAndData<Map<String, String>> response = minioService.getUrlGambarPertanyaan(gambarPertanyaan);
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 
     @GetMapping("/gambarjawaban/url")
     public ResponseEntity<ResponseWithMessageAndData<Map<String, String>>> getURLGambarJawaban(@RequestParam String gambarJawaban) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         ResponseWithMessageAndData<Map<String, String>> response = minioService.getUrlGambarJawaban(gambarJawaban);
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 }

@@ -19,7 +19,7 @@ public class SoalSiswaController {
     @GetMapping("/findbyid/{idSoal}")
     public ResponseEntity<ResponseWithMessageAndData<SoalDto>> getSoalById(@PathVariable String idSoal) {
         ResponseWithMessageAndData<SoalDto> soalResponse = soalService.soalById(idSoal);
-        HttpStatus httpStatus = HttpStatus.valueOf(soalResponse.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(soalResponse.getHttp_code());
         return new ResponseEntity<>(soalResponse, httpStatus);
     }
 

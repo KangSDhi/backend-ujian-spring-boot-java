@@ -27,7 +27,7 @@ public class SoalAdminController {
     @GetMapping("")
     public ResponseEntity<ResponseWithMessageAndData<List<SoalDto>>> getAllSoals() {
         ResponseWithMessageAndData<List<SoalDto>> response = soalService.listAllSoal();
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 
@@ -35,21 +35,21 @@ public class SoalAdminController {
     public ResponseEntity<ResponseWithMessageAndData<SoalDto>> getSoalById(@PathVariable String idSoal) {
         ResponseWithMessageAndData<SoalDto> response = soalService.soalById(idSoal);
         System.out.println(response.getData());
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 
     @PostMapping("/create")
     public ResponseEntity<ResponseWithMessageAndData<SoalDto>> createSoal(@Valid @RequestBody SoalCreateRequest soalCreateRequest) {
         ResponseWithMessageAndData<SoalDto> response = soalService.createSoal(soalCreateRequest);
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 
     @PutMapping("/update")
     public ResponseEntity<ResponseWithMessageAndData<SoalDto>> updateSoal(@Valid @RequestBody SoalEditRequest soalEditRequest) {
         ResponseWithMessageAndData<SoalDto> response = soalService.updateSoal(soalEditRequest);
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 

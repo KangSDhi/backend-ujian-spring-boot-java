@@ -34,7 +34,7 @@ public class AuthenticationController {
     @GetMapping("/check/user")
     public ResponseEntity<ResponseWithMessageAndData<Map<String, String>>> checkAuth() {
         ResponseWithMessageAndData<Map<String, String>> checkUserAuthResponse = new ResponseWithMessageAndData<>();
-        checkUserAuthResponse.setHttpCode(HttpStatus.OK.value());
+        checkUserAuthResponse.setHttp_code(HttpStatus.OK.value());
         checkUserAuthResponse.setMessage("Autentikasi Berhasil");
         HashMap<String, String> mapData = new HashMap<>();
         mapData.put("user", authenticationService.getCurrentUser().getUsername());

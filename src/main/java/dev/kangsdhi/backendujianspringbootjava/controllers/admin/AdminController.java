@@ -22,7 +22,7 @@ public class AdminController {
     @GetMapping("/ping")
     public ResponseEntity<ResponseWithMessageAndData<Map<String, String>>> ping() {
         ResponseWithMessageAndData<Map<String, String>> pingResponse = new ResponseWithMessageAndData<>();
-        pingResponse.setHttpCode(HttpStatus.OK.value());
+        pingResponse.setHttp_code(HttpStatus.OK.value());
         pingResponse.setMessage("Pong Admin!");
         HashMap<String, String> data = new HashMap<>();
         data.put("user", authenticationService.getCurrentUser().getUsername());

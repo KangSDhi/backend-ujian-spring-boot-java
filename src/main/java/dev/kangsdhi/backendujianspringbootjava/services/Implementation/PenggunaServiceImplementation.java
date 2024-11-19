@@ -116,7 +116,7 @@ public class PenggunaServiceImplementation implements PenggunaService {
         data.put("email_admin", storePengguna.getEmailPengguna());
         
         ResponseWithMessageAndData<Object> responseWithMessageAndData = new ResponseWithMessageAndData<>();
-        responseWithMessageAndData.setHttpCode(HttpStatus.CREATED.value());
+        responseWithMessageAndData.setHttp_code(HttpStatus.CREATED.value());
         responseWithMessageAndData.setMessage("Berhasil Membuat Admin");
         responseWithMessageAndData.setData(data);
         return responseWithMessageAndData;
@@ -181,7 +181,7 @@ public class PenggunaServiceImplementation implements PenggunaService {
 
     private <T> ResponseWithMessageAndData<T> createResponse(int httpCode, String message, T data){
         ResponseWithMessageAndData<T> response = new ResponseWithMessageAndData<>();
-        response.setHttpCode(httpCode);
+        response.setHttp_code(httpCode);
         response.setMessage(message);
         response.setData(data);
         return response;

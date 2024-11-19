@@ -62,7 +62,7 @@ public class SoalServiceImplementation implements SoalService {
         List<SoalDto> soalDtoList = soalList.stream().map(this::convertSoalToDto).collect(Collectors.toList());
 
         ResponseWithMessageAndData<List<SoalDto>> responseWithMessageAndData = new ResponseWithMessageAndData<>();
-        responseWithMessageAndData.setHttpCode(HttpStatus.OK.value());
+        responseWithMessageAndData.setHttp_code(HttpStatus.OK.value());
         responseWithMessageAndData.setMessage("Berhasil Mengambil Data Soal!");
         responseWithMessageAndData.setData(soalDtoList);
         return responseWithMessageAndData;
@@ -77,7 +77,7 @@ public class SoalServiceImplementation implements SoalService {
         SoalDto soalDtoFindById = convertSoalToDto(soal);
         ResponseWithMessageAndData<SoalDto> responseSoal = new ResponseWithMessageAndData<>();
         responseSoal.setMessage("Berhasil Mengambil Data Soal!");
-        responseSoal.setHttpCode(HttpStatus.OK.value());
+        responseSoal.setHttp_code(HttpStatus.OK.value());
         responseSoal.setData(soalDtoFindById);
         return responseSoal;
     }
@@ -97,7 +97,7 @@ public class SoalServiceImplementation implements SoalService {
 
         SoalDto soalDtoCreate = convertSoalToDto(soalStore);
         ResponseWithMessageAndData<SoalDto> responseSoal = new ResponseWithMessageAndData<>();
-        responseSoal.setHttpCode(HttpStatus.CREATED.value());
+        responseSoal.setHttp_code(HttpStatus.CREATED.value());
         responseSoal.setMessage("Berhasil Membuat Soal");
         responseSoal.setData(soalDtoCreate);
 
@@ -120,7 +120,7 @@ public class SoalServiceImplementation implements SoalService {
         SoalDto soalDtoUpdate = convertSoalToDto(soalUpdate);
 
         ResponseWithMessageAndData<SoalDto> responseSoal = new ResponseWithMessageAndData<>();
-        responseSoal.setHttpCode(HttpStatus.OK.value());
+        responseSoal.setHttp_code(HttpStatus.OK.value());
         responseSoal.setMessage("Berhasil Memperbarui Soal");
         responseSoal.setData(soalDtoUpdate);
         return responseSoal;

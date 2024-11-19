@@ -24,28 +24,28 @@ public class TingkatAdminController {
     @GetMapping("")
     public ResponseEntity<ResponseWithMessageAndData<List<TingkatDto>>> getAllTingkat() {
         ResponseWithMessageAndData<List<TingkatDto>> response = tingkatService.allTingkat();
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 
     @GetMapping("/findbyid/{idTingkat}")
     public ResponseEntity<ResponseWithMessageAndData<TingkatDto>> getTingkatById(@PathVariable String idTingkat) {
         ResponseWithMessageAndData<TingkatDto> response = tingkatService.findTingkatById(idTingkat);
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 
     @PostMapping("/create")
     public ResponseEntity<ResponseWithMessageAndData<TingkatDto>> createTingkat(@Valid @RequestBody TingkatCreateRequest tingkatCreateRequest) {
         ResponseWithMessageAndData<TingkatDto> response = tingkatService.storeTingkat(tingkatCreateRequest);
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 
     @PutMapping("/update")
     public ResponseEntity<ResponseWithMessageAndData<TingkatDto>> updateTingkat(@Valid @RequestBody TingkatEditRequest tingkatEditRequest) {
         ResponseWithMessageAndData<TingkatDto> response = tingkatService.updateTingkat(tingkatEditRequest);
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 

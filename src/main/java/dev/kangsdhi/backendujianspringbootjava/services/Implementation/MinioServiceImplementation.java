@@ -76,7 +76,7 @@ public class MinioServiceImplementation implements MinioService {
 
     private ResponseWithMessageAndData<Map<String, String>> buildResponse(HttpStatus httpStatus, String message, Map<String, String> data) {
         ResponseWithMessageAndData<Map<String, String>> responseWithMessageAndData = new ResponseWithMessageAndData<>();
-        responseWithMessageAndData.setHttpCode(httpStatus.value());
+        responseWithMessageAndData.setHttp_code(httpStatus.value());
         responseWithMessageAndData.setMessage(message);
         responseWithMessageAndData.setData(data);
         return responseWithMessageAndData;

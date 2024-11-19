@@ -35,7 +35,7 @@ public class MinioAdminController {
         }
 
         ResponseWithMessageAndData<Map<String, String>> response = minioService.uploadGambarPertanyaan(fileUploadRequest.getFile());
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 
@@ -47,7 +47,7 @@ public class MinioAdminController {
         }
 
         ResponseWithMessageAndData<Map<String, String>> response = minioService.uploadGambarJawaban(fileUploadRequest.getFile());
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 }

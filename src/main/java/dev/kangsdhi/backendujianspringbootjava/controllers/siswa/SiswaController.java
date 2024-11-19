@@ -22,7 +22,7 @@ public class SiswaController {
     @GetMapping("/ping")
     public ResponseEntity<ResponseWithMessageAndData<Map<String, String>>> ping() {
         ResponseWithMessageAndData<Map<String, String>> pingResponse = new ResponseWithMessageAndData<>();
-        pingResponse.setHttpCode(HttpStatus.OK.value());
+        pingResponse.setHttp_code(HttpStatus.OK.value());
         pingResponse.setMessage("Pong Siswa!");
         HashMap<String, String> mapData = new HashMap<>();
         mapData.put("user", authenticationService.getCurrentUser().getUsername());

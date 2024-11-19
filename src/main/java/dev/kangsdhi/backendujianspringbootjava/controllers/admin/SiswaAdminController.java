@@ -26,35 +26,35 @@ public class SiswaAdminController {
     @GetMapping("")
     public ResponseEntity<ResponseWithMessageAndData<List<SiswaDto>>> getAllSiswa(){
         ResponseWithMessageAndData<List<SiswaDto>> response = penggunaService.allSiswa();
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 
     @PostMapping("/create")
     public ResponseEntity<ResponseWithMessageAndData<SiswaDto>> createSiswa(@RequestBody @Valid SiswaCreateRequest siswaCreateRequest){
         ResponseWithMessageAndData<SiswaDto> response = penggunaService.storeSiswa(siswaCreateRequest);
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 
     @PostMapping("/create/batch")
     public ResponseEntity<ResponseWithMessageAndData<List<SiswaDto>>> createBatchSiswa(@Valid @RequestBody SiswaCreateBatchRequest siswaCreateBatchRequest){
         ResponseWithMessageAndData<List<SiswaDto>> response = penggunaService.storeSiswaBatch(siswaCreateBatchRequest);
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 
     @PutMapping("/update")
     public ResponseEntity<ResponseWithMessageAndData<SiswaDto>> updateSiswa(@RequestBody @Valid SiswaEditRequest siswaEditRequest){
         ResponseWithMessageAndData<SiswaDto> response = penggunaService.updateSiswa(siswaEditRequest);
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 
     @GetMapping("/findbyid/{idSiswa}")
     public ResponseEntity<ResponseWithMessageAndData<SiswaDto>> getSiswaById(@PathVariable String idSiswa) throws BadRequestException {
         ResponseWithMessageAndData<SiswaDto> response = penggunaService.findSiswaById(idSiswa);
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 

@@ -19,14 +19,14 @@ public class NilaiUjianSiswaController {
     @GetMapping("/findbyid/{idNilai}")
     public ResponseEntity<ResponseWithMessageAndData<Object>> getNilaiById(@PathVariable String idNilai){
         ResponseWithMessageAndData<Object> response = nilaiUjianService.findByIdNilaiUjian(idNilai);
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 
     @PostMapping("/generate")
     public ResponseEntity<ResponseWithMessageAndData<Object>> generateNilaiUjian(@Valid @RequestBody HasilUjianRequest hasilUjianRequest) {
         ResponseWithMessageAndData<Object> response = nilaiUjianService.generateHasilUjian(hasilUjianRequest);
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 }

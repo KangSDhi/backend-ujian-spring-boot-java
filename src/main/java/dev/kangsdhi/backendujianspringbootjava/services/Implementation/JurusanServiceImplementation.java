@@ -86,7 +86,7 @@ public class JurusanServiceImplementation implements JurusanService {
 
     private <T> ResponseWithMessageAndData<T> createResponse(int httpCode, String message, T data) {
         ResponseWithMessageAndData<T> response = new ResponseWithMessageAndData<>();
-        response.setHttpCode(httpCode);
+        response.setHttp_code(httpCode);
         response.setMessage(message);
         response.setData(data);
         return response;

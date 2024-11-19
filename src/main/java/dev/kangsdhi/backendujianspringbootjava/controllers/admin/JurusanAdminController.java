@@ -24,28 +24,28 @@ public class JurusanAdminController {
     @GetMapping("")
     public ResponseEntity<ResponseWithMessageAndData<List<JurusanDto>>> getAllJurusan() {
         ResponseWithMessageAndData<List<JurusanDto>> response = jurusanService.allJurusan();
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 
     @GetMapping("/findbyid/{idJurusan}")
     public ResponseEntity<ResponseWithMessageAndData<JurusanDto>> getJurusanById(@PathVariable String idJurusan) {
         ResponseWithMessageAndData<JurusanDto> response = jurusanService.findJurusanById(idJurusan);
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 
     @PostMapping("/create")
     public ResponseEntity<ResponseWithMessageAndData<JurusanDto>> createJurusan(@Valid @RequestBody JurusanCreateRequest jurusanCreateRequest) {
         ResponseWithMessageAndData<JurusanDto> response = jurusanService.storeJurusan(jurusanCreateRequest);
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 
     @PutMapping("/update")
     public ResponseEntity<ResponseWithMessageAndData<JurusanDto>> updateJurusan(@Valid @RequestBody JurusanEditRequest jurusanEditRequest) {
         ResponseWithMessageAndData<JurusanDto> response = jurusanService.updateJurusan(jurusanEditRequest);
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttpCode());
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }
 

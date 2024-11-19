@@ -58,7 +58,7 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
         String jwtToken = jwtService.generateToken(pengguna);
 
         ResponseWithMessageAndData<Map<String, String>> signInResponse = new ResponseWithMessageAndData<>();
-        signInResponse.setHttpCode(HttpStatus.OK.value());
+        signInResponse.setHttp_code(HttpStatus.OK.value());
         signInResponse.setMessage("Berhasil Login");
 
         Map<String, String> data = new HashMap<>();
