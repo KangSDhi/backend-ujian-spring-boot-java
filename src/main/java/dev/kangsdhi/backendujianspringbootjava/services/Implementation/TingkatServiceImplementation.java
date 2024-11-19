@@ -42,7 +42,7 @@ public class TingkatServiceImplementation implements TingkatService {
 
     @Override
     public ResponseWithMessageAndData<TingkatDto> storeTingkat(TingkatCreateRequest tingkatCreateRequest) {
-        Tingkat tingkat = prepareTingkatEntity(new Tingkat(), tingkatCreateRequest.getNamaTingkat());
+        Tingkat tingkat = prepareTingkatEntity(new Tingkat(), tingkatCreateRequest.getNama_tingkat());
         Tingkat tingkatStore = tingkatRepository.save(tingkat);
 
         return createResponse(HttpStatus.CREATED.value(), "Berhasil Membuat Tingkat", mapToTingkatDto(tingkatStore));
@@ -50,11 +50,11 @@ public class TingkatServiceImplementation implements TingkatService {
 
     @Override
     public ResponseWithMessageAndData<TingkatDto> updateTingkat(TingkatEditRequest tingkatEditRequest) {
-        UUID tingkatId = UUID.fromString(tingkatEditRequest.getIdTingkat());
+        UUID tingkatId = UUID.fromString(tingkatEditRequest.getId());
         Tingkat existingTingkat = tingkatRepository.findById(tingkatId)
                 .orElseThrow(() -> new EntityNotFoundException("Tingkat Tidak Ditemukan!"));
 
-        Tingkat updatedTingkat = prepareTingkatEntity(existingTingkat, tingkatEditRequest.getNamaTingkat());
+        Tingkat updatedTingkat = prepareTingkatEntity(existingTingkat, tingkatEditRequest.getNama_tingkat());
         Tingkat savedTingkat = tingkatRepository.save(updatedTingkat);
 
         return createResponse(HttpStatus.CREATED.value(), "Berhasil Memperbarui Tingkat", mapToTingkatDto(savedTingkat));
@@ -72,9 +72,9 @@ public class TingkatServiceImplementation implements TingkatService {
     private TingkatDto mapToTingkatDto(Tingkat tingkat){
         TingkatDto tingkatDto = new TingkatDto();
         tingkatDto.setId(tingkat.getId().toString());
-        tingkatDto.setNamaTingkat(tingkat.getTingkat());
-        tingkatDto.setCreatedAt(tingkat.getCreatedAt());
-        tingkatDto.setUpdatedAt(tingkat.getUpdatedAt());
+        tingkatDto.setNama_tingkat(tingkat.getTingkat());
+        tingkatDto.setCreated_at(tingkat.getCreatedAt());
+        tingkatDto.setUpdated_at(tingkat.getUpdatedAt());
         return tingkatDto;
     }
 

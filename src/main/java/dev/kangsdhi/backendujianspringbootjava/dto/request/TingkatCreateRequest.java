@@ -11,5 +11,5 @@ public class TingkatCreateRequest {
     @NotBlank(message = "Nama Tingkat Kosong!")
     @NotNull(message = "Nama Tingkat Kosong!")
     @NamaTingkatUnique(message = "Nama Tingkat Telah Terdaftar!")
-    private String namaTingkat;
+    private String nama_tingkat;
 }

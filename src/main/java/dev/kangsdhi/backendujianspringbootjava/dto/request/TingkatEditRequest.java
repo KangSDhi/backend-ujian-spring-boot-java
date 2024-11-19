@@ -11,9 +11,9 @@ public class TingkatEditRequest {
 
     @NotBlank(message = "ID Tingkat Kosong!")
     @NotNull(message = "ID Tingkat Kosong!")
-    private String idTingkat;
+    private String id;
 
     @NotBlank(message = "Nama Tingkat Kosong!")
     @NotNull(message = "Nama Tingkat Kosong!")
-    private String namaTingkat;
+    private String nama_tingkat;
 }

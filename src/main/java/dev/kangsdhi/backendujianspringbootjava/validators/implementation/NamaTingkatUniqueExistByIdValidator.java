@@ -17,16 +17,16 @@ public class NamaTingkatUniqueExistByIdValidator implements ConstraintValidator<
     @Override
     public boolean isValid(TingkatEditRequest tingkatEditRequest, ConstraintValidatorContext constraintValidatorContext) {
 
-        if (tingkatEditRequest.getIdTingkat() == null || tingkatEditRequest.getNamaTingkat() == null) {
+        if (tingkatEditRequest.getId() == null || tingkatEditRequest.getNama_tingkat() == null) {
             return true;
         }
 
-        UUID tingkatId = UUID.fromString(tingkatEditRequest.getIdTingkat());
+        UUID tingkatId = UUID.fromString(tingkatEditRequest.getId());
 
-        if (tingkatRepository.existsByIdAndTingkat(tingkatId, tingkatEditRequest.getNamaTingkat())) {
+        if (tingkatRepository.existsByIdAndTingkat(tingkatId, tingkatEditRequest.getNama_tingkat())) {
             return true;
         }
 
-        return !tingkatRepository.existsByTingkat(tingkatEditRequest.getNamaTingkat());
+        return !tingkatRepository.existsByTingkat(tingkatEditRequest.getNama_tingkat());
     }
 }
