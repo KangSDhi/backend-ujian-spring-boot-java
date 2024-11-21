@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 public class JawabanUjianRequest {
-    private String idSoal;
-    private String idBank;
+    private String id_soal;
+    private String id_bank;
     private String jawaban;
-    private StatusPertanyaan statusPertanyaan;
+    private StatusPertanyaan status_pertanyaan;
 }

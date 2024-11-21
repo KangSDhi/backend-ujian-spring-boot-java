@@ -85,10 +85,10 @@ public class SoalServiceImplementation implements SoalService {
     @Override
     public ResponseWithMessageAndData<SoalDto> createSoal(SoalCreateRequest soalCreateRequest) {
 
-        Tingkat tingkat = Optional.ofNullable(tingkatRepository.findTingkatByTingkat(soalCreateRequest.getTingkatSoal()))
+        Tingkat tingkat = Optional.ofNullable(tingkatRepository.findTingkatByTingkat(soalCreateRequest.getTingkat()))
                 .orElseThrow(() -> new EntityNotFoundException("Tingkat tidak Ditemukan"));
 
-        Jurusan jurusan = Optional.ofNullable(soalCreateRequest.getJurusanSoal())
+        Jurusan jurusan = Optional.ofNullable(soalCreateRequest.getJurusan())
                 .map(jurusanRepository::findJurusanByJurusan)
                 .orElse(null);
 
@@ -106,14 +106,14 @@ public class SoalServiceImplementation implements SoalService {
 
     @Override
     public ResponseWithMessageAndData<SoalDto> updateSoal(SoalEditRequest soalEditRequest) {
-        Tingkat tingkat = Optional.ofNullable(tingkatRepository.findTingkatByTingkat(soalEditRequest.getTingkatSoal()))
+        Tingkat tingkat = Optional.ofNullable(tingkatRepository.findTingkatByTingkat(soalEditRequest.getTingkat()))
                 .orElseThrow(() -> new EntityNotFoundException("Tingkat tidak Ditemukan"));
 
-        Jurusan jurusan = Optional.ofNullable(soalEditRequest.getJurusanSoal())
+        Jurusan jurusan = Optional.ofNullable(soalEditRequest.getJurusan())
                 .map(jurusanRepository::findJurusanByJurusan)
                 .orElse(null);
 
-        UUID soalId = UUID.fromString(soalEditRequest.getIdSoal());
+        UUID soalId = UUID.fromString(soalEditRequest.getId());
         Soal findSoal = soalRepository.findById(soalId).orElseThrow(() -> new EntityNotFoundException("Soal " + soalId + " tidak Ditemukan!"));
         Soal editSoal = prepareSoalEntity(findSoal, soalEditRequest, tingkat, jurusan);
         Soal soalUpdate = soalRepository.save(editSoal);
@@ -142,16 +142,16 @@ public class SoalServiceImplementation implements SoalService {
     private Soal prepareSoalEntity(Soal soal, SoalRequest soalRequest, Tingkat tingkat, Jurusan jurusan) {
         ConvertUtils convertUtils = new ConvertUtils();
         GenerateUtils generateUtils = new GenerateUtils();
-        soal.setNamaSoal(soalRequest.getNamaSoal());
+        soal.setNamaSoal(soalRequest.getNama_soal());
         soal.setTokenSoal(generateUtils.generatedSixDigitRandomStringNumeric());
         soal.setTingkat(tingkat);
         soal.setJurusan(jurusan);
-        soal.setAcakSoal(soalRequest.getAcakSoal());
-        soal.setTipeSoal(soalRequest.getTipeSoal());
-        soal.setButirSoal(soalRequest.getButirSoal());
-        soal.setDurasiSoal(convertUtils.convertStringToDatetimeOrTime(soalRequest.getDurasiSoal()));
-        soal.setWaktuMulaiSoal(convertUtils.convertStringToDatetimeOrTime(soalRequest.getWaktuMulaiSoal()));
-        soal.setWaktuSelesaiSoal(convertUtils.convertStringToDatetimeOrTime(soalRequest.getWaktuSelesaiSoal()));
+        soal.setAcakSoal(soalRequest.getAcak_soal());
+        soal.setTipeSoal(soalRequest.getTipe_soal());
+        soal.setButirSoal(soalRequest.getButir_soal());
+        soal.setDurasiSoal(convertUtils.convertStringToDatetimeOrTime(soalRequest.getDurasi_soal()));
+        soal.setWaktuMulaiSoal(convertUtils.convertStringToDatetimeOrTime(soalRequest.getWaktu_mulai_soal()));
+        soal.setWaktuSelesaiSoal(convertUtils.convertStringToDatetimeOrTime(soalRequest.getWaktu_selesai_soal()));
         if (soal.getWaktuMulaiSoal().getTime() > soal.getWaktuSelesaiSoal().getTime()) {
             throw new IllegalArgumentException("Waktu mulai lebih besar daripada waktu selesai!");
         }
@@ -162,16 +162,15 @@ public class SoalServiceImplementation implements SoalService {
         ConvertUtils convertUtils = new ConvertUtils();
         SoalDto soalDto = new SoalDto();
         soalDto.setId(soal.getId().toString());
-        soalDto.setNamaSoal(soal.getNamaSoal());
+        soalDto.setNama_soal(soal.getNamaSoal());
         soalDto.setTingkat(soal.getTingkat().getTingkat());
         soalDto.setJurusan(soal.getJurusan() != null ? soal.getJurusan().getJurusan() : null);
-        soalDto.setAcakSoal(soal.getAcakSoal());
-        soalDto.setTipeSoal(soal.getTipeSoal());
-        soalDto.setButirSoal(soal.getButirSoal());
-        soalDto.setDurasiSoal(convertUtils.convertDateToTimeStringFormat(soal.getDurasiSoal()));
-        soalDto.setWaktuMulaiSoal(convertUtils.convertDateToDatetimeStringFormat(soal.getWaktuMulaiSoal()));
-        soalDto.setWaktuSelesaiSoal(convertUtils.convertDateToDatetimeStringFormat(soal.getWaktuSelesaiSoal()));
+        soalDto.setAcak_soal(soal.getAcakSoal());
+        soalDto.setTipe_soal(soal.getTipeSoal());
+        soalDto.setButir_soal(soal.getButirSoal());
+        soalDto.setDurasi_soal(convertUtils.convertDateToTimeStringFormat(soal.getDurasiSoal()));
+        soalDto.setWaktu_mulai_soal(convertUtils.convertDateToDatetimeStringFormat(soal.getWaktuMulaiSoal()));
+        soalDto.setWaktu_selesai_soal(convertUtils.convertDateToDatetimeStringFormat(soal.getWaktuSelesaiSoal()));
         return soalDto;
     }
-
 }

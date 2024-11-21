@@ -8,14 +8,14 @@ import lombok.Data;
 public class CreatePenggunaAdminRequest {
     @NotNull(message = "Nama Admin Kosong!")
     @NotBlank(message = "Nama Admin Kosong!")
-    private String namaAdmin;
+    private String nama_admin;
     @NotNull(message = "Email Admin Kosong!")
     @NotBlank(message = "Email Admin Kosong!")
-    private String emailAdmin;
+    private String email;
     @NotNull(message = "Password Kosong!")
     @NotBlank(message = "Password Kosong!")
-    private String passwordAdmin;
+    private String password;
     @NotNull(message = "Password Konfirmasi Kosong!")
     @NotBlank(message = "Password Konfirmasi Kosong!")
-    private String konfimasiPasswordAdmin;
+    private String konfimasi_password;
 }

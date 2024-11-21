@@ -93,20 +93,20 @@ public class PenggunaServiceImplementation implements PenggunaService {
 
     @Override
     public ResponseWithMessageAndData<Object> createPenggunaRoleAdmin(CreatePenggunaAdminRequest createPenggunaAdminRequest) throws BadRequestException {
-        Pengguna checkEmailExist = penggunaRepository.findByEmailPengguna(createPenggunaAdminRequest.getEmailAdmin()).orElse(null);
+        Pengguna checkEmailExist = penggunaRepository.findByEmailPengguna(createPenggunaAdminRequest.getEmail()).orElse(null);
         if (checkEmailExist != null) {
             throw new BadRequestException("Email Sudah Terdaftar!");
         }
         
-        boolean checkPassword = createPenggunaAdminRequest.getKonfimasiPasswordAdmin().equals(createPenggunaAdminRequest.getPasswordAdmin());
+        boolean checkPassword = createPenggunaAdminRequest.getKonfimasi_password().equals(createPenggunaAdminRequest.getPassword());
         if (!checkPassword) {
             throw new BadRequestException("Password Konfirmasi Tidak Sama!");
         }
         
         Pengguna newPenggunaAdmin = new Pengguna();
-        newPenggunaAdmin.setNamaPengguna(createPenggunaAdminRequest.getNamaAdmin());
-        newPenggunaAdmin.setEmailPengguna(createPenggunaAdminRequest.getEmailAdmin());
-        newPenggunaAdmin.setPasswordPengguna(passwordEncoder.encode(createPenggunaAdminRequest.getPasswordAdmin()));
+        newPenggunaAdmin.setNamaPengguna(createPenggunaAdminRequest.getNama_admin());
+        newPenggunaAdmin.setEmailPengguna(createPenggunaAdminRequest.getEmail());
+        newPenggunaAdmin.setPasswordPengguna(passwordEncoder.encode(createPenggunaAdminRequest.getPassword()));
         newPenggunaAdmin.setRolePengguna(RolePengguna.ADMIN);
         Pengguna storePengguna = penggunaRepository.save(newPenggunaAdmin);
 
@@ -174,8 +174,8 @@ public class PenggunaServiceImplementation implements PenggunaService {
         siswaDto.setKelas(pengguna.getKelas().getKelas());
         siswaDto.setTingkat(pengguna.getKelas().getTingkat().getTingkat());
         siswaDto.setJurusan(pengguna.getKelas().getJurusan().getJurusan());
-        siswaDto.setCreatedAt(pengguna.getCreatedAt());
-        siswaDto.setUpdatedAt(pengguna.getUpdatedAt());
+        siswaDto.setCreated_at(pengguna.getCreatedAt());
+        siswaDto.setUpdated_at(pengguna.getUpdatedAt());
         return siswaDto;
     }
 

@@ -6,6 +6,6 @@ import java.util.UUID;
 
 @Data
 public class HasilUjianDto {
-    private UUID idNilaiUjian;
-    private Float nilaiUjian;
+    private UUID id;
+    private Float nilai_ujian;
 }

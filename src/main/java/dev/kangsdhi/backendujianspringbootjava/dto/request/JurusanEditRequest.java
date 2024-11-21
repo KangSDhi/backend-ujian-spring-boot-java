@@ -11,9 +11,9 @@ public class JurusanEditRequest {
 
     @NotBlank(message = "ID Jurusan Kosong!")
     @NotNull(message = "ID Jurusan Kosong!")
-    private String idJurusan;
+    private String id;
 
     @NotBlank(message = "Nama Jurusan Kosong!")
     @NotNull(message = "Nama Jurusan Kosong!")
-    private String namaJurusan;
+    private String nama_jurusan;
 }

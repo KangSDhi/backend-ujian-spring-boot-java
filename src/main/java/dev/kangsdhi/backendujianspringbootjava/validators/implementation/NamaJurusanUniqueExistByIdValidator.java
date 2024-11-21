@@ -17,16 +17,16 @@ public class NamaJurusanUniqueExistByIdValidator implements ConstraintValidator<
     @Override
     public boolean isValid(JurusanEditRequest jurusanEditRequest, ConstraintValidatorContext constraintValidatorContext) {
 
-        if (jurusanEditRequest.getIdJurusan() == null || jurusanEditRequest.getNamaJurusan() == null) {
+        if (jurusanEditRequest.getId() == null || jurusanEditRequest.getNama_jurusan() == null) {
             return true;
         }
 
-        UUID jurusanId = UUID.fromString(jurusanEditRequest.getIdJurusan());
+        UUID jurusanId = UUID.fromString(jurusanEditRequest.getId());
 
-        if (jurusanRepository.existsByIdAndJurusan(jurusanId, jurusanEditRequest.getNamaJurusan())) {
+        if (jurusanRepository.existsByIdAndJurusan(jurusanId, jurusanEditRequest.getNama_jurusan())) {
             return true;
         }
 
-        return !jurusanRepository.existsByJurusan(jurusanEditRequest.getNamaJurusan());
+        return !jurusanRepository.existsByJurusan(jurusanEditRequest.getNama_jurusan());
     }
 }

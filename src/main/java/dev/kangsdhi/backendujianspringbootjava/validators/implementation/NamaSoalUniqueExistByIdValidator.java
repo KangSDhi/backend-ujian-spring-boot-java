@@ -17,16 +17,16 @@ public class NamaSoalUniqueExistByIdValidator implements ConstraintValidator<Nam
     @Override
     public boolean isValid(SoalEditRequest soalEditRequest, ConstraintValidatorContext constraintValidatorContext) {
 
-        if (soalEditRequest.getIdSoal() == null || soalEditRequest.getNamaSoal() == null) {
+        if (soalEditRequest.getId() == null || soalEditRequest.getNama_soal() == null) {
             return true;
         }
 
-        UUID soalId = UUID.fromString(soalEditRequest.getIdSoal());
+        UUID soalId = UUID.fromString(soalEditRequest.getId());
 
-        if (soalRepository.existsByIdAndNamaSoal(soalId, soalEditRequest.getNamaSoal())) {
+        if (soalRepository.existsByIdAndNamaSoal(soalId, soalEditRequest.getNama_soal())) {
             return true;
         }
 
-        return !soalRepository.existsByNamaSoal(soalEditRequest.getNamaSoal());
+        return !soalRepository.existsByNamaSoal(soalEditRequest.getNama_soal());
     }
 }

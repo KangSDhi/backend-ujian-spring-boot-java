@@ -7,14 +7,14 @@ import java.util.UUID;
 
 @Data
 public class UjianMappingDto {
-    private UUID idBank;
+    private UUID id_bank;
     private String pertanyaan;
-    private String gambarPertanyaan;
-    private String pilihanA;
-    private String pilihanB;
-    private String pilihanC;
-    private String pilihanD;
-    private String pilihanE;
+    private String gambar_pertanyaan;
+    private String pilihan_a;
+    private String pilihan_b;
+    private String pilihan_c;
+    private String pilihan_d;
+    private String pilihan_e;
     private String jawaban;
-    private StatusPertanyaan statusPertanyaan;
+    private StatusPertanyaan status_pertanyaan;
 }

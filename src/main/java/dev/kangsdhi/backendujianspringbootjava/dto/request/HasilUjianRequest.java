@@ -9,5 +9,5 @@ public class HasilUjianRequest {
 
     @NotBlank(message = "Id Soal Kosong!")
     @NotNull(message = "Id Soal Kosong!")
-    private String idSoal;
+    private String id_soal;
 }

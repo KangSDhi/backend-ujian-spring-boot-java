@@ -65,9 +65,9 @@ public class UjianSeeder {
                 for (BankSoal bankSoalItem : listBankSoal) {
 
                     UjianMappingDto ujianMappingDto = new UjianMappingDto();
-                    ujianMappingDto.setIdBank(bankSoalItem.getId());
+                    ujianMappingDto.setId_bank(bankSoalItem.getId());
                     ujianMappingDto.setPertanyaan(bankSoalItem.getPertanyaanBankSoal());
-                    ujianMappingDto.setStatusPertanyaan(StatusPertanyaan.BELUM_DIJAWAB);
+                    ujianMappingDto.setStatus_pertanyaan(StatusPertanyaan.BELUM_DIJAWAB);
 
                     System.out.println(bankSoalItem.toString());
 
@@ -85,11 +85,11 @@ public class UjianSeeder {
 
                     System.out.println(Arrays.toString(listPilihan.toArray()));
 
-                    ujianMappingDto.setPilihanA(listPilihan.getFirst());
-                    ujianMappingDto.setPilihanB(listPilihan.get(1));
-                    ujianMappingDto.setPilihanC(listPilihan.get(2));
-                    ujianMappingDto.setPilihanD(listPilihan.get(3));
-                    ujianMappingDto.setPilihanE(listPilihan.get(4));
+                    ujianMappingDto.setPilihan_a(listPilihan.getFirst());
+                    ujianMappingDto.setPilihan_b(listPilihan.get(1));
+                    ujianMappingDto.setPilihan_c(listPilihan.get(2));
+                    ujianMappingDto.setPilihan_d(listPilihan.get(3));
+                    ujianMappingDto.setPilihan_e(listPilihan.get(4));
 
                     ujianMappingDtoList.add(ujianMappingDto);
                 }

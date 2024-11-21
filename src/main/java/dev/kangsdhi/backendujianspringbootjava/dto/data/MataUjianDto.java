@@ -6,11 +6,11 @@ import lombok.Data;
 
 @Data
 public class MataUjianDto {
-    private String idSoal;
-    private String namaSoal;
-    private Integer butirSoal;
-    private AcakSoal acakSoal;
-    private String waktuMulaiSoal;
-    private String waktuSelesaiSoal;
-    private StatusMataUjian statusMataUjian;
+    private String id;
+    private String nama_soal;
+    private Integer butir_soal;
+    private AcakSoal acak_soal;
+    private String waktu_mulai_soal;
+    private String waktu_selesai_soal;
+    private StatusMataUjian status_mata_ujian;
 }

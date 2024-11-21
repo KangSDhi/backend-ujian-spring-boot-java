@@ -9,7 +9,7 @@ public class SignInRequest {
 
     @NotBlank(message = "Email atau ID Siswa Kosong!")
     @NotNull(message = "Email atau ID Siswa Kosong!")
-    private String emailOrIdSiswa;
+    private String email_or_id_siswa;
 
     @NotBlank(message = "Password Kosong!")
     @NotNull(message = "Password Kosong!")

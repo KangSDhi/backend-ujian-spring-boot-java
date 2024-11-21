@@ -8,5 +8,5 @@ import lombok.Data;
 public class SoalIdRequest {
     @NotNull(message = "Soal Id Kosong!")
     @NotBlank(message = "Soal Id Kosong!")
-    private String soalId;
+    private String id;
 }

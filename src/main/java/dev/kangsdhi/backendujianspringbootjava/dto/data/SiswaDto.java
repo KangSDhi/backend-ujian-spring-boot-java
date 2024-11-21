@@ -13,6 +13,6 @@ public class SiswaDto {
     private String kelas;
     private String tingkat;
     private String jurusan;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private LocalDateTime created_at;
+    private LocalDateTime updated_at;
 }

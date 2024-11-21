@@ -37,8 +37,8 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
         Pengguna pengguna = new Pengguna();
         ValidateUtils validateUtils = new ValidateUtils();
 
-        if (validateUtils.validateEmailFormat(signInRequest.getEmailOrIdSiswa())){
-            pengguna = penggunaRepository.findByEmailPengguna(signInRequest.getEmailOrIdSiswa()).orElseThrow(() -> new UsernameNotFoundException("Pengguna Tidak Ditemukan!"));
+        if (validateUtils.validateEmailFormat(signInRequest.getEmail_or_id_siswa())){
+            pengguna = penggunaRepository.findByEmailPengguna(signInRequest.getEmail_or_id_siswa()).orElseThrow(() -> new UsernameNotFoundException("Pengguna Tidak Ditemukan!"));
             if (pengguna != null && passwordEncoder.matches(signInRequest.getPassword(), pengguna.getPassword())) {
                 // check this out
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(pengguna.getUsername(), signInRequest.getPassword()));
@@ -46,7 +46,7 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
                 throw new UsernameNotFoundException("Pengguna Tidak Ditemukan!");
             }
         } else {
-            pengguna = penggunaRepository.findByIdSiswa(signInRequest.getEmailOrIdSiswa()).orElseThrow(() -> new UsernameNotFoundException("Siswa Tidak Ditemukan!"));
+            pengguna = penggunaRepository.findByIdSiswa(signInRequest.getEmail_or_id_siswa()).orElseThrow(() -> new UsernameNotFoundException("Siswa Tidak Ditemukan!"));
             if (pengguna != null && passwordEncoder.matches(signInRequest.getPassword(), pengguna.getPassword())) {
                 // check this out
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(pengguna.getUsername(), signInRequest.getPassword()));

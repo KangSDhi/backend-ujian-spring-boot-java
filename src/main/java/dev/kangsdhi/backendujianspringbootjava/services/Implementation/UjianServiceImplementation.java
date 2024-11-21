@@ -117,7 +117,8 @@ public class UjianServiceImplementation implements UjianService {
 
     @Override
     public ResponseWithMessage jawabUjian(JawabanUjianRequest jawabanUjianRequest) {
-        Soal soal = getSoalById(jawabanUjianRequest.getIdSoal());
+        System.out.println(jawabanUjianRequest.toString());
+        Soal soal = getSoalById(jawabanUjianRequest.getId_soal());
         if (soal == null) {
             return createResponseWithMessage(HttpStatus.NOT_FOUND, "Soal Tidak Ditemukan!");
         }
@@ -139,10 +140,10 @@ public class UjianServiceImplementation implements UjianService {
     private List<UjianMappingDto> generateJawabanDtoList(Soal soal, List<BankSoal> bankSoalList) {
         return bankSoalList.stream().map(bankSoalItem -> {
             UjianMappingDto ujianMappingDto = new UjianMappingDto();
-            ujianMappingDto.setIdBank(bankSoalItem.getId());
+            ujianMappingDto.setId_bank(bankSoalItem.getId());
             ujianMappingDto.setPertanyaan(bankSoalItem.getPertanyaanBankSoal());
-            ujianMappingDto.setGambarPertanyaan(bankSoalItem.getGambarPertanyaanBankSoal());
-            ujianMappingDto.setStatusPertanyaan(StatusPertanyaan.BELUM_DIJAWAB);
+            ujianMappingDto.setGambar_pertanyaan(bankSoalItem.getGambarPertanyaanBankSoal());
+            ujianMappingDto.setStatus_pertanyaan(StatusPertanyaan.BELUM_DIJAWAB);
 
             List<String> listPilihan = Arrays.asList(
                     bankSoalItem.getPilihanA(),
@@ -156,11 +157,11 @@ public class UjianServiceImplementation implements UjianService {
                 Collections.shuffle(listPilihan);
             }
 
-            ujianMappingDto.setPilihanA(listPilihan.getFirst());
-            ujianMappingDto.setPilihanB(listPilihan.get(1));
-            ujianMappingDto.setPilihanC(listPilihan.get(2));
-            ujianMappingDto.setPilihanD(listPilihan.get(3));
-            ujianMappingDto.setPilihanE(listPilihan.getLast());
+            ujianMappingDto.setPilihan_a(listPilihan.getFirst());
+            ujianMappingDto.setPilihan_b(listPilihan.get(1));
+            ujianMappingDto.setPilihan_c(listPilihan.get(2));
+            ujianMappingDto.setPilihan_d(listPilihan.get(3));
+            ujianMappingDto.setPilihan_e(listPilihan.getLast());
 
             return ujianMappingDto;
         }).collect(Collectors.toList());
@@ -234,12 +235,12 @@ public class UjianServiceImplementation implements UjianService {
     private MataUjianDto mapToMataUjianDto(Soal soal) {
         ConvertUtils convertUtils = new ConvertUtils();
         MataUjianDto dto = new MataUjianDto();
-        dto.setIdSoal(soal.getId().toString());
-        dto.setNamaSoal(soal.getNamaSoal());
-        dto.setButirSoal(soal.getButirSoal());
-        dto.setAcakSoal(soal.getAcakSoal());
-        dto.setWaktuMulaiSoal(convertUtils.convertDateToDatetimeStringFormat(soal.getWaktuMulaiSoal()));
-        dto.setWaktuSelesaiSoal(convertUtils.convertDateToDatetimeStringFormat(soal.getWaktuSelesaiSoal()));
+        dto.setId(soal.getId().toString());
+        dto.setNama_soal(soal.getNamaSoal());
+        dto.setButir_soal(soal.getButirSoal());
+        dto.setAcak_soal(soal.getAcakSoal());
+        dto.setWaktu_mulai_soal(convertUtils.convertDateToDatetimeStringFormat(soal.getWaktuMulaiSoal()));
+        dto.setWaktu_selesai_soal(convertUtils.convertDateToDatetimeStringFormat(soal.getWaktuSelesaiSoal()));
 
         ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Jakarta"));
         long currentMillis = now.toInstant().toEpochMilli();
@@ -247,11 +248,11 @@ public class UjianServiceImplementation implements UjianService {
         long endMillis = soal.getWaktuSelesaiSoal().getTime();
 
         if (currentMillis >= startMillis && currentMillis <= endMillis) {
-            dto.setStatusMataUjian(StatusMataUjian.MULAI);
+            dto.setStatus_mata_ujian(StatusMataUjian.MULAI);
         } else if (currentMillis >= startMillis) {
-            dto.setStatusMataUjian(StatusMataUjian.SELESAI);
+            dto.setStatus_mata_ujian(StatusMataUjian.SELESAI);
         } else {
-            dto.setStatusMataUjian(StatusMataUjian.BELUM_MULAI);
+            dto.setStatus_mata_ujian(StatusMataUjian.BELUM_MULAI);
         }
 
         return dto;
@@ -279,7 +280,7 @@ public class UjianServiceImplementation implements UjianService {
                 Objects.requireNonNull(deserializeJson(ujian.getListJawabanUjian(), UjianMappingDto[].class))
         );
 
-        UUID idBank = UUID.fromString(jawabanUjianRequest.getIdBank());
+        UUID idBank = UUID.fromString(jawabanUjianRequest.getId_bank());
 
 //        for (UjianMappingDto dto : ujianMappingDtoList) {
 //            if (dto.getIdBank().equals(UUID.fromString(jawabanUjianRequest.getIdBank()))) {
@@ -290,11 +291,11 @@ public class UjianServiceImplementation implements UjianService {
 //        }
 
         ujianMappingDtoList.stream()
-                .filter(dto -> dto.getIdBank().equals(idBank))
+                .filter(dto -> dto.getId_bank().equals(idBank))
                 .findFirst()
                 .ifPresent(ujianMappingDto -> {
                     ujianMappingDto.setJawaban(jawabanUjianRequest.getJawaban());
-                    ujianMappingDto.setStatusPertanyaan(jawabanUjianRequest.getStatusPertanyaan());
+                    ujianMappingDto.setStatus_pertanyaan(jawabanUjianRequest.getStatus_pertanyaan());
                 });
 
         return ujianMappingDtoList;

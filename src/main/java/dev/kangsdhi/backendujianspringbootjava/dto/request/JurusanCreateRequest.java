@@ -11,5 +11,5 @@ public class JurusanCreateRequest {
     @NotBlank(message = "Nama Jurusan Kosong!")
     @NotNull(message = "Nama Jurusan Kosong!")
     @NamaJurusanUnique(message = "Nama Jurusan Telah Terdaftar!")
-    private String namaJurusan;
+    private String nama_jurusan;
 }

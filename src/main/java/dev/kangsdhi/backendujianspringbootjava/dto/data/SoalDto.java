@@ -7,13 +7,13 @@ import lombok.Data;
 @Data
 public class SoalDto {
     private String id;
-    private String namaSoal;
+    private String nama_soal;
     private String tingkat;
     private String jurusan;
-    private Integer butirSoal;
-    private String durasiSoal;
-    private AcakSoal acakSoal;
-    private TipeSoal tipeSoal;
-    private String waktuMulaiSoal;
-    private String waktuSelesaiSoal;
+    private Integer butir_soal;
+    private String durasi_soal;
+    private AcakSoal acak_soal;
+    private TipeSoal tipe_soal;
+    private String waktu_mulai_soal;
+    private String waktu_selesai_soal;
 }

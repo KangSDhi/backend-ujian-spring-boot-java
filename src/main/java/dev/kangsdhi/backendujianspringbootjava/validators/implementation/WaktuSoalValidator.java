@@ -14,16 +14,16 @@ public class WaktuSoalValidator implements ConstraintValidator<WaktuSoalValid, S
 
     @Override
     public boolean isValid(SoalRequest soalRequest, ConstraintValidatorContext constraintValidatorContext) {
-        if (soalRequest.getWaktuMulaiSoal() == null || soalRequest.getWaktuSelesaiSoal() == null) {
+        if (soalRequest.getWaktu_mulai_soal() == null || soalRequest.getWaktu_selesai_soal() == null) {
             return true;
         }
 
-        if (soalRequest.getWaktuMulaiSoal().contains("NaN") || soalRequest.getWaktuSelesaiSoal().contains("NaN")) {
+        if (soalRequest.getWaktu_mulai_soal().contains("NaN") || soalRequest.getWaktu_selesai_soal().contains("NaN")) {
             return true;
         }
 
-        Date waktuMulai = convertUtils.convertStringToDatetimeOrTime(soalRequest.getWaktuMulaiSoal());
-        Date waktuSelesai = convertUtils.convertStringToDatetimeOrTime(soalRequest.getWaktuSelesaiSoal());
+        Date waktuMulai = convertUtils.convertStringToDatetimeOrTime(soalRequest.getWaktu_mulai_soal());
+        Date waktuSelesai = convertUtils.convertStringToDatetimeOrTime(soalRequest.getWaktu_selesai_soal());
         return waktuMulai.before(waktuSelesai);
     }
 }

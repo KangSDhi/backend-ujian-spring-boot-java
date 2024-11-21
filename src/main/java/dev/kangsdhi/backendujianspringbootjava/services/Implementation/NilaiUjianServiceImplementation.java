@@ -37,15 +37,15 @@ public class NilaiUjianServiceImplementation implements NilaiUjianService {
         }
 
         HasilUjianDto hasilUjianDto = new HasilUjianDto();
-        hasilUjianDto.setIdNilaiUjian(nilaiUjian.getId());
-        hasilUjianDto.setNilaiUjian(nilaiUjian.getNilaiUjian());
+        hasilUjianDto.setId(nilaiUjian.getId());
+        hasilUjianDto.setNilai_ujian(nilaiUjian.getNilaiUjian());
 
         return createResponseWithMessageAndData(HttpStatus.OK, "Nilai Ditemukan!", hasilUjianDto);
     }
 
     @Override
     public ResponseWithMessageAndData<Object> generateHasilUjian(HasilUjianRequest hasilUjianRequest) {
-        UUID soalId = UUID.fromString(hasilUjianRequest.getIdSoal());
+        UUID soalId = UUID.fromString(hasilUjianRequest.getId_soal());
         Pengguna pengguna = getCurrentPengguna();
         Soal soal = soalRepository.findById(soalId).orElse(null);
         if (soal == null) {
@@ -62,8 +62,8 @@ public class NilaiUjianServiceImplementation implements NilaiUjianService {
         HasilUjianDto hasilUjianDto = new HasilUjianDto();
 
         if (existingNilaiUjian.isPresent()) {
-            hasilUjianDto.setIdNilaiUjian(existingNilaiUjian.get().getId());
-            hasilUjianDto.setNilaiUjian(existingNilaiUjian.get().getNilaiUjian());
+            hasilUjianDto.setId(existingNilaiUjian.get().getId());
+            hasilUjianDto.setNilai_ujian(existingNilaiUjian.get().getNilaiUjian());
             return createResponseWithMessageAndData(HttpStatus.OK, "Berhasil Mengambil Nilai", hasilUjianDto);
         } else {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -77,7 +77,7 @@ public class NilaiUjianServiceImplementation implements NilaiUjianService {
             AtomicReference<Float> totalNilai = new AtomicReference<>(0f);
 
             ujianMappingDtoList.forEach(ujianMappingDto -> {
-                BankSoal bankSoal = bankSoalRepository.findById(ujianMappingDto.getIdBank()).orElse(null);
+                BankSoal bankSoal = bankSoalRepository.findById(ujianMappingDto.getId_bank()).orElse(null);
 
                 if (bankSoal != null) {
                     if (Objects.equals(bankSoal.getPilihanA(), ujianMappingDto.getJawaban())){
@@ -111,8 +111,8 @@ public class NilaiUjianServiceImplementation implements NilaiUjianService {
             ujian.setStatusUjian(StatusUjian.SELESAI);
             ujianRepository.save(ujian);
 
-            hasilUjianDto.setIdNilaiUjian(nilaiUjianBaru.getId());
-            hasilUjianDto.setNilaiUjian(nilaiUjian.getNilaiUjian());
+            hasilUjianDto.setId(nilaiUjianBaru.getId());
+            hasilUjianDto.setNilai_ujian(nilaiUjian.getNilaiUjian());
 
             return createResponseWithMessageAndData(HttpStatus.CREATED, "Berhasil Membuat Nilai", hasilUjianDto);
         }

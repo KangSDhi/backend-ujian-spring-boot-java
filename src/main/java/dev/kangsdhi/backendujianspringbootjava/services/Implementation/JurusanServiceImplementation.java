@@ -42,7 +42,7 @@ public class JurusanServiceImplementation implements JurusanService {
 
     @Override
     public ResponseWithMessageAndData<JurusanDto> storeJurusan(JurusanCreateRequest jurusanCreateRequest) {
-        Jurusan jurusan = prepareJurusanEntity(new Jurusan(), jurusanCreateRequest.getNamaJurusan());
+        Jurusan jurusan = prepareJurusanEntity(new Jurusan(), jurusanCreateRequest.getNama_jurusan());
         Jurusan savedJurusan = jurusanRepository.save(jurusan);
 
         return createResponse(HttpStatus.CREATED.value(), "Berhasil Membuat Jurusan", mapToJurusanDto(savedJurusan));
@@ -50,11 +50,11 @@ public class JurusanServiceImplementation implements JurusanService {
 
     @Override
     public ResponseWithMessageAndData<JurusanDto> updateJurusan(JurusanEditRequest jurusanEditRequest) {
-        UUID jurusanId = UUID.fromString(jurusanEditRequest.getIdJurusan());
+        UUID jurusanId = UUID.fromString(jurusanEditRequest.getId());
         Jurusan existingJurusan = jurusanRepository.findById(jurusanId)
                 .orElseThrow(() -> new EntityNotFoundException("Jurusan Tidak Ditemukan!"));
 
-        Jurusan updatedJurusan = prepareJurusanEntity(existingJurusan, jurusanEditRequest.getNamaJurusan());
+        Jurusan updatedJurusan = prepareJurusanEntity(existingJurusan, jurusanEditRequest.getNama_jurusan());
         Jurusan savedJurusan = jurusanRepository.save(updatedJurusan);
 
         return createResponse(HttpStatus.CREATED.value(), "Berhasil Memperbarui Jurusan", mapToJurusanDto(savedJurusan));
@@ -73,9 +73,9 @@ public class JurusanServiceImplementation implements JurusanService {
     private JurusanDto mapToJurusanDto(Jurusan jurusan) {
         JurusanDto jurusanDto = new JurusanDto();
         jurusanDto.setId(jurusan.getId().toString());
-        jurusanDto.setNamaJurusan(jurusan.getJurusan());
-        jurusanDto.setCreatedAt(jurusan.getCreatedAt());
-        jurusanDto.setUpdatedAt(jurusan.getUpdatedAt());
+        jurusanDto.setNama_jurusan(jurusan.getJurusan());
+        jurusanDto.setCreated_at(jurusan.getCreatedAt());
+        jurusanDto.setUpdated_at(jurusan.getUpdatedAt());
         return jurusanDto;
     }
 

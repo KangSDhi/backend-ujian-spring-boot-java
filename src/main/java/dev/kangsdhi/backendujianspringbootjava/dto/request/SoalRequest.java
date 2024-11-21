@@ -12,36 +12,36 @@ import lombok.Data;
 @Data
 public class SoalRequest {
 
-    private String namaSoal;
+    private String nama_soal;
 
     @NotNull(message = "Tingkat Soal Kosong!")
     @NotBlank(message = "Tingkat Soal Kosong!")
-    private String tingkatSoal;
+    private String tingkat;
 
-    private String jurusanSoal;
+    private String jurusan;
 
     @NotNull(message = "Acak Soal Kosong!")
-    private AcakSoal acakSoal;
+    private AcakSoal acak_soal;
 
     @NotNull(message = "Butir Soal Kosong!")
-    private Integer butirSoal;
+    private Integer butir_soal;
 
     @NotNull(message = "Tipe Soal Kosong!")
-    private TipeSoal tipeSoal;
+    private TipeSoal tipe_soal;
 
     @NotNull(message = "Durasi Soal Kosong!")
     @NotBlank(message = "Durasi Soal Kosong!")
     @Pattern(regexp = "^\\d{2}:\\d{2}:\\d{2}$", message = "Durasi soal harus dalam format HH:mm:ss!")
-    private String durasiSoal;
+    private String durasi_soal;
 
     @NotNull(message = "Waktu Mulai Soal Kosong!")
     @NotBlank(message = "Waktu Mulai Soal Kosong!")
     @Pattern(regexp = "^\\d{2}-\\d{2}-\\d{4} \\d{2}:\\d{2}:\\d{2}$", message = "Waktu Mulai Soal harus dalam format dd:MM:YYYY HH:mm:ss!")
-    private String waktuMulaiSoal;
+    private String waktu_mulai_soal;
 
     @NotNull(message = "Waktu Selesai Soal Kosong!")
     @NotBlank(message = "Waktu Selesai Soal Kosong!")
     @Pattern(regexp = "^\\d{2}-\\d{2}-\\d{4} \\d{2}:\\d{2}:\\d{2}$", message = "Waktu Selesai Soal harus dalam format dd:MM:YYYY HH:mm:ss!")
-    private String waktuSelesaiSoal;
+    private String waktu_selesai_soal;
 }
 

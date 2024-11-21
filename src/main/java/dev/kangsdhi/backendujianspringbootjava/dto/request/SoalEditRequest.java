@@ -13,10 +13,10 @@ public class SoalEditRequest extends SoalRequest {
 
     @NotNull(message = "Id Kosong!")
     @NotBlank(message = "Id Kosong!")
-    private String idSoal;
+    private String id;
 
     @NotNull(message = "Nama Soal Kosong!")
     @NotBlank(message = "Nama Soal Kosong!")
-    private String namaSoal;
+    private String nama_soal;
 
 }
