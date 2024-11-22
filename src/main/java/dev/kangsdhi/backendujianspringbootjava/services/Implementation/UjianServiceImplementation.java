@@ -269,9 +269,9 @@ public class UjianServiceImplementation implements UjianService {
 
         Map<String, Object> dataUjianMap = new HashMap<>();
         dataUjianMap.put("soal", ujianMappingDtoList);
-        dataUjianMap.put("statusUjian", ujian.getStatusUjian().name());
-        dataUjianMap.put("waktuAktifSelesaiUjian", waktuAktifSelesaiUjian);
-        dataUjianMap.put("waktuSelesaiUjian", waktuSelesaiUjian);
+        dataUjianMap.put("status_ujian", ujian.getStatusUjian().name());
+        dataUjianMap.put("waktu_aktif_selesai_ujian", waktuAktifSelesaiUjian);
+        dataUjianMap.put("waktu_selesai_ujian", waktuSelesaiUjian);
         return dataUjianMap;
     }
 
