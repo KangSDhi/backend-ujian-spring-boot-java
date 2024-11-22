@@ -10,6 +10,7 @@ import dev.kangsdhi.backendujianspringbootjava.repository.JurusanRepository;
 import dev.kangsdhi.backendujianspringbootjava.services.JurusanService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class JurusanServiceImplementation implements JurusanService {
 
     @Override
     public ResponseWithMessageAndData<List<JurusanDto>> allJurusan() {
-        List<JurusanDto> jurusanDtoList = jurusanRepository.findAll().stream()
+        List<JurusanDto> jurusanDtoList = jurusanRepository.findAll(Sort.by(Sort.Direction.ASC, "jurusan")).stream()
                 .map(this::mapToJurusanDto)
                 .collect(Collectors.toList());
         return createResponse(HttpStatus.OK.value(), "Berhasil Mengambil Data Jurusan", jurusanDtoList);

@@ -68,19 +68,19 @@ public class GlobalExceptionHandler {
 
         for (ObjectError objectError : e.getBindingResult().getGlobalErrors()) {
             if (Objects.requireNonNull(objectError.getDefaultMessage()).contains("Waktu Mulai Soal")){
-                errorMessage.put("waktuMulaiSoal", objectError.getDefaultMessage());
+                errorMessage.put("waktu_mulai_soal", objectError.getDefaultMessage());
             }
 
             if (Objects.requireNonNull(objectError.getDefaultMessage()).contains("Nama Soal Sudah Terdaftar")){
-                errorMessage.put("namaSoal", objectError.getDefaultMessage());
+                errorMessage.put("nama_soal", objectError.getDefaultMessage());
             }
 
             if (Objects.requireNonNull(objectError.getDefaultMessage()).contains("Nama Tingkat Sudah Terdaftar")){
-                errorMessage.put("namaTingkat", objectError.getDefaultMessage());
+                errorMessage.put("nama_tingkat", objectError.getDefaultMessage());
             }
 
             if (Objects.requireNonNull(objectError.getDefaultMessage()).contains("Nama Jurusan Sudah Terdaftar")){
-                errorMessage.put("namaJurusan", objectError.getDefaultMessage());
+                errorMessage.put("nama_jurusan", objectError.getDefaultMessage());
             }
 
             if (objectError.getDefaultMessage().contains("Konfirmasi Password Tidak Sama Dengan Password!")){

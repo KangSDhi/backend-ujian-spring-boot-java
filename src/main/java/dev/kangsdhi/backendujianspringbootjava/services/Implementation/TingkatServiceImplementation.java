@@ -10,6 +10,7 @@ import dev.kangsdhi.backendujianspringbootjava.repository.TingkatRepository;
 import dev.kangsdhi.backendujianspringbootjava.services.TingkatService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class TingkatServiceImplementation implements TingkatService {
 
     @Override
     public ResponseWithMessageAndData<List<TingkatDto>> allTingkat() {
-        List<TingkatDto> tingkatDtoList = tingkatRepository.findAll().stream()
+        List<TingkatDto> tingkatDtoList = tingkatRepository.findAll(Sort.by(Sort.Direction.ASC, "tingkat")).stream()
                 .map(this::mapToTingkatDto)
                 .collect(Collectors.toList());
         return createResponse(HttpStatus.OK.value(), "Berhasil Mengambil Data Tingkat", tingkatDtoList);
