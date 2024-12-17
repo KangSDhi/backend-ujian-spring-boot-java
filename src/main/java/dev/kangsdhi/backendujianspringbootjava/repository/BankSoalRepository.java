@@ -12,4 +12,5 @@ import java.util.UUID;
 
 public interface BankSoalRepository extends JpaRepository<BankSoal, UUID> {
     List<BankSoal> findBySoal(Soal soal);
+    List<BankSoal> findAllBySoalId(UUID soalId);
 }
