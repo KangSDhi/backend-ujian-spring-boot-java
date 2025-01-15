@@ -1,10 +1,15 @@
 package dev.kangsdhi.backendujianspringbootjava.services.Implementation;
 
 import dev.kangsdhi.backendujianspringbootjava.dto.data.BankSoalDto;
+import dev.kangsdhi.backendujianspringbootjava.dto.request.BankSoalCreateRequest;
+import dev.kangsdhi.backendujianspringbootjava.dto.request.BankSoalRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessageAndData;
 import dev.kangsdhi.backendujianspringbootjava.entities.BankSoal;
+import dev.kangsdhi.backendujianspringbootjava.entities.Soal;
 import dev.kangsdhi.backendujianspringbootjava.repository.BankSoalRepository;
+import dev.kangsdhi.backendujianspringbootjava.repository.SoalRepository;
 import dev.kangsdhi.backendujianspringbootjava.services.BankSoalService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,6 +22,9 @@ import java.util.UUID;
 public class BankSoalServiceImplementation implements BankSoalService {
 
     @Autowired
+    private SoalRepository soalRepository;
+
+    @Autowired
     private BankSoalRepository bankSoalRepository;
 
     @Override
@@ -27,6 +35,40 @@ public class BankSoalServiceImplementation implements BankSoalService {
                 .map(this::mapToBankSoalDto)
                 .toList();
         return createResponse(HttpStatus.OK.value(), "Berhasil Mengambil Data Bank Soal!", bankSoalDtoList);
+    }
+
+    @Override
+    public ResponseWithMessageAndData<BankSoalDto> createBankSoal(BankSoalCreateRequest bankSoalCreateRequest) {
+        UUID idSoal = UUID.fromString(bankSoalCreateRequest.getId_soal());
+        Soal soal = soalRepository.findById(idSoal)
+                .orElseThrow(() -> new EntityNotFoundException("Soal Tidak Ditemukan!"));
+
+        BankSoal newBankSoal = prepareBankSoalEntity(new BankSoal(), bankSoalCreateRequest, soal);
+        BankSoal bankSoalStored = bankSoalRepository.save(newBankSoal);
+
+        BankSoalDto bankSoalDto = mapToBankSoalDto(bankSoalStored);
+        ResponseWithMessageAndData<BankSoalDto> response = new ResponseWithMessageAndData<>();
+        response.setHttp_code(HttpStatus.CREATED.value());
+        response.setMessage("Berhasil Membuat Bank Soal!");
+        response.setData(bankSoalDto);
+        return response;
+    }
+
+    private BankSoal prepareBankSoalEntity(BankSoal bankSoal, BankSoalRequest bankSoalRequest, Soal soal) {
+        bankSoal.setPertanyaanBankSoal(bankSoalRequest.getPertanyaan());
+        bankSoal.setGambarPertanyaanBankSoal(bankSoalRequest.getGambar_pertanyaan());
+        bankSoal.setSoal(soal);
+        bankSoal.setPilihanA(bankSoalRequest.getPilihan_a());
+        bankSoal.setPilihanB(bankSoalRequest.getPilihan_b());
+        bankSoal.setPilihanC(bankSoalRequest.getPilihan_c());
+        bankSoal.setPilihanD(bankSoalRequest.getPilihan_d());
+        bankSoal.setPilihanE(bankSoalRequest.getPilihan_e());
+        bankSoal.setNilaiA(bankSoalRequest.getNilai_a());
+        bankSoal.setNilaiB(bankSoalRequest.getNilai_b());
+        bankSoal.setNilaiC(bankSoalRequest.getNilai_c());
+        bankSoal.setNilaiD(bankSoalRequest.getNilai_d());
+        bankSoal.setNilaiE(bankSoalRequest.getNilai_e());
+        return bankSoal;
     }
 
     private BankSoalDto mapToBankSoalDto(BankSoal bankSoal) {

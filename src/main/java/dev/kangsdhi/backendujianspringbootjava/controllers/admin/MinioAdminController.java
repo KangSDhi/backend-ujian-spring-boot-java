@@ -27,7 +27,7 @@ public class MinioAdminController {
     @Autowired
     private MinioService minioService;
 
-    @PostMapping("/upload/gambarpertanyaan")
+    @PostMapping("/upload/gambar-pertanyaan")
     public ResponseEntity<ResponseWithMessageAndData<Map<String, String>>> uploadGambarPertanyaan(@Valid @ModelAttribute FileUploadRequest fileUploadRequest, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
 
         if (bindingResult.hasErrors()) {
@@ -39,7 +39,7 @@ public class MinioAdminController {
         return new ResponseEntity<>(response, httpStatus);
     }
 
-    @PostMapping("/upload/gambarjawaban")
+    @PostMapping("/upload/gambar-jawaban")
     public ResponseEntity<ResponseWithMessageAndData<Map<String, String>>> uploadGambarJawaban(@Valid @ModelAttribute FileUploadRequest fileUploadRequest, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
 
         if (bindingResult.hasErrors()){

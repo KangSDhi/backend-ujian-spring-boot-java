@@ -40,7 +40,7 @@ public class MinioServiceImplementation implements MinioService {
     public ResponseWithMessageAndData<Map<String, String>> uploadGambarJawaban(MultipartFile file) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         String newFilename = generateFilename(file);
         uploadFile(file, "jawaban/" + newFilename);
-        return buildResponse(HttpStatus.CREATED, "Upload Gambar Jawaban Sukses!", Map.of("jawaban", newFilename));
+        return buildResponse(HttpStatus.CREATED, "Upload Gambar Jawaban Sukses!", Map.of("gambar_jawaban", newFilename));
     }
 
     @Override
