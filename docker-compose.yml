@@ -1,31 +1,60 @@
-name: backend-ujian-spring-boot-java
+name: ujian-services
 
 services:
 
-  db:
-    image: mariadb:11.5-rc
-    container_name: backend-ujian-spring-boot-java-dev-db
-
+  db-main:
+    image: mariadb:10.5.15
+    container_name: ujian-service-db-main
     ports:
-      - 3001:3306
-
+      - "3301:3306"
     environment:
-      MARIADB_ROOT_PASSWORD: 'toor'
-      MARIADB_DATABASE: 'ujian-db'
-      MARIADB_USER: 'spring'
-      MARIADB_PASSWORD: 'boot'
-
+      MARIADB_ROOT_PASSWORD: "toor"
+      MARIADB_USER: "spring"
+      MARIADB_PASSWORD: "boot"
+      MARIADB_DATABASE: "ujian-db"
     volumes:
-      - backend-ujian-spring-boot-java-dev-data:/var/lib/mysql
-
+      - "ujian-service-db-main-data:/var/lib/mysql"
     networks:
-      - backend-ujian-spring-boot-java-dev-net
+      - ujian-service-net
 
+  db-test:
+    image: mariadb:10.5.15
+    container_name: ujian-service-db-test
+    ports:
+      - "3302:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: "toor"
+      MARIADB_USER: "spring"
+      MARIADB_PASSWORD: "test"
+      MARIADB_DATABASE: "ujian-test-db"
+    volumes:
+      - "ujian-service-db-test-data:/var/lib/mysql"
+    networks:
+      - ujian-service-net
+
+  minio:
+    image: bitnami/minio:latest
+    container_name: ujian-service-minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: "minioadmin"
+      MINIO_ROOT_PASSWORD: "minioadmin"
+      MINIO_DEFAULT_BUCKETS: "ujian-bucket"
+    volumes:
+      - "ujian-service-minio-data:/bitnami/minio/data"
+    networks:
+      - ujian-service-net
 
 volumes:
-  backend-ujian-spring-boot-java-dev-data:
+  ujian-service-db-main-data:
+    driver: local
+  ujian-service-db-test-data:
+    driver: local
+  ujian-service-minio-data:
     driver: local
 
 networks:
-  backend-ujian-spring-boot-java-dev-net:
+  ujian-service-net:
     driver: bridge
