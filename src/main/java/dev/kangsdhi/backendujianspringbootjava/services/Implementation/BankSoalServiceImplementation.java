@@ -49,11 +49,7 @@ public class BankSoalServiceImplementation implements BankSoalService {
         BankSoal bankSoalStored = bankSoalRepository.save(newBankSoal);
 
         BankSoalDto bankSoalDto = mapToBankSoalDto(bankSoalStored);
-        ResponseWithMessageAndData<BankSoalDto> response = new ResponseWithMessageAndData<>();
-        response.setHttp_code(HttpStatus.CREATED.value());
-        response.setMessage("Berhasil Membuat Bank Soal!");
-        response.setData(bankSoalDto);
-        return response;
+        return createResponse(HttpStatus.CREATED.value(), "Berhasil Membuat Bank Soal!", bankSoalDto);
     }
 
     @Override
@@ -69,11 +65,7 @@ public class BankSoalServiceImplementation implements BankSoalService {
         BankSoal bankSoalStored = bankSoalRepository.save(editBankSoal);
 
         BankSoalDto bankSoalDto = mapToBankSoalDto(bankSoalStored);
-        ResponseWithMessageAndData<BankSoalDto> response = new ResponseWithMessageAndData<>();
-        response.setHttp_code(HttpStatus.CREATED.value());
-        response.setMessage("Berhasil Memperbarui Bank Soal!");
-        response.setData(bankSoalDto);
-        return response;
+        return createResponse(HttpStatus.CREATED.value(), "Berhasil Memperbarui Bank Soal!", bankSoalDto);
     }
 
     @Override
