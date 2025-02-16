@@ -2,6 +2,8 @@ package dev.kangsdhi.backendujianspringbootjava.controllers.admin;
 
 import dev.kangsdhi.backendujianspringbootjava.dto.data.BankSoalDto;
 import dev.kangsdhi.backendujianspringbootjava.dto.request.BankSoalCreateRequest;
+import dev.kangsdhi.backendujianspringbootjava.dto.request.BankSoalEditRequest;
+import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessage;
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessageAndData;
 import dev.kangsdhi.backendujianspringbootjava.services.BankSoalService;
 import jakarta.validation.Valid;
@@ -29,6 +31,20 @@ public class BankSoalAdminController {
     @PostMapping("/create")
     public ResponseEntity<ResponseWithMessageAndData<BankSoalDto>> createBankSoal(@RequestBody @Valid BankSoalCreateRequest bankSoalCreateRequest) {
         ResponseWithMessageAndData<BankSoalDto> response = bankSoalService.createBankSoal(bankSoalCreateRequest);
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
+        return new ResponseEntity<>(response, httpStatus);
+    }
+
+    @PutMapping("/update/{idBankSoal}")
+    public ResponseEntity<ResponseWithMessageAndData<BankSoalDto>> updateBankSoal(@PathVariable String idBankSoal, @RequestBody @Valid BankSoalEditRequest bankSoalEditRequest){
+        ResponseWithMessageAndData<BankSoalDto> response = bankSoalService.updateBankSoal(idBankSoal, bankSoalEditRequest);
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
+        return new ResponseEntity<>(response, httpStatus);
+    }
+
+    @DeleteMapping("/delete/{idBankSoal}")
+    public ResponseEntity<ResponseWithMessage> deleteBankSoal(@PathVariable String idBankSoal) {
+        ResponseWithMessage response = bankSoalService.deleteBankSoal(idBankSoal);
         HttpStatus httpStatus = HttpStatus.valueOf(response.getHttp_code());
         return new ResponseEntity<>(response, httpStatus);
     }

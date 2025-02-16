@@ -2,7 +2,9 @@ package dev.kangsdhi.backendujianspringbootjava.services.Implementation;
 
 import dev.kangsdhi.backendujianspringbootjava.dto.data.BankSoalDto;
 import dev.kangsdhi.backendujianspringbootjava.dto.request.BankSoalCreateRequest;
+import dev.kangsdhi.backendujianspringbootjava.dto.request.BankSoalEditRequest;
 import dev.kangsdhi.backendujianspringbootjava.dto.request.BankSoalRequest;
+import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessage;
 import dev.kangsdhi.backendujianspringbootjava.dto.response.ResponseWithMessageAndData;
 import dev.kangsdhi.backendujianspringbootjava.entities.BankSoal;
 import dev.kangsdhi.backendujianspringbootjava.entities.Soal;
@@ -54,6 +56,35 @@ public class BankSoalServiceImplementation implements BankSoalService {
         return response;
     }
 
+    @Override
+    public ResponseWithMessageAndData<BankSoalDto> updateBankSoal(String idBankSoal, BankSoalEditRequest bankSoalEditRequest) {
+        UUID uuidBankSoal = UUID.fromString(idBankSoal);
+        UUID idSoal = UUID.fromString(bankSoalEditRequest.getId_soal());
+        Soal soal = soalRepository.findById(idSoal)
+                .orElseThrow(() -> new EntityNotFoundException("Soal Tidak Ditemukan!"));
+        BankSoal bankSoal = bankSoalRepository.findById(uuidBankSoal)
+                .orElseThrow(() -> new EntityNotFoundException("Bank Soal Tidak Ditemukan!"));
+
+        BankSoal editBankSoal = prepareBankSoalEntity(bankSoal, bankSoalEditRequest, soal);
+        BankSoal bankSoalStored = bankSoalRepository.save(editBankSoal);
+
+        BankSoalDto bankSoalDto = mapToBankSoalDto(bankSoalStored);
+        ResponseWithMessageAndData<BankSoalDto> response = new ResponseWithMessageAndData<>();
+        response.setHttp_code(HttpStatus.CREATED.value());
+        response.setMessage("Berhasil Memperbarui Bank Soal!");
+        response.setData(bankSoalDto);
+        return response;
+    }
+
+    @Override
+    public ResponseWithMessage deleteBankSoal(String idBankSoal) {
+        UUID bankSoalId = UUID.fromString(idBankSoal);
+        BankSoal bankSoal = bankSoalRepository.findById(bankSoalId)
+                .orElseThrow(() -> new EntityNotFoundException("Bank Soal Tidak Ditemukan!"));
+        bankSoalRepository.delete(bankSoal);
+        return createResponse(HttpStatus.OK.value(), "Berhasil Menghapus Bank Soal!");
+    }
+
     private BankSoal prepareBankSoalEntity(BankSoal bankSoal, BankSoalRequest bankSoalRequest, Soal soal) {
         bankSoal.setPertanyaanBankSoal(bankSoalRequest.getPertanyaan());
         bankSoal.setGambarPertanyaanBankSoal(bankSoalRequest.getGambar_pertanyaan());
@@ -97,6 +128,13 @@ public class BankSoalServiceImplementation implements BankSoalService {
         response.setHttp_code(httpCode);
         response.setMessage(message);
         response.setData(data);
+        return response;
+    }
+
+    private ResponseWithMessage createResponse(int httpCode, String message) {
+        ResponseWithMessage response = new ResponseWithMessage();
+        response.setHttp_code(httpCode);
+        response.setMessage(message);
         return response;
     }
 }
