@@ -79,7 +79,7 @@ class AuthenticationControllerTest {
     @Order(2)
     void testLoginEmailNullShouldReturnBadRequest() throws Exception {
         SignInRequest signInRequest = new SignInRequest();
-        signInRequest.setEmailOrIdSiswa(null);
+        signInRequest.setEmail_or_id_siswa(null);
         assertBadRequest(signInRequest, EXPECTED_EMAIL_ERROR, EXPECTED_PASSWORD_ERROR);
     }
 
@@ -116,7 +116,7 @@ class AuthenticationControllerTest {
     @Order(7)
     void testLoginBodyEmailEmptyShouldReturnBadRequest() throws Exception {
         SignInRequest signInRequest = new SignInRequest();
-        signInRequest.setEmailOrIdSiswa("");
+        signInRequest.setEmail_or_id_siswa("");
         assertBadRequest(signInRequest, EXPECTED_EMAIL_ERROR, EXPECTED_PASSWORD_ERROR);
     }
 
@@ -396,7 +396,7 @@ class AuthenticationControllerTest {
 
     private SignInRequest createSignInRequest(String emailOrIdSiswa, String password) {
         SignInRequest signInRequest = new SignInRequest();
-        signInRequest.setEmailOrIdSiswa(emailOrIdSiswa);
+        signInRequest.setEmail_or_id_siswa(emailOrIdSiswa);
         signInRequest.setPassword(password);
         return signInRequest;
     }
@@ -413,7 +413,7 @@ class AuthenticationControllerTest {
         ResponseError<Map<String, String>> responseError = objectMapper.readValue(responseBody, new TypeReference<ResponseError<Map<String, String>>>() {
         });
 
-        assertEquals(expectedEmailError, responseError.getErrors().get("emailOrIdSiswa"));
+        assertEquals(expectedEmailError, responseError.getErrors().get("email_or_id_siswa"));
         assertEquals(expectedPasswordError, responseError.getErrors().get("password"));
     }
 

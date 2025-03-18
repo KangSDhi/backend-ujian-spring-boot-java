@@ -81,25 +81,25 @@ class SoalServiceTest {
         mockSoal.setWaktuSelesaiSoal(convertUtils.convertStringToDatetimeOrTime(currentDate.format(formatter) + " 04:00:00"));
 
         mockSoalCreateRequest = new SoalCreateRequest();
-        mockSoalCreateRequest.setNamaSoal("Soal Test Create");
-        mockSoalCreateRequest.setTingkatSoal("X");
-        mockSoalCreateRequest.setAcakSoal(AcakSoal.ACAK);
-        mockSoalCreateRequest.setButirSoal(100);
-        mockSoalCreateRequest.setDurasiSoal("01:00:00");
-        mockSoalCreateRequest.setTipeSoal(TipeSoal.PILIHAN_GANDA);
-        mockSoalCreateRequest.setWaktuMulaiSoal(currentDate.format(formatter) + " 01:00:00");
-        mockSoalCreateRequest.setWaktuSelesaiSoal(currentDate.format(formatter) + " 04:00:00");
+        mockSoalCreateRequest.setNama_soal("Soal Test Create");
+        mockSoalCreateRequest.setTingkat("X");
+        mockSoalCreateRequest.setAcak_soal(AcakSoal.ACAK);
+        mockSoalCreateRequest.setButir_soal(100);
+        mockSoalCreateRequest.setDurasi_soal("01:00:00");
+        mockSoalCreateRequest.setTipe_soal(TipeSoal.PILIHAN_GANDA);
+        mockSoalCreateRequest.setWaktu_mulai_soal(currentDate.format(formatter) + " 01:00:00");
+        mockSoalCreateRequest.setWaktu_selesai_soal(currentDate.format(formatter) + " 04:00:00");
 
         mockSoalEditRequest = new SoalEditRequest();
-        mockSoalEditRequest.setIdSoal("f823ba29-b657-4516-bc2e-e9ef45333a5e");
-        mockSoalEditRequest.setNamaSoal("Soal Test Edit");
-        mockSoalEditRequest.setTingkatSoal("XI");
-        mockSoalEditRequest.setAcakSoal(AcakSoal.ACAK);
-        mockSoalEditRequest.setButirSoal(100);
-        mockSoalEditRequest.setDurasiSoal("02:00:00");
-        mockSoalEditRequest.setTipeSoal(TipeSoal.PILIHAN_GANDA);
-        mockSoalEditRequest.setWaktuMulaiSoal(currentDate.format(formatter) + " 02:00:00");
-        mockSoalEditRequest.setWaktuSelesaiSoal(currentDate.format(formatter) + " 04:00:00");
+        mockSoalEditRequest.setId("f823ba29-b657-4516-bc2e-e9ef45333a5e");
+        mockSoalEditRequest.setNama_soal("Soal Test Edit");
+        mockSoalEditRequest.setTingkat("XI");
+        mockSoalEditRequest.setAcak_soal(AcakSoal.ACAK);
+        mockSoalEditRequest.setButir_soal(100);
+        mockSoalEditRequest.setDurasi_soal("02:00:00");
+        mockSoalEditRequest.setTipe_soal(TipeSoal.PILIHAN_GANDA);
+        mockSoalEditRequest.setWaktu_mulai_soal(currentDate.format(formatter) + " 02:00:00");
+        mockSoalEditRequest.setWaktu_selesai_soal(currentDate.format(formatter) + " 04:00:00");
     }
 
     @Test
@@ -120,7 +120,7 @@ class SoalServiceTest {
 
         // Assert the results
         assertNotNull(response);
-        assertEquals(HttpStatus.OK.value(), response.getHttpCode());
+        assertEquals(HttpStatus.OK.value(), response.getHttp_code());
         assertEquals("Berhasil Mengambil Data Soal!", response.getMessage());
         assertNotNull(response.getData());
 
@@ -162,7 +162,7 @@ class SoalServiceTest {
         mockSoal.setId(uuid);
 
         when(soalRepository.findById(uuid)).thenReturn(Optional.of(mockSoal));
-        lenient().when(tingkatRepository.findTingkatByTingkat(mockSoalEditRequest.getTingkatSoal())).thenReturn(mockTingkat);
+        lenient().when(tingkatRepository.findTingkatByTingkat(mockSoalEditRequest.getTingkat())).thenReturn(mockTingkat);
         lenient().when(jurusanRepository.findJurusanByJurusan(null)).thenReturn(null);
         when(soalRepository.save(Mockito.any(Soal.class))).thenReturn(mockSoal);
 

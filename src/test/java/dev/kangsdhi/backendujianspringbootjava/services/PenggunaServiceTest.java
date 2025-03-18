@@ -39,10 +39,10 @@ class PenggunaServiceTest {
         pengguna.setPasswordPengguna(passwordEncoder.encode("password"));
 
         CreatePenggunaAdminRequest createPenggunaAdminRequest = new CreatePenggunaAdminRequest();
-        createPenggunaAdminRequest.setNamaAdmin("Kang Mimin");
-        createPenggunaAdminRequest.setEmailAdmin("kangmimin@gmail.com");
-        createPenggunaAdminRequest.setPasswordAdmin("password");
-        createPenggunaAdminRequest.setKonfimasiPasswordAdmin("password");
+        createPenggunaAdminRequest.setNama_admin("Kang Mimin");
+        createPenggunaAdminRequest.setEmail("kangmimin@gmail.com");
+        createPenggunaAdminRequest.setPassword("password");
+        createPenggunaAdminRequest.setKonfimasi_password("password");
 
         when(penggunaRepository.save(Mockito.any(Pengguna.class))).thenAnswer(invocationOnMock -> {
             Pengguna savedPengguna = invocationOnMock.getArgument(0);

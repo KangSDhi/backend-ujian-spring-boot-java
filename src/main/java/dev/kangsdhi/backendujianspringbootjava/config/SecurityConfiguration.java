@@ -52,37 +52,37 @@ public class SecurityConfiguration {
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
                         jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class
-                )
-                .exceptionHandling(exceptionHandling -> exceptionHandling
-                        .accessDeniedHandler((request, response, accessDeniedException) -> {
-                            ResponseError<String> responseError = new ResponseError<>();
-                            responseError.setHttp_code(HttpStatus.FORBIDDEN.value());
-                            responseError.setErrors(accessDeniedException.getMessage());
-                            ResponseEntity<ResponseError<String>> responseEntity = ResponseEntity.status(HttpStatus.FORBIDDEN)
-                                    .body(responseError);
-                            ObjectMapper objectMapper = new ObjectMapper();
-                            String jsonResponse = objectMapper.writeValueAsString(responseEntity.getBody());
-                            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                            response.setStatus(HttpStatus.FORBIDDEN.value());
-                            response.getWriter().write(jsonResponse);
-                            response.getWriter().flush();
-                            logger.error(accessDeniedException.getMessage());
-                        })
-                        .authenticationEntryPoint((request, response, authException) -> {
-                            ResponseError<String> responseError = new ResponseError<>();
-                            responseError.setHttp_code(HttpStatus.UNAUTHORIZED.value());
-                            responseError.setErrors(authException.getMessage());
-                            ResponseEntity<ResponseError<String>> responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                                    .body(responseError);
-                            ObjectMapper objectMapper = new ObjectMapper();
-                            String jsonResponse = objectMapper.writeValueAsString(responseEntity.getBody());
-                            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                            response.getWriter().write(jsonResponse);
-                            response.getWriter().flush();
-                            logger.error(authException.getMessage());
-                        })
                 );
+//                .exceptionHandling(exceptionHandling -> exceptionHandling
+//                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+//                            ResponseError<String> responseError = new ResponseError<>();
+//                            responseError.setHttp_code(HttpStatus.FORBIDDEN.value());
+//                            responseError.setErrors(accessDeniedException.getMessage());
+//                            ResponseEntity<ResponseError<String>> responseEntity = ResponseEntity.status(HttpStatus.FORBIDDEN)
+//                                    .body(responseError);
+//                            ObjectMapper objectMapper = new ObjectMapper();
+//                            String jsonResponse = objectMapper.writeValueAsString(responseEntity.getBody());
+//                            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+//                            response.setStatus(HttpStatus.FORBIDDEN.value());
+//                            response.getWriter().write(jsonResponse);
+//                            response.getWriter().flush();
+//                            logger.error(accessDeniedException.getMessage());
+//                        })
+//                        .authenticationEntryPoint((request, response, authException) -> {
+//                            ResponseError<String> responseError = new ResponseError<>();
+//                            responseError.setHttp_code(HttpStatus.UNAUTHORIZED.value());
+//                            responseError.setErrors(authException.getMessage());
+//                            ResponseEntity<ResponseError<String>> responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+//                                    .body(responseError);
+//                            ObjectMapper objectMapper = new ObjectMapper();
+//                            String jsonResponse = objectMapper.writeValueAsString(responseEntity.getBody());
+//                            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+//                            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+//                            response.getWriter().write(jsonResponse);
+//                            response.getWriter().flush();
+//                            logger.error(authException.getMessage());
+//                        })
+//                );
         return http.build();
     }
 
